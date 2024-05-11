@@ -8,13 +8,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Context\" />
-    <Folder Include="Models\" />
-    <Folder Include="Helper\" />
     <Folder Include="DTOs\" />
     <Folder Include="IServices\" />
     <Folder Include="IRepos\" />
     <Folder Include="Logger\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.18">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.18">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MySql.Data" Version="8.4.0" />
+    <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.16" />
   </ItemGroup>
 
 </Project>
