@@ -15,4 +15,9 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BlogPhotographerSystem-Core\BlogPhotographerSystem-Core.csproj" />
+    <ProjectReference Include="..\BlogPhotographerSystem-Infra\BlogPhotographerSystem-Infra.csproj" />
+  </ItemGroup>
+
 </Project>
