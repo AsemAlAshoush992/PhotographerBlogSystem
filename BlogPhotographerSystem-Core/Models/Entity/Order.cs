@@ -16,6 +16,8 @@ namespace BlogPhotographerSystem_Core.Models.Entity
         public Status Status { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
         public bool IsActive { get; set; }
-        public DateTime ModifiedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public int? UserID { get; set; }
+        public int? ServiceID { get; set; }
     }
 }

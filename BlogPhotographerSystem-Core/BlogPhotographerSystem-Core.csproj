@@ -12,6 +12,7 @@
     <Folder Include="IServices\" />
     <Folder Include="IRepos\" />
     <Folder Include="Logger\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>

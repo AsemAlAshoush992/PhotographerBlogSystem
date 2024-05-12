@@ -17,6 +17,7 @@ namespace BlogPhotographerSystem_Core.Models.Entity
         public float Budget { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreationDate { get; set; }
-        public DateTime ModifiedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public int? UserID { get; set; }
     }
 }

@@ -16,10 +16,11 @@ namespace BlogPhotographerSystem_Core.Models.Entity
         public int Price { get; set; }
         public int Quantity { get; set; }
         public bool IsHaveDiscount { get; set; }
-        public float DisacountAmount { get; set; }
-        public DiscountType DiscountType { get; set; }
+        public float? DisacountAmount { get; set; }
+        public DiscountType? DiscountType { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreationDate { get; set; }
-        public DateTime ModifiedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public int? CategoryID { get; set; }
     }
 }

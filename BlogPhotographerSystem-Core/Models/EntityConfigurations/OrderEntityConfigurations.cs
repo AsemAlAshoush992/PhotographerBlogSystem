@@ -23,6 +23,7 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.Status).IsRequired();
             builder.Property(x => x.PaymentMethod).IsRequired();
             builder.Property(x => x.Note).IsRequired(false);
+            builder.Property(x => x.ModifiedDate).IsRequired(false);
             //Unique Constraint
             builder.HasIndex(x => x.Note).IsUnique();
             builder.HasIndex(x => x.Title).IsUnique();

@@ -25,6 +25,7 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.Quantity).IsRequired();
             builder.Property(x => x.DisacountAmount).IsRequired(false);
             builder.Property(x => x.DiscountType).IsRequired(false);
+            builder.Property(x => x.ModifiedDate).IsRequired(false);
 
             //Nvarchar
             builder.Property(x => x.Name).IsUnicode();
@@ -34,6 +35,8 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.Description).HasMaxLength(150);
             //Check Constraint
             builder.ToTable(t => t.HasCheckConstraint("CH_Service_Name", "LENGTH(Name) >= 4"));
+            //Relationships
+            builder.HasMany<Order>().WithOne().HasForeignKey(x => x.ServiceID);
         }
     }
 }

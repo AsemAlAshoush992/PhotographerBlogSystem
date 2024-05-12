@@ -24,6 +24,7 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.Email).IsRequired();
             builder.Property(x => x.Phone).IsRequired();
             builder.Property(x => x.BirthDate).IsRequired();
+            builder.Property(x => x.ModifiedDate).IsRequired(false);
             //Size 
             builder.Property(x => x.Phone).HasMaxLength(14);
             //Nvarchar
@@ -34,6 +35,10 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.ToTable(t => t.HasCheckConstraint("CH_User_LastName", "LENGTH(LastName) >= 3"));
             builder.ToTable(t => t.HasCheckConstraint("CH_User_Phone", "Phone LIKE '009627________'"));
             builder.ToTable(t => t.HasCheckConstraint("CH_User_Email", "Email LIKE '%@%.com'"));
+            //Relationships
+            builder.HasOne<Login>().WithOne().HasForeignKey<Login>(x => x.UserID);
+            builder.HasMany<ContactRequest>().WithOne().HasForeignKey(x => x.UserID);
+            builder.HasMany<Order>().WithOne().HasForeignKey(x => x.UserID);
         }
     }
 }

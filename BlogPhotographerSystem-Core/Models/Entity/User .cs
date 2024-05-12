@@ -16,6 +16,6 @@ namespace BlogPhotographerSystem_Core.Models.Entity
         public string Phone { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreationDate { get; set; }
-        public DateTime ModifiedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
     }
 }
