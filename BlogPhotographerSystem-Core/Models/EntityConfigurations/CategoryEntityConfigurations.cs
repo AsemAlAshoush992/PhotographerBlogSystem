@@ -30,3 +30,4 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.ToTable(t => t.HasCheckConstraint("CH_Category_Title", "LENGTH(Title) >= 5"));
         }
     }
+}

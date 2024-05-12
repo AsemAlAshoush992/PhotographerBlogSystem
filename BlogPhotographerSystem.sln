@@ -5,9 +5,9 @@ VisualStudioVersion = 17.7.34003.232
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogPhotographerSystem", "BlogPhotographerSystem\BlogPhotographerSystem.csproj", "{4876A77D-EC82-4437-8831-43F113EB9450}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogPhotographerSystem-Core", "BlogPhotographerSystem-Core\BlogPhotographerSystem-Core.csproj", "{E52160E0-F92E-4F4F-B731-ED6E2EDC42FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogPhotographerSystem-Core", "BlogPhotographerSystem-Core\BlogPhotographerSystem-Core.csproj", "{E52160E0-F92E-4F4F-B731-ED6E2EDC42FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogPhotographerSystem-Infra", "BlogPhotographerSystem-Infra\BlogPhotographerSystem-Infra.csproj", "{00350E3E-81C1-4891-842B-92F2105D6B22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogPhotographerSystem-Infra", "BlogPhotographerSystem-Infra\BlogPhotographerSystem-Infra.csproj", "{00350E3E-81C1-4891-842B-92F2105D6B22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
