@@ -13,11 +13,16 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
-            //basic configurations
-            builder.HasKey(X => X.ID);
-            //Default Constraint
-            builder.Property(x => x.IsActive).HasDefaultValue(true);
-            builder.Property(x => x.OrderDate).HasDefaultValue(DateTime.Now);
+            //shared entity configuration
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).HasColumnType("int").ValueGeneratedOnAdd();
+            builder.Property(x => x.CreationDate).IsRequired();
+            builder.Property(x => x.CreatorUserId).IsRequired();
+            builder.Property(x => x.IsDeleted).IsRequired();
+            builder.Property(x => x.CreationDate).HasDefaultValue(DateTime.Now);
+            builder.Property(x => x.IsDeleted).HasDefaultValue(false);
+            builder.Property(x => x.ModifiedUserId).IsRequired(false);
+            builder.Property(x => x.ModifiedDate).IsRequired(false);
             //Not Null Constraint
             builder.Property(x => x.Title).IsRequired();
             builder.Property(x => x.Status).IsRequired();

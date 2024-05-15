@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogPhotographerSystem_Core.Migrations
 {
     [DbContext(typeof(BlogPhotographerSystemDBContext))]
-    [Migration("20240512155228_intial1")]
-    partial class intial1
+    [Migration("20240515152546_Asem")]
+    partial class Asem
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,26 +24,32 @@ namespace BlogPhotographerSystem_Core.Migrations
 
             modelBuilder.Entity("BlogPhotographerSystem_Core.Models.Entity.Category", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 12, 18, 52, 28, 462, DateTimeKind.Local).AddTicks(3283));
+                        .HasDefaultValue(new DateTime(2024, 5, 15, 18, 25, 46, 91, DateTimeKind.Local).AddTicks(8001));
+
+                    b.Property<int>("CreatorUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(true);
+                        .HasDefaultValue(false);
 
-                    b.Property<DateTime>("ModifiedDate")
+                    b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("ModifiedUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -51,7 +57,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .IsUnicode(true)
                         .HasColumnType("varchar(25)");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("Categories", t =>
                         {
@@ -61,7 +67,7 @@ namespace BlogPhotographerSystem_Core.Migrations
 
             modelBuilder.Entity("BlogPhotographerSystem_Core.Models.Entity.ContactRequest", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -76,7 +82,10 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 12, 18, 52, 28, 462, DateTimeKind.Local).AddTicks(8631));
+                        .HasDefaultValue(new DateTime(2024, 5, 15, 18, 25, 46, 92, DateTimeKind.Local).AddTicks(3791));
+
+                    b.Property<int>("CreatorUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -88,13 +97,16 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(true);
+                        .HasDefaultValue(false);
 
-                    b.Property<DateTime>("ModifiedDate")
+                    b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("ModifiedUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -108,7 +120,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<int?>("UserID")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.HasIndex("Email")
                         .IsUnique();
@@ -130,19 +142,22 @@ namespace BlogPhotographerSystem_Core.Migrations
 
             modelBuilder.Entity("BlogPhotographerSystem_Core.Models.Entity.Login", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 12, 18, 52, 28, 462, DateTimeKind.Local).AddTicks(7558));
+                        .HasDefaultValue(new DateTime(2024, 5, 15, 18, 25, 46, 92, DateTimeKind.Local).AddTicks(2348));
 
-                    b.Property<bool>("IsActive")
+                    b.Property<int>("CreatorUserId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(true);
+                        .HasDefaultValue(false);
 
                     b.Property<bool>("IsLoggedIn")
                         .HasColumnType("tinyint(1)");
@@ -150,8 +165,11 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("LastLoginTime")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("ModifiedDate")
+                    b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("ModifiedUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -165,7 +183,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.HasIndex("Password")
                         .IsUnique();
@@ -184,26 +202,35 @@ namespace BlogPhotographerSystem_Core.Migrations
 
             modelBuilder.Entity("BlogPhotographerSystem_Core.Models.Entity.Order", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValue(new DateTime(2024, 5, 15, 18, 25, 46, 92, DateTimeKind.Local).AddTicks(5426));
+
+                    b.Property<int>("CreatorUserId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(true);
+                        .HasDefaultValue(false);
 
-                    b.Property<DateTime>("ModifiedDate")
+                    b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("ModifiedUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Note")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
                     b.Property<DateTime>("OrderDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 12, 18, 52, 28, 462, DateTimeKind.Local).AddTicks(9932));
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("PaymentMethod")
                         .HasColumnType("int");
@@ -221,7 +248,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<int?>("UserID")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.HasIndex("Note")
                         .IsUnique();
@@ -241,17 +268,20 @@ namespace BlogPhotographerSystem_Core.Migrations
 
             modelBuilder.Entity("BlogPhotographerSystem_Core.Models.Entity.Service", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("CategoryID")
+                    b.Property<int?>("CategoryID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 12, 18, 52, 28, 463, DateTimeKind.Local).AddTicks(1109));
+                        .HasDefaultValue(new DateTime(2024, 5, 15, 18, 25, 46, 92, DateTimeKind.Local).AddTicks(6897));
+
+                    b.Property<int>("CreatorUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -270,16 +300,19 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(true);
+                        .HasDefaultValue(false);
 
                     b.Property<bool>("IsHaveDiscount")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<DateTime>("ModifiedDate")
+                    b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("ModifiedUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -289,10 +322,11 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int?>("Quantity")
+                        .IsRequired()
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.HasIndex("CategoryID");
 
@@ -304,7 +338,7 @@ namespace BlogPhotographerSystem_Core.Migrations
 
             modelBuilder.Entity("BlogPhotographerSystem_Core.Models.Entity.User", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -314,7 +348,10 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 12, 18, 52, 28, 463, DateTimeKind.Local).AddTicks(4446));
+                        .HasDefaultValue(new DateTime(2024, 5, 15, 18, 25, 46, 93, DateTimeKind.Local).AddTicks(645));
+
+                    b.Property<int>("CreatorUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -325,25 +362,28 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .IsUnicode(true)
                         .HasColumnType("longtext");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(true);
+                        .HasDefaultValue(false);
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .IsUnicode(true)
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("ModifiedDate")
+                    b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("ModifiedUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasMaxLength(14)
                         .HasColumnType("varchar(14)");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("Users", t =>
                         {
@@ -386,9 +426,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                 {
                     b.HasOne("BlogPhotographerSystem_Core.Models.Entity.Category", null)
                         .WithMany()
-                        .HasForeignKey("CategoryID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryID");
                 });
 #pragma warning restore 612, 618
         }

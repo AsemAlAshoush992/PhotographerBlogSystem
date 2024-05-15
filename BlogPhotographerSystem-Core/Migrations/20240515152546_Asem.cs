@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace BlogPhotographerSystem_Core.Migrations
 {
     /// <inheritdoc />
-    public partial class intial1 : Migration
+    public partial class Asem : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,17 +19,19 @@ namespace BlogPhotographerSystem_Core.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Title = table.Column<string>(type: "varchar(25)", maxLength: 25, nullable: false),
                     Description = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 12, 18, 52, 28, 462, DateTimeKind.Local).AddTicks(3283)),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 15, 18, 25, 46, 91, DateTimeKind.Local).AddTicks(8001)),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    CreatorUserId = table.Column<int>(type: "int", nullable: false),
+                    ModifiedUserId = table.Column<int>(type: "int", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.ID);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                     table.CheckConstraint("CH_Category_Title", "LENGTH(Title) >= 5");
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
@@ -38,20 +40,22 @@ namespace BlogPhotographerSystem_Core.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     FirstName = table.Column<string>(type: "longtext", nullable: false),
                     LastName = table.Column<string>(type: "longtext", nullable: false),
                     Email = table.Column<string>(type: "longtext", nullable: false),
                     BirthDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Phone = table.Column<string>(type: "varchar(14)", maxLength: 14, nullable: false),
-                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 12, 18, 52, 28, 463, DateTimeKind.Local).AddTicks(4446)),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 15, 18, 25, 46, 93, DateTimeKind.Local).AddTicks(645)),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    CreatorUserId = table.Column<int>(type: "int", nullable: false),
+                    ModifiedUserId = table.Column<int>(type: "int", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.ID);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                     table.CheckConstraint("CH_User_Email", "Email LIKE '%@%.com'");
                     table.CheckConstraint("CH_User_FirstName", "LENGTH(FirstName) >= 3");
                     table.CheckConstraint("CH_User_LastName", "LENGTH(LastName) >= 3");
@@ -63,7 +67,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                 name: "Services",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "longtext", nullable: false),
                     Description = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false),
@@ -73,21 +77,22 @@ namespace BlogPhotographerSystem_Core.Migrations
                     IsHaveDiscount = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     DisacountAmount = table.Column<float>(type: "float", nullable: true),
                     DiscountType = table.Column<int>(type: "int", nullable: true),
-                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 12, 18, 52, 28, 463, DateTimeKind.Local).AddTicks(1109)),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    CategoryID = table.Column<int>(type: "int", nullable: false)
+                    CategoryID = table.Column<int>(type: "int", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 15, 18, 25, 46, 92, DateTimeKind.Local).AddTicks(6897)),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    CreatorUserId = table.Column<int>(type: "int", nullable: false),
+                    ModifiedUserId = table.Column<int>(type: "int", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Services", x => x.ID);
+                    table.PrimaryKey("PK_Services", x => x.Id);
                     table.CheckConstraint("CH_Service_Name", "LENGTH(Name) >= 4");
                     table.ForeignKey(
                         name: "FK_Services_Categories_CategoryID",
                         column: x => x.CategoryID,
                         principalTable: "Categories",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -95,7 +100,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                 name: "ContactRequests",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     ClientName = table.Column<string>(type: "longtext", nullable: false),
                     Email = table.Column<string>(type: "varchar(255)", nullable: false),
@@ -103,14 +108,16 @@ namespace BlogPhotographerSystem_Core.Migrations
                     Description = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     Purpose = table.Column<string>(type: "longtext", nullable: false),
                     Budget = table.Column<float>(type: "float", nullable: false),
-                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 12, 18, 52, 28, 462, DateTimeKind.Local).AddTicks(8631)),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UserID = table.Column<int>(type: "int", nullable: true)
+                    UserID = table.Column<int>(type: "int", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 15, 18, 25, 46, 92, DateTimeKind.Local).AddTicks(3791)),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    CreatorUserId = table.Column<int>(type: "int", nullable: false),
+                    ModifiedUserId = table.Column<int>(type: "int", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ContactRequests", x => x.ID);
+                    table.PrimaryKey("PK_ContactRequests", x => x.Id);
                     table.CheckConstraint("CH_ContactRequest_ClientName", "LENGTH(ClientName) >= 5");
                     table.CheckConstraint("CH_ContactRequest_Email", "Email LIKE '%@%.com'");
                     table.CheckConstraint("CH_ContactRequest_Phone", "Phone LIKE '009627________'");
@@ -118,7 +125,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                         name: "FK_ContactRequests_Users_UserID",
                         column: x => x.UserID,
                         principalTable: "Users",
-                        principalColumn: "ID");
+                        principalColumn: "Id");
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -126,26 +133,28 @@ namespace BlogPhotographerSystem_Core.Migrations
                 name: "Logins",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     UserName = table.Column<string>(type: "varchar(255)", nullable: false),
                     Password = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
                     LastLoginTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     IsLoggedIn = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 12, 18, 52, 28, 462, DateTimeKind.Local).AddTicks(7558)),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UserID = table.Column<int>(type: "int", nullable: true)
+                    UserID = table.Column<int>(type: "int", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 15, 18, 25, 46, 92, DateTimeKind.Local).AddTicks(2348)),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    CreatorUserId = table.Column<int>(type: "int", nullable: false),
+                    ModifiedUserId = table.Column<int>(type: "int", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Logins", x => x.ID);
+                    table.PrimaryKey("PK_Logins", x => x.Id);
                     table.CheckConstraint("CH_Login_Password", "LENGTH(Password) >= 8");
                     table.ForeignKey(
                         name: "FK_Logins_Users_UserID",
                         column: x => x.UserID,
                         principalTable: "Users",
-                        principalColumn: "ID");
+                        principalColumn: "Id");
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -153,32 +162,35 @@ namespace BlogPhotographerSystem_Core.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    OrderDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 12, 18, 52, 28, 462, DateTimeKind.Local).AddTicks(9932)),
+                    OrderDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Title = table.Column<string>(type: "varchar(255)", nullable: false),
                     Note = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     PaymentMethod = table.Column<int>(type: "int", nullable: false),
-                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UserID = table.Column<int>(type: "int", nullable: true),
-                    ServiceID = table.Column<int>(type: "int", nullable: true)
+                    ServiceID = table.Column<int>(type: "int", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 15, 18, 25, 46, 92, DateTimeKind.Local).AddTicks(5426)),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    CreatorUserId = table.Column<int>(type: "int", nullable: false),
+                    ModifiedUserId = table.Column<int>(type: "int", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders", x => x.ID);
+                    table.PrimaryKey("PK_Orders", x => x.Id);
                     table.CheckConstraint("CH_Order_Title", "LENGTH(Title) >= 5");
                     table.ForeignKey(
                         name: "FK_Orders_Services_ServiceID",
                         column: x => x.ServiceID,
                         principalTable: "Services",
-                        principalColumn: "ID");
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Orders_Users_UserID",
                         column: x => x.UserID,
                         principalTable: "Users",
-                        principalColumn: "ID");
+                        principalColumn: "Id");
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
