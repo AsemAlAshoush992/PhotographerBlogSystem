@@ -33,5 +33,10 @@ namespace BlogPhotographerSystem_Core.Helper.Enums
             Completed= 4,
             Cancelled= 5
         }
+        public enum UserType
+        {
+            Client= 0,
+            Admin= 1
+        }
     }
 }

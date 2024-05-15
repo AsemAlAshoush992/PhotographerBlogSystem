@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static BlogPhotographerSystem_Core.Helper.Enums.Enums;
 
 namespace BlogPhotographerSystem_Core.Models.Entity
 {
@@ -14,5 +15,6 @@ namespace BlogPhotographerSystem_Core.Models.Entity
         public string Email { get; set; }
         public DateTime BirthDate { get; set; }
         public string Phone { get; set; }
+        public UserType UserType { get; set; }
     }
 }
