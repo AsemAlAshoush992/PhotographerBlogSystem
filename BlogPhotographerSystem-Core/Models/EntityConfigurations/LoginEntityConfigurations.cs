@@ -23,6 +23,7 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.IsDeleted).HasDefaultValue(false);
             builder.Property(x => x.ModifiedUserId).IsRequired(false);
             builder.Property(x => x.ModifiedDate).IsRequired(false);
+            builder.Property(x => x.LastLoginTime).IsRequired(false);
             //Not Null Constraint
             builder.Property(x => x.UserName).IsRequired();
             builder.Property(x => x.Password).IsRequired();

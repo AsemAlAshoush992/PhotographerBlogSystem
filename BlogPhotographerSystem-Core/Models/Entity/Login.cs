@@ -11,7 +11,7 @@ namespace BlogPhotographerSystem_Core.Models.Entity
     {
         public string UserName { get; set; }
         public string Password { get; set; }
-        public DateTime LastLoginTime { get; set; }
+        public DateTime? LastLoginTime { get; set; }
         public bool IsLoggedIn { get; set; }
         public int? UserID { get; set; }
     }
