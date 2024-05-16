@@ -3,6 +3,7 @@ using System;
 using BlogPhotographerSystem_Core.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogPhotographerSystem_Core.Migrations
 {
     [DbContext(typeof(BlogPhotographerSystemDBContext))]
-    partial class BlogPhotographerSystemDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240515154455_Asem2")]
+    partial class Asem2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
