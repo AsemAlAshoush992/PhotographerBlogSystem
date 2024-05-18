@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace BlogPhotographerSystem_Core.Migrations
 {
     /// <inheritdoc />
-    public partial class Asem : Migration
+    public partial class asem1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,7 +23,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Title = table.Column<string>(type: "varchar(25)", maxLength: 25, nullable: false),
                     Description = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 15, 18, 25, 46, 91, DateTimeKind.Local).AddTicks(8001)),
+                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 19, 0, 14, 37, 978, DateTimeKind.Local).AddTicks(7532)),
                     ModifiedDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     CreatorUserId = table.Column<int>(type: "int", nullable: false),
                     ModifiedUserId = table.Column<int>(type: "int", nullable: true),
@@ -44,10 +44,11 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     FirstName = table.Column<string>(type: "longtext", nullable: false),
                     LastName = table.Column<string>(type: "longtext", nullable: false),
-                    Email = table.Column<string>(type: "longtext", nullable: false),
+                    Email = table.Column<string>(type: "varchar(255)", nullable: false),
                     BirthDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Phone = table.Column<string>(type: "varchar(14)", maxLength: 14, nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 15, 18, 25, 46, 93, DateTimeKind.Local).AddTicks(645)),
+                    UserType = table.Column<int>(type: "int", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 19, 0, 14, 37, 980, DateTimeKind.Local).AddTicks(5247)),
                     ModifiedDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     CreatorUserId = table.Column<int>(type: "int", nullable: false),
                     ModifiedUserId = table.Column<int>(type: "int", nullable: true),
@@ -56,9 +57,9 @@ namespace BlogPhotographerSystem_Core.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                    table.CheckConstraint("CH_User_Email", "Email LIKE '%@%.com'");
-                    table.CheckConstraint("CH_User_FirstName", "LENGTH(FirstName) >= 3");
-                    table.CheckConstraint("CH_User_LastName", "LENGTH(LastName) >= 3");
+                    table.CheckConstraint("CH_User_Email", "Email REGEXP '^[A-Za-z0-9._-]+@[A-Za-z0-9]+[.][A-Za-z]+$'");
+                    table.CheckConstraint("CH_User_FirstName", "FirstName REGEXP '^[A-Za-z]{3,}$'");
+                    table.CheckConstraint("CH_User_LastName", "LastName REGEXP '^[A-Za-z]{3,}$'");
                     table.CheckConstraint("CH_User_Phone", "Phone LIKE '009627________'");
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
@@ -78,7 +79,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     DisacountAmount = table.Column<float>(type: "float", nullable: true),
                     DiscountType = table.Column<int>(type: "int", nullable: true),
                     CategoryID = table.Column<int>(type: "int", nullable: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 15, 18, 25, 46, 92, DateTimeKind.Local).AddTicks(6897)),
+                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 19, 0, 14, 37, 979, DateTimeKind.Local).AddTicks(9956)),
                     ModifiedDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     CreatorUserId = table.Column<int>(type: "int", nullable: false),
                     ModifiedUserId = table.Column<int>(type: "int", nullable: true),
@@ -109,7 +110,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     Purpose = table.Column<string>(type: "longtext", nullable: false),
                     Budget = table.Column<float>(type: "float", nullable: false),
                     UserID = table.Column<int>(type: "int", nullable: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 15, 18, 25, 46, 92, DateTimeKind.Local).AddTicks(3791)),
+                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 19, 0, 14, 37, 979, DateTimeKind.Local).AddTicks(5491)),
                     ModifiedDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     CreatorUserId = table.Column<int>(type: "int", nullable: false),
                     ModifiedUserId = table.Column<int>(type: "int", nullable: true),
@@ -137,10 +138,10 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     UserName = table.Column<string>(type: "varchar(255)", nullable: false),
                     Password = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    LastLoginTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    LastLoginTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     IsLoggedIn = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     UserID = table.Column<int>(type: "int", nullable: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 15, 18, 25, 46, 92, DateTimeKind.Local).AddTicks(2348)),
+                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 19, 0, 14, 37, 979, DateTimeKind.Local).AddTicks(3416)),
                     ModifiedDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     CreatorUserId = table.Column<int>(type: "int", nullable: false),
                     ModifiedUserId = table.Column<int>(type: "int", nullable: true),
@@ -149,7 +150,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Logins", x => x.Id);
-                    table.CheckConstraint("CH_Login_Password", "LENGTH(Password) >= 8");
+                    table.CheckConstraint("CH_Login_Password", "Password REGEXP '[A-Z]{1,}[a-z]{5,}[0-9]+[+=)(*&^%$#@!~]+'");
                     table.ForeignKey(
                         name: "FK_Logins_Users_UserID",
                         column: x => x.UserID,
@@ -171,7 +172,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     PaymentMethod = table.Column<int>(type: "int", nullable: false),
                     UserID = table.Column<int>(type: "int", nullable: true),
                     ServiceID = table.Column<int>(type: "int", nullable: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 15, 18, 25, 46, 92, DateTimeKind.Local).AddTicks(5426)),
+                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 5, 19, 0, 14, 37, 979, DateTimeKind.Local).AddTicks(7898)),
                     ModifiedDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     CreatorUserId = table.Column<int>(type: "int", nullable: false),
                     ModifiedUserId = table.Column<int>(type: "int", nullable: true),
@@ -255,6 +256,18 @@ namespace BlogPhotographerSystem_Core.Migrations
                 name: "IX_Services_CategoryID",
                 table: "Services",
                 column: "CategoryID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Phone",
+                table: "Users",
+                column: "Phone",
+                unique: true);
         }
 
         /// <inheritdoc />

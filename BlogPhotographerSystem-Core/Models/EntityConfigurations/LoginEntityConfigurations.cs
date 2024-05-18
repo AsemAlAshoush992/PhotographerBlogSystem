@@ -33,7 +33,9 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             //Size 
             builder.Property(x => x.Password).HasMaxLength(15);
             //Check Constraint
-            builder.ToTable(t => t.HasCheckConstraint("CH_Login_Password", "LENGTH(Password) >= 8"));
+            //builder.ToTable(t => t.HasCheckConstraint("CH_Login_Password", "LENGTH(Password) >= 8"));
+            builder.ToTable(t => t.HasCheckConstraint("CH_Login_Password", @"Password REGEXP '[A-Z]{1,}[a-z]{5,}[0-9]+[+=)(*&^%$#@!~]+'"));
+
         }
     }
 }

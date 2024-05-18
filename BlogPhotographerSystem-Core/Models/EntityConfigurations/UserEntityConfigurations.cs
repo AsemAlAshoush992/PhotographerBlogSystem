@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
 {
@@ -30,16 +31,20 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.Phone).IsRequired();
             builder.Property(x => x.BirthDate).IsRequired();
             builder.Property(x => x.ModifiedDate).IsRequired(false);
+            //Unique Constraint
+            builder.HasIndex(x => x.Email).IsUnique();
+            builder.HasIndex(x => x.Phone).IsUnique();
             //Size 
             builder.Property(x => x.Phone).HasMaxLength(14);
             //Nvarchar
             builder.Property(x => x.FirstName).IsUnicode();
             builder.Property(x => x.LastName).IsUnicode();
             //Check Constraint
-            builder.ToTable(t => t.HasCheckConstraint("CH_User_FirstName", "LENGTH(FirstName) >= 3"));
-            builder.ToTable(t => t.HasCheckConstraint("CH_User_LastName", "LENGTH(LastName) >= 3"));
+            builder.ToTable(t => t.HasCheckConstraint("CH_User_FirstName", @"FirstName REGEXP '^[A-Za-z]{3,}$'"));
+            builder.ToTable(t => t.HasCheckConstraint("CH_User_LastName", @"LastName REGEXP '^[A-Za-z]{3,}$'"));
             builder.ToTable(t => t.HasCheckConstraint("CH_User_Phone", "Phone LIKE '009627________'"));
-            builder.ToTable(t => t.HasCheckConstraint("CH_User_Email", "Email LIKE '%@%.com'"));
+            //builder.ToTable(t => t.HasCheckConstraint("CH_User_Email", "Email LIKE '%@%.com'"));
+            builder.ToTable(t => t.HasCheckConstraint("CH_User_Email", @"Email REGEXP '^[A-Za-z0-9._-]+@[A-Za-z0-9]+[.][A-Za-z]+$'"));
             //Relationships
             builder.HasOne<Login>().WithOne().HasForeignKey<Login>(x => x.UserID);
             builder.HasMany<ContactRequest>().WithOne().HasForeignKey(x => x.UserID);

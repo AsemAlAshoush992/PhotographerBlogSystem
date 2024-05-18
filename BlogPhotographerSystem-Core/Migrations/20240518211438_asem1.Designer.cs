@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogPhotographerSystem_Core.Migrations
 {
     [DbContext(typeof(BlogPhotographerSystemDBContext))]
-    [Migration("20240516150218_asem3")]
-    partial class asem3
+    [Migration("20240518211438_asem1")]
+    partial class asem1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,7 +31,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 16, 18, 2, 17, 937, DateTimeKind.Local).AddTicks(8749));
+                        .HasDefaultValue(new DateTime(2024, 5, 19, 0, 14, 37, 978, DateTimeKind.Local).AddTicks(7532));
 
                     b.Property<int>("CreatorUserId")
                         .HasColumnType("int");
@@ -82,7 +82,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 16, 18, 2, 17, 938, DateTimeKind.Local).AddTicks(7234));
+                        .HasDefaultValue(new DateTime(2024, 5, 19, 0, 14, 37, 979, DateTimeKind.Local).AddTicks(5491));
 
                     b.Property<int>("CreatorUserId")
                         .HasColumnType("int");
@@ -149,7 +149,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 16, 18, 2, 17, 938, DateTimeKind.Local).AddTicks(4812));
+                        .HasDefaultValue(new DateTime(2024, 5, 19, 0, 14, 37, 979, DateTimeKind.Local).AddTicks(3416));
 
                     b.Property<int>("CreatorUserId")
                         .HasColumnType("int");
@@ -196,7 +196,7 @@ namespace BlogPhotographerSystem_Core.Migrations
 
                     b.ToTable("Logins", t =>
                         {
-                            t.HasCheckConstraint("CH_Login_Password", "LENGTH(Password) >= 8");
+                            t.HasCheckConstraint("CH_Login_Password", "Password REGEXP '[A-Z]{1,}[a-z]{5,}[0-9]+[+=)(*&^%$#@!~]+'");
                         });
                 });
 
@@ -209,7 +209,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 16, 18, 2, 17, 939, DateTimeKind.Local).AddTicks(46));
+                        .HasDefaultValue(new DateTime(2024, 5, 19, 0, 14, 37, 979, DateTimeKind.Local).AddTicks(7898));
 
                     b.Property<int>("CreatorUserId")
                         .HasColumnType("int");
@@ -278,7 +278,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 16, 18, 2, 17, 939, DateTimeKind.Local).AddTicks(2499));
+                        .HasDefaultValue(new DateTime(2024, 5, 19, 0, 14, 37, 979, DateTimeKind.Local).AddTicks(9956));
 
                     b.Property<int>("CreatorUserId")
                         .HasColumnType("int");
@@ -348,14 +348,14 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 16, 18, 2, 17, 939, DateTimeKind.Local).AddTicks(8468));
+                        .HasDefaultValue(new DateTime(2024, 5, 19, 0, 14, 37, 980, DateTimeKind.Local).AddTicks(5247));
 
                     b.Property<int>("CreatorUserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -388,13 +388,19 @@ namespace BlogPhotographerSystem_Core.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("Phone")
+                        .IsUnique();
+
                     b.ToTable("Users", t =>
                         {
-                            t.HasCheckConstraint("CH_User_Email", "Email LIKE '%@%.com'");
+                            t.HasCheckConstraint("CH_User_Email", "Email REGEXP '^[A-Za-z0-9._-]+@[A-Za-z0-9]+[.][A-Za-z]+$'");
 
-                            t.HasCheckConstraint("CH_User_FirstName", "LENGTH(FirstName) >= 3");
+                            t.HasCheckConstraint("CH_User_FirstName", "FirstName REGEXP '^[A-Za-z]{3,}$'");
 
-                            t.HasCheckConstraint("CH_User_LastName", "LENGTH(LastName) >= 3");
+                            t.HasCheckConstraint("CH_User_LastName", "LastName REGEXP '^[A-Za-z]{3,}$'");
 
                             t.HasCheckConstraint("CH_User_Phone", "Phone LIKE '009627________'");
                         });
