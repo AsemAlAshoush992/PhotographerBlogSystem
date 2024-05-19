@@ -40,8 +40,8 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.FirstName).IsUnicode();
             builder.Property(x => x.LastName).IsUnicode();
             //Check Constraint
-            builder.ToTable(t => t.HasCheckConstraint("CH_User_FirstName", @"FirstName REGEXP '^[A-Za-z]{3,}$'"));
-            builder.ToTable(t => t.HasCheckConstraint("CH_User_LastName", @"LastName REGEXP '^[A-Za-z]{3,}$'"));
+            builder.ToTable(t => t.HasCheckConstraint("CH_User_FirstName", @"NOT (FirstName REGEXP '[0-9]')"));
+            builder.ToTable(t => t.HasCheckConstraint("CH_User_LastName", @"NOT (LastName REGEXP '[0-9]')"));
             builder.ToTable(t => t.HasCheckConstraint("CH_User_Phone", "Phone LIKE '009627________'"));
             //builder.ToTable(t => t.HasCheckConstraint("CH_User_Email", "Email LIKE '%@%.com'"));
             builder.ToTable(t => t.HasCheckConstraint("CH_User_Email", @"Email REGEXP '^[A-Za-z0-9._-]+@[A-Za-z0-9]+[.][A-Za-z]+$'"));

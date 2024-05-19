@@ -28,7 +28,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 19, 0, 14, 37, 978, DateTimeKind.Local).AddTicks(7532));
+                        .HasDefaultValue(new DateTime(2024, 5, 19, 19, 0, 52, 523, DateTimeKind.Local).AddTicks(8276));
 
                     b.Property<int>("CreatorUserId")
                         .HasColumnType("int");
@@ -79,7 +79,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 19, 0, 14, 37, 979, DateTimeKind.Local).AddTicks(5491));
+                        .HasDefaultValue(new DateTime(2024, 5, 19, 19, 0, 52, 524, DateTimeKind.Local).AddTicks(5462));
 
                     b.Property<int>("CreatorUserId")
                         .HasColumnType("int");
@@ -146,7 +146,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 19, 0, 14, 37, 979, DateTimeKind.Local).AddTicks(3416));
+                        .HasDefaultValue(new DateTime(2024, 5, 19, 19, 0, 52, 524, DateTimeKind.Local).AddTicks(3593));
 
                     b.Property<int>("CreatorUserId")
                         .HasColumnType("int");
@@ -206,7 +206,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 19, 0, 14, 37, 979, DateTimeKind.Local).AddTicks(7898));
+                        .HasDefaultValue(new DateTime(2024, 5, 19, 19, 0, 52, 524, DateTimeKind.Local).AddTicks(7618));
 
                     b.Property<int>("CreatorUserId")
                         .HasColumnType("int");
@@ -275,7 +275,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 19, 0, 14, 37, 979, DateTimeKind.Local).AddTicks(9956));
+                        .HasDefaultValue(new DateTime(2024, 5, 19, 19, 0, 52, 524, DateTimeKind.Local).AddTicks(9542));
 
                     b.Property<int>("CreatorUserId")
                         .HasColumnType("int");
@@ -345,7 +345,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 19, 0, 14, 37, 980, DateTimeKind.Local).AddTicks(5247));
+                        .HasDefaultValue(new DateTime(2024, 5, 19, 19, 0, 52, 525, DateTimeKind.Local).AddTicks(4292));
 
                     b.Property<int>("CreatorUserId")
                         .HasColumnType("int");
@@ -395,9 +395,9 @@ namespace BlogPhotographerSystem_Core.Migrations
                         {
                             t.HasCheckConstraint("CH_User_Email", "Email REGEXP '^[A-Za-z0-9._-]+@[A-Za-z0-9]+[.][A-Za-z]+$'");
 
-                            t.HasCheckConstraint("CH_User_FirstName", "FirstName REGEXP '^[A-Za-z]{3,}$'");
+                            t.HasCheckConstraint("CH_User_FirstName", "NOT (FirstName REGEXP '[0-9]')");
 
-                            t.HasCheckConstraint("CH_User_LastName", "LastName REGEXP '^[A-Za-z]{3,}$'");
+                            t.HasCheckConstraint("CH_User_LastName", "NOT (LastName REGEXP '[0-9]')");
 
                             t.HasCheckConstraint("CH_User_Phone", "Phone LIKE '009627________'");
                         });
