@@ -26,7 +26,6 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             //Not Null Constraint
             builder.Property(x => x.Title).IsRequired();
             builder.Property(x => x.Description).IsRequired(false);
-            builder.Property(x => x.ModifiedDate).IsRequired(false);
             //Size 
             builder.Property(x => x.Description).HasMaxLength(100);
             builder.Property(x => x.Title).HasMaxLength(25);

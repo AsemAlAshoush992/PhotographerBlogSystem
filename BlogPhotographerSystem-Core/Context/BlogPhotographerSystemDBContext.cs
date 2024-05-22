@@ -24,6 +24,9 @@ namespace BlogPhotographerSystem_Core.Context
             modelBuilder.ApplyConfiguration(new OrderEntityConfigurations());
             modelBuilder.ApplyConfiguration(new ServiceEntityConfigurations());
             modelBuilder.ApplyConfiguration(new UserEntityConfigurations());
+            modelBuilder.ApplyConfiguration(new BlogAttachementEntityConfigurations());
+            modelBuilder.ApplyConfiguration(new BlogEntityConfigurations());
+            modelBuilder.ApplyConfiguration(new ProblemEntityConfigurations());
 
         }
         public virtual DbSet<Category> Categories { get; set; }
@@ -32,5 +35,8 @@ namespace BlogPhotographerSystem_Core.Context
         public virtual DbSet<Service> Services { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<ContactRequest> ContactRequests { get; set; }
+        public virtual DbSet<Problem> Problems{ get; set; }
+        public virtual DbSet<BlogAttachement> BlogAttachements{ get; set; }
+        public virtual DbSet<Blog> Blogs { get; set; }
     }
 }

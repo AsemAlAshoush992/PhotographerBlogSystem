@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static BlogPhotographerSystem_Core.Helper.Enums.Enums;
 
 namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
 {
-    internal class OrderEntityConfigurations : IEntityTypeConfiguration<Order>
+    public class ProblemEntityConfigurations : IEntityTypeConfiguration<Problem>
     {
-        public void Configure(EntityTypeBuilder<Order> builder)
+        public void Configure(EntityTypeBuilder<Problem> builder)
         {
             //shared entity configuration
             builder.HasKey(x => x.Id);
@@ -25,19 +26,20 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.ModifiedDate).IsRequired(false);
             //Not Null Constraint
             builder.Property(x => x.Title).IsRequired();
-            builder.Property(x => x.Status).IsRequired();
-            builder.Property(x => x.PaymentMethod).IsRequired();
-            builder.Property(x => x.Note).IsRequired(false);
-            builder.Property(x => x.ModifiedDate).IsRequired(false);
-            //Unique Constraint
-            builder.HasIndex(x => x.Note).IsUnique();
-            builder.HasIndex(x => x.Title).IsUnique();
+            builder.Property(x => x.Description).IsRequired();
+            builder.Property(x => x.Purpose).IsRequired();
+            builder.Property(x => x.UserID).IsRequired(false);
+            builder.Property(x => x.OrderID).IsRequired(false);
             //Size 
-            builder.Property(x => x.Note).HasMaxLength(100);
+            builder.Property(x => x.Purpose).HasMaxLength(50);
+            //Nvarchar
+            builder.Property(x => x.Title).IsUnicode();
+            builder.Property(x => x.Description).IsUnicode();
+            builder.Property(x => x.Purpose).IsUnicode();
             //Check Constraint
-            builder.ToTable(t => t.HasCheckConstraint("CH_Order_Title", "LENGTH(Title) >= 5"));
-            //Relationships
-            builder.HasOne<Problem>().WithOne().HasForeignKey<Problem>(x => x.OrderID);
+            builder.ToTable(t => t.HasCheckConstraint("CH_Problem_Title", "LENGTH(Title) >= 5"));
+            builder.ToTable(t => t.HasCheckConstraint("CH_Problem_Title", @"NOT (Title REGEXP '[0-9~!@#$%^&*()_+=-]')"));
+            builder.ToTable(t => t.HasCheckConstraint("CH_Problem_Purpose", @"NOT (Purpose REGEXP '[0-9~!@#$%^&*()_+=-]')"));
         }
     }
 }

@@ -38,5 +38,11 @@ namespace BlogPhotographerSystem_Core.Helper.Enums
             Client,
             Admin
         }
+        public enum FileType
+        {
+            Image,
+            Video,
+            Document
+        }
     }
 }

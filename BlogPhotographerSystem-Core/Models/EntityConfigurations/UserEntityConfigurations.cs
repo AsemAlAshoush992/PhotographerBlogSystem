@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using static BlogPhotographerSystem_Core.Helper.Enums.Enums;
 
 namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
 {
@@ -39,6 +40,8 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             //Nvarchar
             builder.Property(x => x.FirstName).IsUnicode();
             builder.Property(x => x.LastName).IsUnicode();
+            //Default Constraint
+            builder.Property(x => x.UserType).HasDefaultValue((UserType)Enum.Parse(typeof(UserType), "Admin"));
             //Check Constraint
             builder.ToTable(t => t.HasCheckConstraint("CH_User_FirstName", @"NOT (FirstName REGEXP '[0-9~!@#$%^&*()_+=-]')"));
             builder.ToTable(t => t.HasCheckConstraint("CH_User_LastName", @"NOT (LastName REGEXP '[0-9~!@#$%^&*()_+=-]')"));
@@ -49,6 +52,9 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.HasOne<Login>().WithOne().HasForeignKey<Login>(x => x.UserID);
             builder.HasMany<ContactRequest>().WithOne().HasForeignKey(x => x.UserID);
             builder.HasMany<Order>().WithOne().HasForeignKey(x => x.UserID);
+            builder.HasMany<Blog>().WithOne().HasForeignKey(x => x.AuthorID);
+            builder.HasMany<Problem>().WithOne().HasForeignKey(x => x.UserID);
+
         }
     }
 }

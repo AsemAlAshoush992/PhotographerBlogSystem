@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
 {
-    internal class OrderEntityConfigurations : IEntityTypeConfiguration<Order>
+    public class BlogEntityConfigurations : IEntityTypeConfiguration<Blog>
     {
-        public void Configure(EntityTypeBuilder<Order> builder)
+        public void Configure(EntityTypeBuilder<Blog> builder)
         {
             //shared entity configuration
             builder.HasKey(x => x.Id);
@@ -25,19 +25,22 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.ModifiedDate).IsRequired(false);
             //Not Null Constraint
             builder.Property(x => x.Title).IsRequired();
-            builder.Property(x => x.Status).IsRequired();
-            builder.Property(x => x.PaymentMethod).IsRequired();
-            builder.Property(x => x.Note).IsRequired(false);
-            builder.Property(x => x.ModifiedDate).IsRequired(false);
-            //Unique Constraint
-            builder.HasIndex(x => x.Note).IsUnique();
-            builder.HasIndex(x => x.Title).IsUnique();
+            builder.Property(x => x.Article).IsRequired();
+            builder.Property(x => x.BlogDate).IsRequired();
+            builder.Property(x => x.Description).IsRequired();
             //Size 
-            builder.Property(x => x.Note).HasMaxLength(100);
+            builder.Property(x => x.Description).HasMaxLength(100);
+            builder.Property(x => x.Title).HasMaxLength(30);
+            //Nvarchar
+            builder.Property(x => x.Title).IsUnicode();
+            builder.Property(x => x.Article).IsUnicode();
+            builder.Property(x => x.Description).IsUnicode();
             //Check Constraint
-            builder.ToTable(t => t.HasCheckConstraint("CH_Order_Title", "LENGTH(Title) >= 5"));
+            builder.ToTable(t => t.HasCheckConstraint("CH_Blog_Title", "LENGTH(Title) >= 5"));
+            //Default Constraint
+            builder.Property(x => x.BlogDate).HasDefaultValue(DateTime.Now);
             //Relationships
-            builder.HasOne<Problem>().WithOne().HasForeignKey<Problem>(x => x.OrderID);
+            builder.HasMany<BlogAttachement>().WithOne().HasForeignKey(x => x.BlogID);
         }
     }
 }

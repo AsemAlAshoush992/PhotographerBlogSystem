@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static BlogPhotographerSystem_Core.Helper.Enums.Enums;
 
 namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
 {
-    internal class OrderEntityConfigurations : IEntityTypeConfiguration<Order>
+    public class BlogAttachementEntityConfigurations : IEntityTypeConfiguration<BlogAttachement>
     {
-        public void Configure(EntityTypeBuilder<Order> builder)
+        public void Configure(EntityTypeBuilder<BlogAttachement> builder)
         {
             //shared entity configuration
             builder.HasKey(x => x.Id);
@@ -24,20 +25,18 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.ModifiedUserId).IsRequired(false);
             builder.Property(x => x.ModifiedDate).IsRequired(false);
             //Not Null Constraint
-            builder.Property(x => x.Title).IsRequired();
-            builder.Property(x => x.Status).IsRequired();
-            builder.Property(x => x.PaymentMethod).IsRequired();
-            builder.Property(x => x.Note).IsRequired(false);
-            builder.Property(x => x.ModifiedDate).IsRequired(false);
-            //Unique Constraint
-            builder.HasIndex(x => x.Note).IsUnique();
-            builder.HasIndex(x => x.Title).IsUnique();
+            builder.Property(x => x.Path).IsRequired();
+            builder.Property(x => x.FileName).IsRequired();
+            builder.Property(x => x.FileType).IsRequired();
             //Size 
-            builder.Property(x => x.Note).HasMaxLength(100);
+            builder.Property(x => x.FileName).HasMaxLength(25);
+            //Nvarchar
+            builder.Property(x => x.FileName).IsUnicode();
+            //Default Constraint
+            builder.Property(x => x.FileType).HasDefaultValue((FileType)Enum.Parse(typeof(FileType), "Image"));
             //Check Constraint
-            builder.ToTable(t => t.HasCheckConstraint("CH_Order_Title", "LENGTH(Title) >= 5"));
-            //Relationships
-            builder.HasOne<Problem>().WithOne().HasForeignKey<Problem>(x => x.OrderID);
+            builder.ToTable(t => t.HasCheckConstraint("CH_BlogAttachement_FileName", "LENGTH(FileName) >= 3"));
+            builder.ToTable(t => t.HasCheckConstraint("CH_BlogAttachement_FileName", @"NOT (FileName REGEXP '[0-9~!@#$%^&*()_+=-]')"));   
         }
     }
 }
