@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
 {
-    internal class ServiceEntityConfigurations : IEntityTypeConfiguration<Service>
+    public class ServiceEntityConfigurations : IEntityTypeConfiguration<Service>
     {
         public void Configure(EntityTypeBuilder<Service> builder)
         {

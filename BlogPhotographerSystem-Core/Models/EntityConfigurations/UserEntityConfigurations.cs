@@ -11,7 +11,7 @@ using static BlogPhotographerSystem_Core.Helper.Enums.Enums;
 
 namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
 {
-    internal class UserEntityConfigurations : IEntityTypeConfiguration<User>
+    public class UserEntityConfigurations : IEntityTypeConfiguration<User>
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {

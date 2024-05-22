@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
 {
-    internal class ContactRequestEntityConfigurations : IEntityTypeConfiguration<ContactRequest>
+    public class ContactRequestEntityConfigurations : IEntityTypeConfiguration<ContactRequest>
     {
         public void Configure(EntityTypeBuilder<ContactRequest> builder)
         {

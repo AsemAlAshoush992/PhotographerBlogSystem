@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
 {
-    internal class LoginEntityConfigurations : IEntityTypeConfiguration<Login>
+    public class LoginEntityConfigurations : IEntityTypeConfiguration<Login>
     {
         public void Configure(EntityTypeBuilder<Login> builder)
         {

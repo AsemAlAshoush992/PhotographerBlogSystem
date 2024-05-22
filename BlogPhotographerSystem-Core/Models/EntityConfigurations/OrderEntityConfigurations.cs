@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
 {
-    internal class OrderEntityConfigurations : IEntityTypeConfiguration<Order>
+    public class OrderEntityConfigurations : IEntityTypeConfiguration<Order>
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
