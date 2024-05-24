@@ -28,6 +28,7 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.Path).IsRequired();
             builder.Property(x => x.FileName).IsRequired();
             builder.Property(x => x.FileType).IsRequired();
+            builder.Property(x => x.BlogID).IsRequired(false);
             //Size 
             builder.Property(x => x.FileName).HasMaxLength(25);
             //Nvarchar

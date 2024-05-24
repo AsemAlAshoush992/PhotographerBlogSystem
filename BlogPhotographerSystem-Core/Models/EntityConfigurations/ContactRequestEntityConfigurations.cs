@@ -31,9 +31,6 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.Description).IsRequired();
             builder.Property(x => x.Budget).IsRequired();
             builder.Property(x => x.ModifiedDate).IsRequired(false);
-            //Unique Constraint
-            builder.HasIndex(x => x.Email).IsUnique();
-            builder.HasIndex(x => x.Phone).IsUnique();
             //Size 
             builder.Property(x => x.Description).HasMaxLength(100);
             builder.Property(x => x.Phone).HasMaxLength(14);
