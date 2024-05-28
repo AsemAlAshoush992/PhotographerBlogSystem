@@ -22,6 +22,7 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.CreatorUserId).IsRequired();
             builder.Property(x => x.IsDeleted).IsRequired();
             builder.Property(x => x.CreationDate).HasDefaultValue(DateTime.Now);
+            builder.Property(x => x.CreatorUserId).HasDefaultValue(1);
             builder.Property(x => x.IsDeleted).HasDefaultValue(false);
             builder.Property(x => x.ModifiedUserId).IsRequired(false);
             builder.Property(x => x.ModifiedDate).IsRequired(false);
@@ -41,7 +42,7 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.FirstName).IsUnicode();
             builder.Property(x => x.LastName).IsUnicode();
             //Default Constraint
-            builder.Property(x => x.UserType).HasDefaultValue((UserType)Enum.Parse(typeof(UserType), "Admin"));
+            builder.Property(x => x.UserType).HasDefaultValue((UserType)Enum.Parse(typeof(UserType), "Client"));
             //Check Constraint
             builder.ToTable(t => t.HasCheckConstraint("CH_User_FirstName", @"NOT (FirstName REGEXP '[0-9~!@#$%^&*()_+=-]')"));
             builder.ToTable(t => t.HasCheckConstraint("CH_User_LastName", @"NOT (LastName REGEXP '[0-9~!@#$%^&*()_+=-]')"));

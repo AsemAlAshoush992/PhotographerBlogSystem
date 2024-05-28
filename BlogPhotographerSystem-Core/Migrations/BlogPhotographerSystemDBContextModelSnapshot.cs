@@ -36,21 +36,28 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("BlogDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 24, 18, 52, 30, 421, DateTimeKind.Local).AddTicks(8621));
+                        .HasDefaultValue(new DateTime(2024, 5, 29, 0, 5, 56, 5, DateTimeKind.Local).AddTicks(833));
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 24, 18, 52, 30, 421, DateTimeKind.Local).AddTicks(7570));
+                        .HasDefaultValue(new DateTime(2024, 5, 29, 0, 5, 56, 4, DateTimeKind.Local).AddTicks(9777));
 
                     b.Property<int>("CreatorUserId")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(100)
                         .IsUnicode(true)
                         .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("IsApproved")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -91,10 +98,12 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 24, 18, 52, 30, 421, DateTimeKind.Local).AddTicks(5782));
+                        .HasDefaultValue(new DateTime(2024, 5, 29, 0, 5, 56, 4, DateTimeKind.Local).AddTicks(8188));
 
                     b.Property<int>("CreatorUserId")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<string>("FileName")
                         .IsRequired()
@@ -141,14 +150,20 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 24, 18, 52, 30, 418, DateTimeKind.Local).AddTicks(1746));
+                        .HasDefaultValue(new DateTime(2024, 5, 29, 0, 5, 56, 1, DateTimeKind.Local).AddTicks(6292));
 
                     b.Property<int>("CreatorUserId")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<string>("Description")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -192,10 +207,12 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 24, 18, 52, 30, 418, DateTimeKind.Local).AddTicks(8574));
+                        .HasDefaultValue(new DateTime(2024, 5, 29, 0, 5, 56, 2, DateTimeKind.Local).AddTicks(2561));
 
                     b.Property<int>("CreatorUserId")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -244,6 +261,66 @@ namespace BlogPhotographerSystem_Core.Migrations
                         });
                 });
 
+            modelBuilder.Entity("BlogPhotographerSystem_Core.Models.Entity.Gallery", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValue(new DateTime(2024, 5, 29, 0, 5, 56, 5, DateTimeKind.Local).AddTicks(5101));
+
+                    b.Property<int>("CreatorUserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .IsUnicode(true)
+                        .HasColumnType("varchar(30)");
+
+                    b.Property<int>("FileType")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsPrivate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("ModifiedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderID");
+
+                    b.ToTable("Galleries", t =>
+                        {
+                            t.HasCheckConstraint("CH_Gallery_FileName", "NOT (FileName REGEXP '[~!@#$%^&*()_+=-]')");
+                        });
+                });
+
             modelBuilder.Entity("BlogPhotographerSystem_Core.Models.Entity.Login", b =>
                 {
                     b.Property<int>("Id")
@@ -253,10 +330,12 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 24, 18, 52, 30, 418, DateTimeKind.Local).AddTicks(6878));
+                        .HasDefaultValue(new DateTime(2024, 5, 29, 0, 5, 56, 2, DateTimeKind.Local).AddTicks(714));
 
                     b.Property<int>("CreatorUserId")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -264,7 +343,9 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .HasDefaultValue(false);
 
                     b.Property<bool>("IsLoggedIn")
-                        .HasColumnType("tinyint(1)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTime?>("LastLoginTime")
                         .HasColumnType("datetime(6)");
@@ -313,10 +394,12 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 24, 18, 52, 30, 419, DateTimeKind.Local).AddTicks(206));
+                        .HasDefaultValue(new DateTime(2024, 5, 29, 0, 5, 56, 2, DateTimeKind.Local).AddTicks(4072));
 
                     b.Property<int>("CreatorUserId")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -373,10 +456,12 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 24, 18, 52, 30, 422, DateTimeKind.Local).AddTicks(1729));
+                        .HasDefaultValue(new DateTime(2024, 5, 29, 0, 5, 56, 5, DateTimeKind.Local).AddTicks(3492));
 
                     b.Property<int>("CreatorUserId")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -438,10 +523,12 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 24, 18, 52, 30, 419, DateTimeKind.Local).AddTicks(5933));
+                        .HasDefaultValue(new DateTime(2024, 5, 29, 0, 5, 56, 3, DateTimeKind.Local).AddTicks(916));
 
                     b.Property<int>("CreatorUserId")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -508,10 +595,12 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 5, 24, 18, 52, 30, 419, DateTimeKind.Local).AddTicks(9951));
+                        .HasDefaultValue(new DateTime(2024, 5, 29, 0, 5, 56, 3, DateTimeKind.Local).AddTicks(4535));
 
                     b.Property<int>("CreatorUserId")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -520,6 +609,10 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .IsUnicode(true)
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<bool>("IsDeleted")
@@ -546,7 +639,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<int>("UserType")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(1);
+                        .HasDefaultValue(0);
 
                     b.HasKey("Id");
 
@@ -589,6 +682,13 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.HasOne("BlogPhotographerSystem_Core.Models.Entity.User", null)
                         .WithMany()
                         .HasForeignKey("UserID");
+                });
+
+            modelBuilder.Entity("BlogPhotographerSystem_Core.Models.Entity.Gallery", b =>
+                {
+                    b.HasOne("BlogPhotographerSystem_Core.Models.Entity.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrderID");
                 });
 
             modelBuilder.Entity("BlogPhotographerSystem_Core.Models.Entity.Login", b =>

@@ -21,6 +21,7 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.CreatorUserId).IsRequired();
             builder.Property(x => x.IsDeleted).IsRequired();
             builder.Property(x => x.CreationDate).HasDefaultValue(DateTime.Now);
+            builder.Property(x => x.CreatorUserId).HasDefaultValue(1);
             builder.Property(x => x.IsDeleted).HasDefaultValue(false);
             builder.Property(x => x.ModifiedUserId).IsRequired(false);
             builder.Property(x => x.ModifiedDate).IsRequired(false);

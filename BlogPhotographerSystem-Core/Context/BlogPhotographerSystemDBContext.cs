@@ -27,6 +27,7 @@ namespace BlogPhotographerSystem_Core.Context
             modelBuilder.ApplyConfiguration(new BlogAttachementEntityConfigurations());
             modelBuilder.ApplyConfiguration(new BlogEntityConfigurations());
             modelBuilder.ApplyConfiguration(new ProblemEntityConfigurations());
+            modelBuilder.ApplyConfiguration(new GalleryEntityConfigurations());
 
         }
         public virtual DbSet<Category> Categories { get; set; }
@@ -38,5 +39,6 @@ namespace BlogPhotographerSystem_Core.Context
         public virtual DbSet<Problem> Problems{ get; set; }
         public virtual DbSet<BlogAttachement> BlogAttachements{ get; set; }
         public virtual DbSet<Blog> Blogs { get; set; }
+        public virtual DbSet<Gallery> Galleries { get; set; }
     }
 }

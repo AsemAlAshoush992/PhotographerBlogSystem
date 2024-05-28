@@ -14,5 +14,7 @@ namespace BlogPhotographerSystem_Core.Models.Entity
         public string FileName { get; set; }
         public FileType FileType { get; set; }
         public int? BlogID { get; set; }
+
+        //DTO Interfaces abstract methods
     }
 }
