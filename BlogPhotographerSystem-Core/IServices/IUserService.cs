@@ -17,12 +17,11 @@ namespace BlogPhotographerSystem_Core.IServices
 
         //Admin Management
         Task<UserDetailsDTO> GetUserDetailsById(int Id);
-        Task<List<UserDetailsDTO>> GetAllUsers();
         //Filter
         Task<UserDetailsDTO> FilterUsersByPhoneOrEmail(string? email, string? phone);
 
         //Create
-        Task CreateNewUser(CreateUserAdminDTO dto);
+        Task CreateNewAdmin(CreateUserAdminDTO dto);
         //Update
         Task UpdateUser(UpdateUserAdminDTO dto);
         //Delete

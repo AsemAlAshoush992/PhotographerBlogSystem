@@ -1,5 +1,8 @@
 ﻿using BlogPhotographerSystem_Core.DTOs.ContactRequest;
+using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.IServices;
+using BlogPhotographerSystem_Core.Models.Entity;
+using BlogPhotographerSystem_Infra.Repos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,39 +13,54 @@ namespace BlogPhotographerSystem_Infra.Services
 {
     public class ContactRequestService : IContactRequestService
     {
+        private readonly IContactRequestRepos _contactRequestRepos;
+
+        public ContactRequestService(IContactRequestRepos contactRequestRepos)
+        {
+            _contactRequestRepos = contactRequestRepos;
+        }
+
         public Task CreateNewContactRequest(CreateContactRequestDTO dto)
         {
             throw new NotImplementedException();
         }
-
-        public Task DeleteContactRequest(UpdateContactRequestDTO dto)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<ContactRequestDetailsDTO> FilterContactRequestByPhoneOrEmailOrUserId(string? Phone, string? Email, int? UserId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<ContactRequestDetailsDTO>> GetAllContactRequests()
+        public async Task<List<ContactRequestDetailsDTO>> GetAllContactRequests()
         {
-            throw new NotImplementedException();
+            return await _contactRequestRepos.GetAllContactRequestsRepos();
         }
 
-        public Task<ContactRequestDetailsDTO> GetContactRequestDetailsById(int Id)
+        public async Task<ContactRequestDetailsDTO> GetContactRequestDetailsById(int Id)
         {
-            throw new NotImplementedException();
+            return await _contactRequestRepos.GetContactRequestDetailsByIdRepos(Id);
         }
 
-        public Task SendContactRequestForService(CreateContactRequestDTO dto)
+        public async Task SendContactRequestForService(CreateContactRequestDTO dto)
         {
-            throw new NotImplementedException();
+            ContactRequest contact = new ContactRequest()
+            {
+                ClientName = dto.ClientName,
+                Email = dto.Email,
+                Phone = dto.Phone,
+                Description = dto.Description,
+                Purpose = dto.Purpose,
+                Budget = dto.Budget,
+                UserID = await _contactRequestRepos.GetUserID(dto.Email) != 0? await _contactRequestRepos.GetUserID(dto.Email) : null,
+            };
+            await _contactRequestRepos.CreateContactRequestForServiceRepos(contact);
         }
 
-        public Task UpdateContactRequest(UpdateContactRequestDTO dto)
+        public async Task UpdateContactRequest(UpdateContactRequestDTO dto)
         {
-            throw new NotImplementedException();
+            await _contactRequestRepos.UpdateContactRequestRepos(dto);
+        }
+        public async Task DeleteContactRequest(UpdateContactRequestDTO dto)
+        {
+            await _contactRequestRepos.DeleteContactRequestRepos(dto);
         }
     }
 }

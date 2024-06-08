@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace BlogPhotographerSystem_Core.DTOs.Blog
 {
-    public class BlogDetailsForUserDTO
+    public class BlogAttachmentDTO
     {
-        public string Title { get; set; }
-        public string Article { get; set; }
-        public DateTime BlogDate { get; set; }
-        public string AuthorName { get; set; }
         public string FilePath { get; set; }
+        public string FileName { get; set; }
+        public string FileType { get; set; }
     }
 }

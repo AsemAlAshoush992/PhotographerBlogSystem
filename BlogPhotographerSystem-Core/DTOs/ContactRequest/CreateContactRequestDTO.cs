@@ -14,6 +14,6 @@ namespace BlogPhotographerSystem_Core.DTOs.ContactRequest
         public string Description { get; set; }
         public string Purpose { get; set; }
         public float Budget { get; set; }
-        public int UserID { get; set; }
+        public int? UserID { get; set; }
     }
 }

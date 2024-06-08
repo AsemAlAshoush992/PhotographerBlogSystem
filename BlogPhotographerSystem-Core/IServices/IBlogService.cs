@@ -24,7 +24,7 @@ namespace BlogPhotographerSystem_Core.IServices
         //Delete
         Task DeleteBlog(UpdateBlogAdminDTO dto);
         //Aprroval
-        //Task ApprovalOfUserBlogs(ApprovalDTO approval);
+        Task ConfirmUserBlog(int blogID);
 
         //Client Management
         Task<List<BlogDetailsForUserDTO>> GetAllBlogsByUserId(int userId);
@@ -33,7 +33,6 @@ namespace BlogPhotographerSystem_Core.IServices
         //Update
         Task UpdateClientBlog(UpdateBlogClientDTO dto);
         //Delete
-        Task DeleteClientBlog(UpdateBlogClientDTO dto);
         //GetNotificationOnApprovedBlogsFromEmail
 
     }

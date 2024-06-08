@@ -1,6 +1,8 @@
-﻿using BlogPhotographerSystem_Core.DTOs.Login;
+﻿using BlogPhotographerSystem_Core.Context;
+using BlogPhotographerSystem_Core.DTOs.Login;
 using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.Models.Entity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,49 +13,48 @@ namespace BlogPhotographerSystem_Infra.Repos
 {
     public class LoginRepos : ILoginRepos
     {
-        public Task CreateNewLoginRepos(Login login)
+        private readonly BlogPhotographerSystemDBContext _context;
+
+        public LoginRepos(BlogPhotographerSystemDBContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task DeleteLoginRepos(Login login)
+        public async Task LogoutRepos(int userID)
         {
-            throw new NotImplementedException();
+            var query = await _context.Logins.SingleOrDefaultAsync
+                (x => x.UserID == userID);
+            query.IsLoggedIn = false;
+            _context.Update(query);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<LoginDetailsDTO> FilterLoginByIsLoggedInOrLastLoginTimeRepos(bool? IsLoggedIn, DateTime? LastLoginTime)
+        public async Task ResetPasswordRepos(CreateLoginDTO dto)
         {
-            throw new NotImplementedException();
+            var query = await _context.Logins.SingleOrDefaultAsync
+                (x => x.UserName == dto.UserName);
+            if (query != null)
+            {
+                query.Password = dto.Password;
+                _context.Update(query);
+                await _context.SaveChangesAsync();
+            }
+            else
+                throw new Exception("The Email is Wrong ");
         }
-
-        public Task<List<LoginDetailsDTO>> GetAllLoginsRepos()
+        public async Task LoginReposClient(CreateLoginDTO dto)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<LoginDetailsDTO> GetLoginDetailsByIdRepos(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task LogoutRepos(Login login)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task ResetPasswordRepos(Login login)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateLoginRepos(Login login)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task ILoginRepos.LoginRepos(Login login)
-        {
-            throw new NotImplementedException();
+            var query = await _context.Logins.SingleOrDefaultAsync
+                (x => x.UserName == dto.UserName && x.Password == dto.Password);
+            if (query != null)
+            {
+                query.LastLoginTime = DateTime.Now;
+                query.IsLoggedIn = true;
+                _context.Update(query);
+                await _context.SaveChangesAsync();
+            }
+            else
+                throw new Exception("Incorrect username or password");
         }
     }
 }

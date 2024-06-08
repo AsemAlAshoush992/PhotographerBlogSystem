@@ -1,54 +1,168 @@
-﻿using BlogPhotographerSystem_Core.DTOs.Gallery;
+﻿using BlogPhotographerSystem_Core.Context;
+using BlogPhotographerSystem_Core.DTOs.Blog;
+using BlogPhotographerSystem_Core.DTOs.Gallery;
 using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.Models.Entity;
+using Microsoft.EntityFrameworkCore;
+using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static BlogPhotographerSystem_Core.Helper.Enums.Enums;
 
 namespace BlogPhotographerSystem_Infra.Repos
 {
     public class GalleryRepos : IGalleryRepos
     {
-        public Task DeletePrivateGalleryRepos(Gallery gallery)
+        private readonly BlogPhotographerSystemDBContext _context;
+
+        public GalleryRepos(BlogPhotographerSystemDBContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task DeletePrivateGalleryRepos(UpdatePrivateGalleryDTO dto)
+        {
+            var gallery = await _context.Galleries.SingleOrDefaultAsync(b => b.Id == dto.Id);
+            gallery.ModifiedDate = DateTime.Now;
+            gallery.ModifiedUserId = 1;
+            gallery.IsDeleted = true;
+
+            _context.Update(gallery);
+            await _context.SaveChangesAsync();
         }
 
         public Task<PrivateGalleryDetailsDTO> FilterPrivateGalleryByFileTypeOrOrderIDRepos(string? FileType, int? orderID)
         {
             throw new NotImplementedException();
         }
-
-        public Task<List<PhotosAndVideosInfoDTO>> GetAllPhotosForPublicGalleryRepos()
+        //Guest Management
+        public async Task<List<PhotosAndVideosInfoDTO>> GetAllPhotosForPublicGalleryRepos()
         {
-            throw new NotImplementedException();
+            var query = from photo in _context.Galleries
+                        where photo.FileType == FileType.Image
+                        && photo.IsPrivate == false
+                        && photo.IsDeleted == false
+                        select new PhotosAndVideosInfoDTO
+                        {
+                            Path = photo.Path,
+                            FileName = photo.FileName
+                        };
+            return await query.ToListAsync();
         }
 
-        public Task<List<PhotosAndVideosInfoDTO>> GetAllVideosForPublicGalleryRepos()
+        public async Task<List<PhotosAndVideosInfoDTO>> GetAllVideosForPublicGalleryRepos()
         {
-            throw new NotImplementedException();
+            var query = from video in _context.Galleries
+                        where video.FileType == FileType.Video
+                        && video.IsPrivate == false
+                        && video.IsDeleted == false
+                        select new PhotosAndVideosInfoDTO
+                        {
+                            Path = video.Path,
+                            FileName = video.FileName
+                        };
+            return await query.ToListAsync();
         }
 
-        public Task<PrivateGalleryDetailsDTO> GetPrivateGalleryDetailsByIdRepos(int Id)
+        public async Task<PrivateGalleryDetailsDTO> GetPublicGalleryDetailsByIdRepos(int Id)
         {
-            throw new NotImplementedException();
+            var query = from gallery in _context.Galleries
+                        where gallery.Id == Id
+                        && gallery.IsPrivate == false
+                        select new PrivateGalleryDetailsDTO
+                        {
+                            Id = gallery.Id,
+                            Path = gallery.Path,
+                            FileName = gallery.FileName,
+                            FileType = gallery.FileType.ToString(),
+                            IsPrivate = gallery.IsPrivate,
+                            OrderID = gallery.OrderID,
+                            CreationDate = gallery.CreationDate,
+                            ModifiedDate = gallery.ModifiedDate,
+                            CreatorUserId = gallery.CreatorUserId,
+                            ModifiedUserId = gallery.ModifiedUserId,
+                            IsDeleted = gallery.IsDeleted
+                        };
+            return await query.SingleOrDefaultAsync();
         }
 
-        public Task<List<PrivateGalleryDetailsDTO>> GetPrivateGallerysRepos()
+        public async Task<List<PrivateGalleryDetailsDTO>> GetAllPrivateGalleriesByUserId(int UserId)
         {
-            throw new NotImplementedException();
+            var query = from user in _context.Users
+                        join order in _context.Orders
+                        on user.Id equals order.UserID
+                        join privateGallery in _context.Galleries
+                        on order.Id equals privateGallery.OrderID
+                        where user.Id == UserId
+                        && privateGallery.IsPrivate == true
+                        && privateGallery.IsDeleted == false
+                        select new PrivateGalleryDetailsDTO
+                        {
+                            Path = privateGallery.Path,
+                            FileName = privateGallery.FileName,
+                            OrderID = privateGallery.OrderID,
+                        };
+            return await query.ToListAsync();
         }
 
-        public Task SendFilesForUserByPrivateGalleryRepos(Gallery gallery)
+        public async Task SendFilesForUserByPrivateGalleryRepos(Gallery gallery)
         {
-            throw new NotImplementedException();
+            await _context.Galleries.AddAsync(gallery);
+            await _context.SaveChangesAsync();
         }
 
-        public Task UpdatePrivateGalleryRepos(Gallery gallery)
+        public async Task UpdatePrivateGalleryRepos(UpdatePrivateGalleryDTO dto)
         {
-            throw new NotImplementedException();
+            var gallery = await _context.Galleries.SingleOrDefaultAsync(b => b.Id == dto.Id);
+
+            if (gallery == null)
+            {
+                throw new Exception("Gallery File not found");
+            }
+
+            if (!string.IsNullOrEmpty(dto.Path))
+            {
+                gallery.Path = dto.Path;
+            }
+
+            if (!string.IsNullOrEmpty(dto.FileName))
+            {
+                gallery.FileName = dto.FileName;
+            }
+
+            if (!string.IsNullOrEmpty(dto.FileType))
+            {
+                gallery.FileType = (FileType)Enum.Parse(typeof(FileType), dto.FileType);
+
+            }
+            gallery.ModifiedDate = DateTime.Now;
+            gallery.ModifiedUserId = 1;
+
+            _context.Update(gallery);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<PrivateGalleryDetailsDTO>> GetPublicGalleriesRepos()
+        {
+            var query = from gallery in _context.Galleries
+                        where gallery.IsPrivate == true
+                        select new PrivateGalleryDetailsDTO
+                        {
+                            Id = gallery.Id,
+                            Path = gallery.Path,
+                            FileName = gallery.FileName,
+                            FileType = gallery.FileType.ToString(),
+                            IsPrivate = gallery.IsPrivate,
+                            OrderID = gallery.OrderID,
+                            CreationDate = gallery.CreationDate,
+                            ModifiedDate = gallery.ModifiedDate,
+                            CreatorUserId = gallery.CreatorUserId,
+                            ModifiedUserId = gallery.ModifiedUserId,
+                            IsDeleted = gallery.IsDeleted
+                        };
+            return await query.ToListAsync();
         }
     }
 }

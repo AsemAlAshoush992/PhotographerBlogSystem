@@ -1,5 +1,8 @@
 ﻿using BlogPhotographerSystem_Core.DTOs.Problem;
+using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.IServices;
+using BlogPhotographerSystem_Core.Models.Entity;
+using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +13,21 @@ namespace BlogPhotographerSystem_Infra.Services
 {
     public class ProblemService : IProblemService
     {
+        private readonly IProblemRepos _problemRepos;
+
+        public ProblemService(IProblemRepos problemRepos)
+        {
+            _problemRepos = problemRepos;
+        }
+
         public Task CreateNewProblem(CreateProblemDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteProblem(UpdateProblemDTO dto)
+        public async Task DeleteProblem(UpdateProblemDTO dto)
         {
-            throw new NotImplementedException();
+            await _problemRepos.DeleteProblemRepos(dto);
         }
 
         public Task<ProblemDetailsDTO> FilterProblemByUserIdOrOrderId(int? orderId, int? userId)
@@ -30,19 +40,27 @@ namespace BlogPhotographerSystem_Infra.Services
             throw new NotImplementedException();
         }
 
-        public Task<ProblemDetailsDTO> GetProblemDetailsById(int Id)
+        public async Task<ProblemDetailsDTO> GetProblemDetailsById(int Id)
         {
-            throw new NotImplementedException();
+            return await _problemRepos.GetProblemDetailsByIdRepos(Id);
         }
 
-        public Task SendTechnicalSupportRequest(CreateProblemDTO dto)
+        public async Task SendTechnicalSupportRequest(CreateProblemDTO dto)
         {
-            throw new NotImplementedException();
+            Problem problem = new Problem()
+            {
+                Title = dto.Title,
+                Purpose = dto.Purpose,
+                Description = dto.Description,
+                UserID = dto.UserID,
+                OrderID = dto.OrderId
+            };
+            await _problemRepos.CreateNewProblemRepos(problem);
         }
 
-        public Task UpdateProblem(UpdateProblemDTO dto)
+        public async Task UpdateProblem(UpdateProblemDTO dto)
         {
-            throw new NotImplementedException();
+            await _problemRepos.UpdateProblemRepos(dto);
         }
     }
 }

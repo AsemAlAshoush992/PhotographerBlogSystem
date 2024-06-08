@@ -20,11 +20,13 @@ namespace BlogPhotographerSystem_Core.IRepos
         //Create
         Task CreateNewOrderRepos(Order order);
         //Update
-        Task UpdateOrderRepos(Order order);
+        Task UpdateOrderRepos(UpdateOrderAdminDTO dto);
         //Delete
-        Task DeleteOrderRepos(Order order);
+        Task DeleteOrderRepos(UpdateOrderAdminDTO dto);
         //Client Management
         //Create
-        Task CreateOrderForSpecificService(Order order);
+        Task CreateOrderForSpecificServiceRepos(Order order);
+        Task<int> GetIdForSpecificService (string serviceName);
+        Task CancelOrderForServiceRepos(CancelOrderClientDTO dto);
     }
 }

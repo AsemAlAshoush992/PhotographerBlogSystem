@@ -11,20 +11,8 @@ namespace BlogPhotographerSystem_Core.IRepos
     public interface ILoginRepos
     {
         //Guest Management
-        Task LoginRepos(Login login);
-        Task ResetPasswordRepos(Login login);
-        Task LogoutRepos(Login login);
-        //Admin Management
-        Task<LoginDetailsDTO> GetLoginDetailsByIdRepos(int Id);
-        Task<List<LoginDetailsDTO>> GetAllLoginsRepos();
-        //Filter
-        Task<LoginDetailsDTO> FilterLoginByIsLoggedInOrLastLoginTimeRepos(bool? IsLoggedIn, DateTime? LastLoginTime);
-
-        //Create
-        Task CreateNewLoginRepos(Login login);
-        //Update
-        Task UpdateLoginRepos(Login login);
-        //Delete
-        Task DeleteLoginRepos(Login login);
+        Task LoginReposClient(CreateLoginDTO dto);
+        Task ResetPasswordRepos(CreateLoginDTO dto);
+        Task LogoutRepos(int userID);
     }
 }

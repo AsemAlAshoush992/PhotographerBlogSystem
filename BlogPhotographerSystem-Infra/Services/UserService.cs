@@ -1,25 +1,46 @@
 ﻿using BlogPhotographerSystem_Core.DTOs.User;
+using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.IServices;
+using BlogPhotographerSystem_Core.Models.Entity;
+using BlogPhotographerSystem_Infra.Repos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static BlogPhotographerSystem_Core.Helper.Enums.Enums;
 
 namespace BlogPhotographerSystem_Infra.Services
 {
     public class UserService : IUserService
     {
-        public Task CreateNewUser(CreateUserAdminDTO dto)
-        {
-            throw new NotImplementedException();
-        }
+        private readonly IUserRepos _userRepos;
 
-        public Task DeleteUser(UpdateUserAdminDTO dto)
+        public UserService(IUserRepos userRepos)
         {
-            throw new NotImplementedException();
+            _userRepos = userRepos;
         }
-
+        public async Task CreateNewAdmin(CreateUserAdminDTO dto)
+        {
+            User user = new User()
+            {
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Email = dto.Email,
+                BirthDate = dto.BirthDate,
+                ImagePath = dto.ImagePath,
+                Phone = dto.Phone,
+                UserType = UserType.Admin
+            };
+            int UsertId = await _userRepos.CreateUserRepos(user);
+            Login login = new Login()
+            {
+                UserName = dto.Email,
+                Password = dto.Password,
+                UserID = UsertId,
+            };
+            await _userRepos.CreateLoginRepos(login);
+        }
         public Task DeleteUserAccount(UpdateUserDTO dto)
         {
             throw new NotImplementedException();
@@ -30,34 +51,50 @@ namespace BlogPhotographerSystem_Infra.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<UserDetailsDTO>> GetAllUsers()
+        public async Task<UserInfoDTO> GetPersonalInformationsById(int Id)
         {
-            throw new NotImplementedException();
+            return await _userRepos.GetPersonalInformationsByIdRepos(Id);
         }
 
-        public Task<UserInfoDTO> GetPersonalInformationsById(int Id)
+        public async Task<UserDetailsDTO> GetUserDetailsById(int Id)
         {
-            throw new NotImplementedException();
+            return await _userRepos.GetUserDetailsByIdRepos(Id);
         }
 
-        public Task<UserDetailsDTO> GetUserDetailsById(int Id)
+        public async Task Register(RegisterDTO dto)
         {
-            throw new NotImplementedException();
+            User user = new User()
+            {
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Email = dto.Email,
+                BirthDate = dto.BirthDate,
+                ImagePath = dto.ImagePath,
+                Phone = dto.Phone,
+                UserType = UserType.Client
+            };
+            int UsertId = await _userRepos.CreateUserRepos(user);
+
+            Login login = new Login()
+            {
+                UserName = dto.Email,
+                Password = dto.Password,
+                UserID = UsertId,
+            };
+            await _userRepos.CreateLoginRepos(login);
         }
 
-        public Task Register(RegisterDTO dto)
+        public async Task UpdateUser(UpdateUserAdminDTO dto)
         {
-            throw new NotImplementedException();
+            await _userRepos.UpdateUserRepos(dto);
         }
-
-        public Task UpdateUser(UpdateUserAdminDTO dto)
+        public async Task DeleteUser(UpdateUserAdminDTO dto)
         {
-            throw new NotImplementedException();
+            await _userRepos.DeleteUserRepos(dto);
         }
-
-        public Task UpdateUserAccount(UpdateUserDTO dto)
+        public async Task UpdateUserAccount(UpdateUserDTO dto)
         {
-            throw new NotImplementedException();
+            await _userRepos.UpdateUserAccountRepos(dto);
         }
     }
 }

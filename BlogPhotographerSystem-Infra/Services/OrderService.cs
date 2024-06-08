@@ -1,18 +1,29 @@
 ﻿using BlogPhotographerSystem_Core.DTOs.Order;
+using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.IServices;
+using BlogPhotographerSystem_Core.Models.Entity;
+using BlogPhotographerSystem_Infra.Repos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static BlogPhotographerSystem_Core.Helper.Enums.Enums;
 
 namespace BlogPhotographerSystem_Infra.Services
 {
     public class OrderService : IOrderService
     {
-        public Task CancelOrderForSpecificService(CancelOrderClientDTO dto)
+        private readonly IOrderRepos _orderRepos;
+
+        public OrderService(IOrderRepos orderRepos)
         {
-            throw new NotImplementedException();
+            _orderRepos = orderRepos;
+        }
+
+        public async Task CancelOrderForSpecificService(CancelOrderClientDTO dto)
+        {
+            await _orderRepos.CancelOrderForServiceRepos(dto);
         }
 
         public Task CreateNewOrder(CreateOrderAdminDTO dto)
@@ -20,9 +31,10 @@ namespace BlogPhotographerSystem_Infra.Services
             throw new NotImplementedException();
         }
 
-        public Task DeleteOrder(UpdateOrderAdminDTO dto)
+        public async Task DeleteOrder(UpdateOrderAdminDTO dto)
         {
-            throw new NotImplementedException();
+            await _orderRepos.DeleteOrderRepos(dto);
+
         }
 
         public Task<OrderDetailsDTO> FilterOrderByTitleOrUserIdOrServiceIdOrStatus(string? title, int? userId, int? serviceId, string? status)
@@ -35,19 +47,30 @@ namespace BlogPhotographerSystem_Infra.Services
             throw new NotImplementedException();
         }
 
-        public Task<OrderDetailsDTO> GetOrderDetailsById(int Id)
+        public async Task<OrderDetailsDTO> GetOrderDetailsById(int Id)
         {
-            throw new NotImplementedException();
+            return await _orderRepos.GetOrderDetailsByIdRepos(Id);
         }
 
-        public Task SendOrderForSpecificService(CreateOrderClientDTO dto)
+        public async Task SendOrderForSpecificService(CreateOrderClientDTO dto)
         {
-            throw new NotImplementedException();
+            Order order = new Order()
+            {
+                OrderDate = DateTime.Now,
+                Title = dto.Title,
+                Note = dto.Note,
+                Status = Status.Pending,
+                PaymentMethod = (PaymentMethod)Enum.Parse(typeof(PaymentMethod), dto.PaymentMethod),
+                UserID = dto.UserID,
+                ServiceID = await _orderRepos.GetIdForSpecificService(dto.ServiceName),
+            };
+            await _orderRepos.CreateOrderForSpecificServiceRepos(order);
+
         }
 
-        public Task UpdateOrder(UpdateOrderAdminDTO dto)
+        public async Task UpdateOrder(UpdateOrderAdminDTO dto)
         {
-            throw new NotImplementedException();
+            await _orderRepos.UpdateOrderRepos(dto);
         }
     }
 }

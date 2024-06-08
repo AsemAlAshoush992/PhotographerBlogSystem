@@ -14,8 +14,8 @@ namespace BlogPhotographerSystem_Core.IServices
         Task<List<PhotosAndVideosInfoDTO>> GetAllPhotosForPublicGallery();
         Task<List<PhotosAndVideosInfoDTO>> GetAllVideosForPublicGallery();
         //Admin Management
-        Task<PrivateGalleryDetailsDTO> GetPrivateGalleryDetailsById(int Id);
-        Task<List<PrivateGalleryDetailsDTO>> GetPrivateGallerys();
+        Task<PrivateGalleryDetailsDTO> GetPublicGalleryDetailsById(int Id);
+        Task<List<PrivateGalleryDetailsDTO>> GetPublicGalleries();
         //Filter
         Task<PrivateGalleryDetailsDTO> FilterPrivateGalleryByFileTypeOrOrderID(string? FileType, int? orderID);
 
@@ -26,6 +26,7 @@ namespace BlogPhotographerSystem_Core.IServices
         //Delete
         Task DeletePrivateGallery(UpdatePrivateGalleryDTO dto);
         //Client Management
+        Task<List<PrivateGalleryDetailsDTO>> GetAllPrivateGalleriesByUserId(int orderId);
         //Upload
         Task UploadFilesForUserByPrivateGallery(CreatePrivateGalleryDTO dto);
         //Update

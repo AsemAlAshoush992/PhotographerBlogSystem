@@ -14,12 +14,13 @@ namespace BlogPhotographerSystem_Core.IRepos
         Task<List<CategoriesInfoDTO>> GetAllCategoriesRepos();
         //Admin
         Task<CategoryDetailsDTO> GetCategoryDetailsByIdRepos(int Id);
+        Task<List<CategoryDetailsDTO>> GetCategoryDetailsRepos();
 
         //Create
-        Task CreateCategory(Category category);
+        Task CreateCategoryRepos(Category category);
         //Update
-        Task UpdateCategoryRepos(Category category);
+        Task UpdateCategoryRepos(UpdateCategoryAdminDTO dto);
         //Delete
-        Task DeleteCategoryRepos(Category category);
+        Task DeleteCategoryRepos(UpdateCategoryAdminDTO dto);
     }
 }

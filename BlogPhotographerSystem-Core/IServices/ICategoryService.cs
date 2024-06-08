@@ -19,7 +19,7 @@ namespace BlogPhotographerSystem_Core.IServices
         Task<CategoryDetailsDTO> GetCategoryDetailsById(int Id);
 
         //Create
-        Task CreateCategoryRepos(CreateCategoryAdminDTO dto);
+        Task CreateCategory(CreateCategoryAdminDTO dto);
         //Update
         Task UpdateCategory(UpdateCategoryAdminDTO dto);
         //Delete

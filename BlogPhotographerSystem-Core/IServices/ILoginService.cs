@@ -12,20 +12,9 @@ namespace BlogPhotographerSystem_Core.IServices
     public interface ILoginService
     {
         //Guest Management
-        Task Login(LoginDTO dto);
-        Task ResetPassword(string? email, string? phone);
-        Task Logout(int id, bool isDeleted);
-        //Admin Management
-        Task<LoginDetailsDTO> GetLoginDetailsById(int Id);
-        Task<List<LoginDetailsDTO>> GetAllLogins();
-        //Filter
-        Task<LoginDetailsDTO> FilterLoginByIsLoggedInOrLastLoginTime(bool? IsLoggedIn, DateTime? LastLoginTime);
+        public Task Login(CreateLoginDTO dto);
+        Task ResetPassword(CreateLoginDTO dto);
+        Task Logout(int userID);
 
-        //Create
-        Task CreateNewLogin(CreateLoginDTO dto);
-        //Update
-        Task UpdateLogin(UpdateLoginDTO dto);
-        //Delete
-        Task DeleteLogin(UpdateLoginDTO dto);
     }
 }

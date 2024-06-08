@@ -17,7 +17,7 @@ namespace BlogPhotographerSystem_Core.IServices
         Task<OrderDetailsDTO> FilterOrderByTitleOrUserIdOrServiceIdOrStatus(string? title, int? userId, int? serviceId, string? status );
 
         //Create
-        Task CreateNewOrder(CreateOrderAdminDTO dto);
+        //Task CreateNewOrder(CreateOrderAdminDTO dto);
         //Update
         Task UpdateOrder(UpdateOrderAdminDTO dto);
         //Delete

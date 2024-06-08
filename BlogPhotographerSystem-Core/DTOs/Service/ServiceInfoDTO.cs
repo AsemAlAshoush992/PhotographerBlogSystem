@@ -13,8 +13,8 @@ namespace BlogPhotographerSystem_Core.DTOs.Service
         public string Description { get; set; }
         public string ImagePath { get; set; }
         public int Price { get; set; }
-        public int Quantity { get; set; }
-        public float DisacountAmount { get; set; }
+        public int? Quantity { get; set; }
+        public string? DisacountAmount { get; set; }
         public string CategoryName { get; set; }
     }
 }

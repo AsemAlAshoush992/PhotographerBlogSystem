@@ -1,68 +1,99 @@
 ﻿using BlogPhotographerSystem_Core.DTOs.Gallery;
+using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.IServices;
+using BlogPhotographerSystem_Core.Models.Entity;
+using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static BlogPhotographerSystem_Core.Helper.Enums.Enums;
 
 namespace BlogPhotographerSystem_Infra.Services
 {
     public class GalleryService : IGalleryService
     {
-        public Task DeleteFilesForClientByPrivateGallery(UpdatePrivateGalleryDTO dto)
+        private readonly IGalleryRepos _galleryRepos;
+
+        public GalleryService(IGalleryRepos galleryRepos)
         {
-            throw new NotImplementedException();
+            _galleryRepos = galleryRepos;
         }
 
-        public Task DeletePrivateGallery(UpdatePrivateGalleryDTO dto)
+        public async Task DeleteFilesForClientByPrivateGallery(UpdatePrivateGalleryDTO dto)
         {
-            throw new NotImplementedException();
+            await _galleryRepos.DeletePrivateGalleryRepos(dto);
+        }
+
+        public async Task DeletePrivateGallery(UpdatePrivateGalleryDTO dto)
+        {
+            await _galleryRepos.DeletePrivateGalleryRepos(dto);
         }
 
         public Task<PrivateGalleryDetailsDTO> FilterPrivateGalleryByFileTypeOrOrderID(string? FileType, int? orderID)
         {
             throw new NotImplementedException();
         }
-
-        public Task<List<PhotosAndVideosInfoDTO>> GetAllPhotosForPublicGallery()
+        //Guest Management
+        public async Task<List<PhotosAndVideosInfoDTO>> GetAllPhotosForPublicGallery()
         {
-            throw new NotImplementedException();
+            return await _galleryRepos.GetAllPhotosForPublicGalleryRepos();
         }
 
-        public Task<List<PhotosAndVideosInfoDTO>> GetAllVideosForPublicGallery()
+        public async Task<List<PhotosAndVideosInfoDTO>> GetAllVideosForPublicGallery()
         {
-            throw new NotImplementedException();
+            return await _galleryRepos.GetAllVideosForPublicGalleryRepos();
         }
 
-        public Task<PrivateGalleryDetailsDTO> GetPrivateGalleryDetailsById(int Id)
+        public async Task<PrivateGalleryDetailsDTO> GetPublicGalleryDetailsById(int Id)
         {
-            throw new NotImplementedException();
+            return await _galleryRepos.GetPublicGalleryDetailsByIdRepos(Id);
         }
 
-        public Task<List<PrivateGalleryDetailsDTO>> GetPrivateGallerys()
+        public async Task<List<PrivateGalleryDetailsDTO>> GetAllPrivateGalleriesByUserId(int UserId)
         {
-            throw new NotImplementedException();
+            return await _galleryRepos.GetAllPrivateGalleriesByUserId(UserId);
         }
 
-        public Task SendFilesForUserByPrivateGallery(CreatePrivateGalleryDTO dto)
+        public async Task SendFilesForUserByPrivateGallery(CreatePrivateGalleryDTO dto)
         {
-            throw new NotImplementedException();
+            Gallery gallery = new Gallery()
+            {
+                Path = dto.Path,
+                FileName = dto.FileName,
+                FileType = (FileType)Enum.Parse(typeof(FileType), dto.FileType),
+                IsPrivate = true,
+                OrderID = dto.OrderID
+            };
+            await _galleryRepos.SendFilesForUserByPrivateGalleryRepos(gallery);
         }
 
-        public Task UpdateFilesForClientByPrivateGallery(UpdatePrivateGalleryDTO dto)
+        public async Task UpdateFilesForClientByPrivateGallery(UpdatePrivateGalleryDTO dto)
         {
-            throw new NotImplementedException();
+            await _galleryRepos.UpdatePrivateGalleryRepos(dto);
         }
 
-        public Task UpdatePrivateGallery(UpdatePrivateGalleryDTO dto)
+        public async Task UpdatePrivateGallery(UpdatePrivateGalleryDTO dto)
         {
-            throw new NotImplementedException();
+            await _galleryRepos.UpdatePrivateGalleryRepos(dto);
         }
 
-        public Task UploadFilesForUserByPrivateGallery(CreatePrivateGalleryDTO dto)
+        public async Task UploadFilesForUserByPrivateGallery(CreatePrivateGalleryDTO dto)
         {
-            throw new NotImplementedException();
+            Gallery gallery = new Gallery()
+            {
+                Path = dto.Path,
+                FileName = dto.FileName,
+                FileType = (FileType)Enum.Parse(typeof(FileType), dto.FileType),
+                IsPrivate = true,
+            };
+            await _galleryRepos.SendFilesForUserByPrivateGalleryRepos(gallery);
+        }
+
+        public async Task<List<PrivateGalleryDetailsDTO>> GetPublicGalleries()
+        {
+           return await _galleryRepos.GetPublicGalleriesRepos();
         }
     }
 }

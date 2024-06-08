@@ -19,11 +19,12 @@ namespace BlogPhotographerSystem_Core.IRepos
         //Create
         Task CreateNewContactRequestRepos(ContactRequest contactRequest);
         //Update
-        Task UpdateContactRequestRepos(ContactRequest contactRequest);
+        Task UpdateContactRequestRepos(UpdateContactRequestDTO dto);
         //Delete
-        Task DeleteContactRequestRepos(ContactRequest contactRequest);
+        Task DeleteContactRequestRepos(UpdateContactRequestDTO dto);
         //Client Management
         //Create
         Task CreateContactRequestForServiceRepos(ContactRequest contactRequest);
+        Task<int> GetUserID(string email);
     }
 }

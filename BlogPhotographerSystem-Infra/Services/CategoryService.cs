@@ -1,5 +1,8 @@
 ﻿using BlogPhotographerSystem_Core.DTOs.Category;
+using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.IServices;
+using BlogPhotographerSystem_Core.Models.Entity;
+using BlogPhotographerSystem_Infra.Repos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,34 +14,53 @@ namespace BlogPhotographerSystem_Infra.Services
     public class CategoryService : ICategoryService
 
     {
-        public Task CreateCategoryRepos(CreateCategoryAdminDTO dto)
-        {
-            throw new NotImplementedException();
-        }
+        private readonly ICategoryRepos _categoryRepos;
 
-        public Task DeleteCategory(UpdateCategoryAdminDTO dto)
+        public CategoryService(ICategoryRepos categoryRepos)
         {
-            throw new NotImplementedException();
+            _categoryRepos = categoryRepos;
         }
-
-        public Task<List<CategoriesInfoDTO>> GetAllCategories()
+        //Guest Management
+        //Get All Categories Info
+        public async Task<List<CategoriesInfoDTO>> GetAllCategories()
         {
-            throw new NotImplementedException();
+            return await _categoryRepos.GetAllCategoriesRepos();
         }
-
-        public Task<List<CategoryDetailsDTO>> GetAllCategoriesForAdmin()
+        //Admin Management
+        //Create Category
+        public async Task CreateCategory(CreateCategoryAdminDTO dto)
         {
-            throw new NotImplementedException();
+            Category category = new Category()
+            {
+                Title = dto.Title,
+                Description = dto.Description,
+                ImagePath = dto.ImagePath
+            };
+            await _categoryRepos.CreateCategoryRepos(category);
         }
-
-        public Task<CategoryDetailsDTO> GetCategoryDetailsById(int Id)
+        //Update Category
+        public async Task UpdateCategory(UpdateCategoryAdminDTO dto)
         {
-            throw new NotImplementedException();
+            await _categoryRepos.UpdateCategoryRepos(dto);
         }
-
-        public Task UpdateCategory(UpdateCategoryAdminDTO dto)
+        //Delete Category
+        public async Task DeleteCategory(UpdateCategoryAdminDTO dto)
         {
-            throw new NotImplementedException();
+            await _categoryRepos.DeleteCategoryRepos(dto);
         }
+        //Get Category Details
+        public async Task<List<CategoryDetailsDTO>> GetAllCategoriesForAdmin()
+        {
+            return await _categoryRepos.GetCategoryDetailsRepos();
+        }
+        //Get Category Details ById
+        public async Task<CategoryDetailsDTO> GetCategoryDetailsById(int Id)
+        {
+            return await _categoryRepos.GetCategoryDetailsByIdRepos(Id);
+        }
+     
+      
+      
+     
     }
 }

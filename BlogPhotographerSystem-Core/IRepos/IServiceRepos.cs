@@ -19,8 +19,8 @@ namespace BlogPhotographerSystem_Core.IRepos
         //Create
         Task CreateServiceRepos(Service service);
         //Update
-        Task UpdateServiceRepos(Service service);
+        Task UpdateServiceRepos(UpdateServiceAdminDTO dto);
         //Delete
-        Task DeleteServiceRepos(Service service);
+        Task DeleteServiceRepos(UpdateServiceAdminDTO dto);
     }
 }

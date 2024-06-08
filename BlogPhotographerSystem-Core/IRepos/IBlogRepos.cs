@@ -23,14 +23,15 @@ namespace BlogPhotographerSystem_Core.IRepos
         Task UpdateBlogRepos(UpdateBlogAdminDTO dto);
         //Delete
         Task DeleteBlogRepos(UpdateBlogAdminDTO dto);
-
+        //Approval
+        Task ConfirmUserBlogRepos(int blogID);
         //Client Management
         Task<List<BlogDetailsForUserDTO>> GetAllBlogsByUserIdRepos(int userId);
         //Create
         Task<int> CreateClientBlogRepos(Blog blog);
         Task CreateClientBlogAttachementRepos(BlogAttachement attachement);
         //Update
-        Task UpdateClientBlogRepos(Blog blog);
+        Task UpdateClientBlogRepos(UpdateBlogClientDTO dto);
         //Delete
         Task DeleteClientBlogRepos(Blog blog);
 

@@ -12,7 +12,6 @@ namespace BlogPhotographerSystem_Core.DTOs.Gallery
         public string Path { get; set; }
         public string FileName { get; set; }
         public string FileType { get; set; }
-        public bool IsPrivate { get; set; }
-        public int OrderID { get; set; }
+        public int? OrderID { get; set; }
     }
 }

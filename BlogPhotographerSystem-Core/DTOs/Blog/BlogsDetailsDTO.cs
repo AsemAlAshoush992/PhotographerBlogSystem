@@ -16,9 +16,9 @@ namespace BlogPhotographerSystem_Core.DTOs.Blog
         public bool IsApproved { get; set; }
         public int AuthorID { get; set; }
         public DateTime CreationDate { get; set; }
-        public DateTime ModifiedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
         public int CreatorUserId { get; set; }
-        public int ModifiedUserId { get; set; }
+        public int? ModifiedUserId { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

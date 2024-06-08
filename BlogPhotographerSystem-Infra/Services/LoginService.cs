@@ -1,5 +1,7 @@
 ﻿using BlogPhotographerSystem_Core.DTOs.Login;
+using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.IServices;
+using BlogPhotographerSystem_Core.Models.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,49 +12,24 @@ namespace BlogPhotographerSystem_Infra.Services
 {
     public class LoginService : ILoginService
     {
-        public Task CreateNewLogin(CreateLoginDTO dto)
+        private readonly ILoginRepos _loginRepos;
+        public LoginService(ILoginRepos loginRepos)
         {
-            throw new NotImplementedException();
+            _loginRepos = loginRepos;
+        }
+        public async Task Login(CreateLoginDTO dto)
+        {
+            await _loginRepos.LoginReposClient(dto);
         }
 
-        public Task DeleteLogin(UpdateLoginDTO dto)
+        public async Task Logout(int userID)
         {
-            throw new NotImplementedException();
+            await _loginRepos.LogoutRepos(userID);
         }
 
-        public Task<LoginDetailsDTO> FilterLoginByIsLoggedInOrLastLoginTime(bool? IsLoggedIn, DateTime? LastLoginTime)
+        public async Task ResetPassword(CreateLoginDTO dto)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<LoginDetailsDTO>> GetAllLogins()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<LoginDetailsDTO> GetLoginDetailsById(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Login(LoginDTO dto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Logout(int id, bool isDeleted)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task ResetPassword(string? email, string? phone)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateLogin(UpdateLoginDTO dto)
-        {
-            throw new NotImplementedException();
+            await _loginRepos.ResetPasswordRepos(dto);
         }
     }
 
