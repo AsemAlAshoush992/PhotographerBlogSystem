@@ -15,7 +15,7 @@ namespace BlogPhotographerSystem_Infra.Services
             throw new NotImplementedException();
         }
 
-        public Task DeleteBlogAttachement(UpdateBlogAttachementDTO dto)
+        public Task DeleteBlogAttachement(int ID)
         {
             throw new NotImplementedException();
         }

@@ -26,6 +26,11 @@ namespace BlogPhotographerSystem.Controllers
             _categoryService = categoryService;
         }
 
+        /// <summary>
+        /// Retrieves all blog posts of the admin.
+        /// </summary>
+        /// <response code="200">Returns the list of all blog posts created.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the blogs.</response>
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> GetAllBlogCards()
@@ -39,6 +44,12 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(503, $"Error Ocurred {ex.Message}");
             }
         }
+
+        /// <summary>
+        /// Retrieves all services.
+        /// </summary>
+        /// <response code="200">Returns the list of all services created.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the services.</response>
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> GetAllServices()
@@ -52,6 +63,12 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(503, $"Error Ocurred {ex.Message}");
             }
         }
+
+        /// <summary>
+        /// Retrieves all photos for public gallery.
+        /// </summary>
+        /// <response code="200">Returns the list of all photos created.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the photos.</response>
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> GetAllPhotosForPublicGallery()
@@ -65,6 +82,12 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(503, $"Error Ocurred {ex.Message}");
             }
         }
+
+        /// <summary>
+        /// Retrieves all videos for public gallery.
+        /// </summary>
+        /// <response code="200">Returns the list of all videos created.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the videos.</response>
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> GetAllVideosForPublicGallery()
@@ -79,6 +102,11 @@ namespace BlogPhotographerSystem.Controllers
             }
         }
 
+        /// <summary>
+        /// Retrieves all categories.
+        /// </summary>
+        /// <response code="200">Returns the list of all categories created.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the categories.</response>
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> GetAllCategories()
@@ -92,7 +120,26 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(503, $"Error Ocurred {ex.Message}");
             }
         }
-        
+
+        /// <summary>
+        /// Creates a new client.
+        /// </summary>
+        /// <response code="201">New client has been successfully created.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data, or an error occurred during client creation.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Post api/Guest
+        ///     {        
+        ///       "firstName": "Rania",
+        ///       "lastName": "Ali",
+        ///       "email": "Rania.Ali77@yahoo.com",
+        ///       "password": "Raniae123#",
+        ///       "birthDate": "1988-06-12T17:43:07.185Z",
+        ///       "imagePath": "photos/Khaled",
+        ///       "phone": "00962799553077"      
+        ///     }
+        /// </remarks>
         [HttpPost]
         [Route("[action]")]
         public async Task<IActionResult> CreateNewClient([FromBody] RegisterDTO dto)
@@ -109,6 +156,21 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(503, $"Error Ocurred {ex.Message}");
             }
         }
+
+        /// <summary>
+        /// Logs in a user account.
+        /// </summary>
+        /// <response code="201">The user has successfully logged in.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data.</response>
+        /// <response code="503">Service unavailable, an error occurred during the login process.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Put api/Guest
+        ///     {        
+        ///       "userName": "alice.johnson@hotmail.com",
+        ///       "password": "Charlie3$"    
+        ///     }
         [HttpPut]
         [Route("[action]")]
         public async Task<IActionResult> LoginUserAccount([FromBody] CreateLoginDTO dto)
@@ -125,6 +187,20 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(503, $"Error Ocurred {ex.Message}");
             }
         }
+
+        /// <summary>
+        /// Logs out a user account.
+        /// </summary>
+        /// <response code="201">The user has successfully logged out.</response>
+        /// <response code="400">Bad request, indicating missing or invalid user ID.</response>
+        /// <response code="503">Service unavailable, an error occurred during the logout process.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Put api/Guest
+        ///     {        
+        ///       "userID": "alice.johnson@hotmail.com"   
+        ///     }
         [HttpPut]
         [Route("[action]")]
         public async Task<IActionResult> LogoutUserAcount([FromBody] int userID)
@@ -143,6 +219,21 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(503, $"Error Ocurred {ex.Message}");
             }
         }
+
+        /// <summary>
+        /// Resets the password for a user account.
+        /// </summary>
+        /// <response code="201">The password has been successfully reset.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data.</response>
+        /// <response code="503">Service unavailable, an error occurred during the password reset process.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Put api/Guest
+        ///     {        
+        ///       "userName": "david.wilson@gmail.com",
+        ///       "password": "davidw123!"  
+        ///     }
         [HttpPut]
         [Route("[action]")]
         public async Task<IActionResult> ResetPasswordUserAcount([FromBody]CreateLoginDTO dto)

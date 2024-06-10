@@ -21,6 +21,6 @@ namespace BlogPhotographerSystem_Core.IRepos
         //Update
         Task UpdateBlogAttachementRepos(BlogAttachement attachement);
         //Delete
-        Task DeleteBlogAttachementRepos(BlogAttachement attachement);
+        Task DeleteBlogAttachementRepos(int ID);
     }
 }

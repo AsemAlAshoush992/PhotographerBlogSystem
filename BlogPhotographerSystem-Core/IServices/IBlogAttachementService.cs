@@ -22,6 +22,6 @@ namespace BlogPhotographerSystem_Core.IServices
         //Update
         Task UpdateBlogAttachement(UpdateBlogAttachementDTO dto);
         //Delete
-        Task DeleteBlogAttachement(UpdateBlogAttachementDTO dto);
+        Task DeleteBlogAttachement(int ID);
     }
 }

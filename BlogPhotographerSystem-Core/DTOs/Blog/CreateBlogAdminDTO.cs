@@ -12,7 +12,6 @@ namespace BlogPhotographerSystem_Core.DTOs.Blog
         public string Title { get; set; }
         public string Description { get; set; }
         public string Article { get; set; }
-        public bool IsApproved { get; set; }
         public int AuthorId { get; set; }
         public List<BlogAttachmentDTO> Attachments { get; set; } = new List<BlogAttachmentDTO>();
 

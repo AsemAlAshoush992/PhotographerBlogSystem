@@ -101,9 +101,9 @@ namespace BlogPhotographerSystem_Infra.Services
              await _blogRepos.UpdateBlogRepos(dto);
         }
 
-        public async Task DeleteBlog(UpdateBlogAdminDTO dto)
+        public async Task DeleteBlog(int ID)
         {
-            await _blogRepos.DeleteBlogRepos(dto);
+            await _blogRepos.DeleteBlogRepos(ID);
         }
 
         public async Task ConfirmUserBlog(int blogID)
@@ -115,8 +115,5 @@ namespace BlogPhotographerSystem_Infra.Services
         {
             await _blogRepos.UpdateClientBlogRepos(dto);
         }
-       
-
-       
     }
 }

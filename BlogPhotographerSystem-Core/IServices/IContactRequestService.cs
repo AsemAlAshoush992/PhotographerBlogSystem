@@ -20,7 +20,7 @@ namespace BlogPhotographerSystem_Core.IServices
         //Update
         Task UpdateContactRequest(UpdateContactRequestDTO dto);
         //Delete
-        Task DeleteContactRequest(UpdateContactRequestDTO dto);
+        Task DeleteContactRequest(int ID);
         //Client Management
         //Send
         Task SendContactRequestForService(CreateContactRequestDTO dto);

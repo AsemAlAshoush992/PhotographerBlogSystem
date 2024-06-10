@@ -31,9 +31,9 @@ namespace BlogPhotographerSystem_Infra.Services
             throw new NotImplementedException();
         }
 
-        public async Task DeleteOrder(UpdateOrderAdminDTO dto)
+        public async Task DeleteOrder(int ID)
         {
-            await _orderRepos.DeleteOrderRepos(dto);
+            await _orderRepos.DeleteOrderRepos(ID);
 
         }
 

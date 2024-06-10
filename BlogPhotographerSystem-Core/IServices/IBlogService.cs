@@ -22,7 +22,7 @@ namespace BlogPhotographerSystem_Core.IServices
         //Update
         Task UpdateBlog(UpdateBlogAdminDTO dto);
         //Delete
-        Task DeleteBlog(UpdateBlogAdminDTO dto);
+        Task DeleteBlog(int ID);
         //Aprroval
         Task ConfirmUserBlog(int blogID);
 

@@ -28,9 +28,9 @@ namespace BlogPhotographerSystem_Infra.Repos
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteProblemRepos(UpdateProblemDTO dto)
+        public async Task DeleteProblemRepos(int ID)
         {
-            var problem = await _context.Problems.SingleOrDefaultAsync(b => b.Id == dto.Id);
+            var problem = await _context.Problems.SingleOrDefaultAsync(b => b.Id == ID);
             problem.ModifiedDate = DateTime.Now;
             problem.ModifiedUserId = 1;
             problem.IsDeleted = true;

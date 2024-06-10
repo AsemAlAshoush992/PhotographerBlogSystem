@@ -46,9 +46,9 @@ namespace BlogPhotographerSystem_Infra.Repos
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteOrderRepos(UpdateOrderAdminDTO dto)
+        public async Task DeleteOrderRepos(int ID)
         {
-            var order = await _context.Orders.SingleOrDefaultAsync(b => b.Id == dto.Id);
+            var order = await _context.Orders.SingleOrDefaultAsync(b => b.Id == ID);
             order.ModifiedDate = DateTime.Now;
             order.ModifiedUserId = 1;
             order.IsDeleted = true;

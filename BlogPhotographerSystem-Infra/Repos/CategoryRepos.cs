@@ -113,9 +113,9 @@ namespace BlogPhotographerSystem_Infra.Repos
             await _context.SaveChangesAsync();
         }
         //Delete Category
-        public async Task DeleteCategoryRepos(UpdateCategoryAdminDTO dto)
+        public async Task DeleteCategoryRepos(int ID)
         {
-            var query = await _context.Categories.SingleOrDefaultAsync(b => b.Id == dto.Id);
+            var query = await _context.Categories.SingleOrDefaultAsync(b => b.Id == ID);
 
             query.ModifiedDate = DateTime.Now;
             query.ModifiedUserId = 1;

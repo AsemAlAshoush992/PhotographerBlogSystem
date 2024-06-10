@@ -25,9 +25,9 @@ namespace BlogPhotographerSystem_Infra.Services
             throw new NotImplementedException();
         }
 
-        public async Task DeleteProblem(UpdateProblemDTO dto)
+        public async Task DeleteProblem(int ID)
         {
-            await _problemRepos.DeleteProblemRepos(dto);
+            await _problemRepos.DeleteProblemRepos(ID);
         }
 
         public Task<ProblemDetailsDTO> FilterProblemByUserIdOrOrderId(int? orderId, int? userId)

@@ -22,9 +22,9 @@ namespace BlogPhotographerSystem_Infra.Repos
         {
             _context = context;
         }
-        public async Task DeletePrivateGalleryRepos(UpdatePrivateGalleryDTO dto)
+        public async Task DeletePrivateGalleryRepos(int ID)
         {
-            var gallery = await _context.Galleries.SingleOrDefaultAsync(b => b.Id == dto.Id);
+            var gallery = await _context.Galleries.SingleOrDefaultAsync(b => b.Id == ID);
             gallery.ModifiedDate = DateTime.Now;
             gallery.ModifiedUserId = 1;
             gallery.IsDeleted = true;

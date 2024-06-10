@@ -46,7 +46,7 @@ namespace BlogPhotographerSystem_Infra.Repos
         {
             throw new NotImplementedException();
         }
-        public Task DeleteClientBlogRepos(Blog blog)
+        public Task DeleteClientBlogRepos(int ID)
         {
             throw new NotImplementedException();
         }
@@ -207,9 +207,9 @@ namespace BlogPhotographerSystem_Infra.Repos
 
         }
 
-        public async Task DeleteBlogRepos(UpdateBlogAdminDTO dto)
+        public async Task DeleteBlogRepos(int ID)
         {
-            var blog = await _context.Blogs.SingleOrDefaultAsync(b => b.Id == dto.Id);
+            var blog = await _context.Blogs.SingleOrDefaultAsync(b => b.Id == ID);
             blog.ModifiedDate = DateTime.Now;
             blog.ModifiedUserId = blog.AuthorID;
             blog.IsDeleted = true;

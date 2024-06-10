@@ -32,5 +32,4 @@ namespace BlogPhotographerSystem_Infra.Services
             await _loginRepos.ResetPasswordRepos(dto);
         }
     }
-
 }

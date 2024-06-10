@@ -110,9 +110,9 @@ namespace BlogPhotographerSystem_Infra.Repos
         }
 
         //Delete Service
-        public async Task DeleteServiceRepos(UpdateServiceAdminDTO dto)
+        public async Task DeleteServiceRepos(int ID)
         {
-            var service = await _context.Services.SingleOrDefaultAsync(b => b.Id == dto.Id);
+            var service = await _context.Services.SingleOrDefaultAsync(b => b.Id == ID);
             service.ModifiedDate = DateTime.Now;
             service.ModifiedUserId = 1;
             service.IsDeleted = true;

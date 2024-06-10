@@ -21,6 +21,6 @@ namespace BlogPhotographerSystem_Core.IRepos
         //Update
         Task UpdateCategoryRepos(UpdateCategoryAdminDTO dto);
         //Delete
-        Task DeleteCategoryRepos(UpdateCategoryAdminDTO dto);
+        Task DeleteCategoryRepos(int ID);
     }
 }

@@ -22,7 +22,7 @@ namespace BlogPhotographerSystem_Core.IRepos
         //Update
         Task UpdateBlogRepos(UpdateBlogAdminDTO dto);
         //Delete
-        Task DeleteBlogRepos(UpdateBlogAdminDTO dto);
+        Task DeleteBlogRepos(int ID);
         //Approval
         Task ConfirmUserBlogRepos(int blogID);
         //Client Management
@@ -33,7 +33,7 @@ namespace BlogPhotographerSystem_Core.IRepos
         //Update
         Task UpdateClientBlogRepos(UpdateBlogClientDTO dto);
         //Delete
-        Task DeleteClientBlogRepos(Blog blog);
+        Task DeleteClientBlogRepos(int ID);
 
     }
 }

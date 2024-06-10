@@ -41,14 +41,14 @@ namespace BlogPhotographerSystem_Infra.Services
             };
             await _userRepos.CreateLoginRepos(login);
         }
-        public Task DeleteUserAccount(UpdateUserDTO dto)
+        public Task DeleteUserAccount(int ID)
         {
             throw new NotImplementedException();
         }
 
-        public Task<UserDetailsDTO> FilterUsersByPhoneOrEmail(string? email, string? phone)
+        public async Task<List<UserDetailsDTO>> FilterUsersByPhoneOrEmail(string? email, string? phone)
         {
-            throw new NotImplementedException();
+            return await _userRepos.FilterUsersByPhoneOrEmailRepos(email, phone);
         }
 
         public async Task<UserInfoDTO> GetPersonalInformationsById(int Id)
@@ -88,9 +88,9 @@ namespace BlogPhotographerSystem_Infra.Services
         {
             await _userRepos.UpdateUserRepos(dto);
         }
-        public async Task DeleteUser(UpdateUserAdminDTO dto)
+        public async Task DeleteUser(int ID)
         {
-            await _userRepos.DeleteUserRepos(dto);
+            await _userRepos.DeleteUserRepos(ID);
         }
         public async Task UpdateUserAccount(UpdateUserDTO dto)
         {

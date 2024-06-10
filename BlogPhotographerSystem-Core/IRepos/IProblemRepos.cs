@@ -21,6 +21,6 @@ namespace BlogPhotographerSystem_Core.IRepos
         //Update
         Task UpdateProblemRepos(UpdateProblemDTO dto);
         //Delete
-        Task DeleteProblemRepos(UpdateProblemDTO dto);
+        Task DeleteProblemRepos(int ID);
     }
 }

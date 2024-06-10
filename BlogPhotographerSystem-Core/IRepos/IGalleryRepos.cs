@@ -27,6 +27,6 @@ namespace BlogPhotographerSystem_Core.IRepos
         //Update
         Task UpdatePrivateGalleryRepos(UpdatePrivateGalleryDTO dto);
         //Delete
-        Task DeletePrivateGalleryRepos(UpdatePrivateGalleryDTO dto);
+        Task DeletePrivateGalleryRepos(int ID);
     }
 }

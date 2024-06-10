@@ -21,14 +21,14 @@ namespace BlogPhotographerSystem_Infra.Services
             _galleryRepos = galleryRepos;
         }
 
-        public async Task DeleteFilesForClientByPrivateGallery(UpdatePrivateGalleryDTO dto)
+        public async Task DeleteFilesForClientByPrivateGallery(int ID)
         {
-            await _galleryRepos.DeletePrivateGalleryRepos(dto);
+            await _galleryRepos.DeletePrivateGalleryRepos(ID);
         }
 
-        public async Task DeletePrivateGallery(UpdatePrivateGalleryDTO dto)
+        public async Task DeletePrivateGallery(int ID)
         {
-            await _galleryRepos.DeletePrivateGalleryRepos(dto);
+            await _galleryRepos.DeletePrivateGalleryRepos(ID);
         }
 
         public Task<PrivateGalleryDetailsDTO> FilterPrivateGalleryByFileTypeOrOrderID(string? FileType, int? orderID)
@@ -56,7 +56,7 @@ namespace BlogPhotographerSystem_Infra.Services
             return await _galleryRepos.GetAllPrivateGalleriesByUserId(UserId);
         }
 
-        public async Task SendFilesForUserByPrivateGallery(CreatePrivateGalleryDTO dto)
+        public async Task SendFilesForUserByPrivateGallery(SendPrivateGalleryDTO dto)
         {
             Gallery gallery = new Gallery()
             {

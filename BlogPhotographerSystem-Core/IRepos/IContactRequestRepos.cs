@@ -21,7 +21,7 @@ namespace BlogPhotographerSystem_Core.IRepos
         //Update
         Task UpdateContactRequestRepos(UpdateContactRequestDTO dto);
         //Delete
-        Task DeleteContactRequestRepos(UpdateContactRequestDTO dto);
+        Task DeleteContactRequestRepos(int ID);
         //Client Management
         //Create
         Task CreateContactRequestForServiceRepos(ContactRequest contactRequest);

@@ -23,6 +23,6 @@ namespace BlogPhotographerSystem_Core.IServices
         //Update
         Task UpdateCategory(UpdateCategoryAdminDTO dto);
         //Delete
-        Task DeleteCategory(UpdateCategoryAdminDTO dto);
+        Task DeleteCategory(int ID);
     }
 }

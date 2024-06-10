@@ -22,6 +22,6 @@ namespace BlogPhotographerSystem_Core.IServices
         //Update
         Task UpdateService(UpdateServiceAdminDTO dto);
         //Delete
-        Task DeleteService(UpdateServiceAdminDTO dto);
+        Task DeleteService(int ID);
     }
 }

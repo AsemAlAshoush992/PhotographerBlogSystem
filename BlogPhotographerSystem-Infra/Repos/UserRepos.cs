@@ -34,14 +34,14 @@ namespace BlogPhotographerSystem_Infra.Repos
             await _dbContext.SaveChangesAsync();
         }
 
-        public Task DeleteUserAccountRepos(User user)
+        public Task DeleteUserAccountRepos(int ID)
         {
             throw new NotImplementedException();
         }
 
-        public async Task DeleteUserRepos(UpdateUserAdminDTO dto)
+        public async Task DeleteUserRepos(int ID)
         {
-            var user = await _dbContext.Users.SingleOrDefaultAsync(b => b.Id == dto.Id);
+            var user = await _dbContext.Users.SingleOrDefaultAsync(b => b.Id == ID);
             user.ModifiedDate = DateTime.Now;
             user.ModifiedUserId = 1;
             user.IsDeleted = true;
@@ -50,9 +50,29 @@ namespace BlogPhotographerSystem_Infra.Repos
             await _dbContext.SaveChangesAsync();
         }
 
-        public Task<UserDetailsDTO> FilterUsersByPhoneOrEmailRepos(string? email, string? phone)
+        public async Task<List<UserDetailsDTO>> FilterUsersByPhoneOrEmailRepos(string? email, string? phone)
         {
-            throw new NotImplementedException();
+            bool flag = email == null && phone == null? true : false;
+            var query = from filter in _dbContext.Users
+                        where filter.Email == email || filter.Phone == phone || flag
+                        select new UserDetailsDTO
+                        {
+                            Id = filter.Id,
+                            FirstName = filter.FirstName,
+                            LastName = filter.LastName,
+                            Email = filter.Email,
+                            BirthDate = filter.BirthDate,
+                            ImagePath = filter.ImagePath,
+                            Phone = filter.Phone,
+                            UserType = filter.UserType.ToString(),
+                            CreationDate = filter.CreationDate,
+                            ModifiedDate = filter.ModifiedDate,
+                            CreatorUserId = filter.CreatorUserId,
+                            ModifiedUserId = filter.ModifiedUserId,
+                            IsDeleted = filter.IsDeleted
+
+                        };
+            return await query.ToListAsync();
         }
 
         public Task<List<UserDetailsDTO>> GetAllUsersRepos()
@@ -136,7 +156,7 @@ namespace BlogPhotographerSystem_Infra.Repos
             {
                 login.Password = dto.Password;
             }
-            
+
             if (dto.BirthDate.HasValue)
             {
                 user.BirthDate = dto.BirthDate.Value;

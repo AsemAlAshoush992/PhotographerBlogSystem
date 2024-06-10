@@ -44,9 +44,9 @@ namespace BlogPhotographerSystem_Infra.Services
             await _categoryRepos.UpdateCategoryRepos(dto);
         }
         //Delete Category
-        public async Task DeleteCategory(UpdateCategoryAdminDTO dto)
+        public async Task DeleteCategory(int ID)
         {
-            await _categoryRepos.DeleteCategoryRepos(dto);
+            await _categoryRepos.DeleteCategoryRepos(ID);
         }
         //Get Category Details
         public async Task<List<CategoryDetailsDTO>> GetAllCategoriesForAdmin()
@@ -58,9 +58,5 @@ namespace BlogPhotographerSystem_Infra.Services
         {
             return await _categoryRepos.GetCategoryDetailsByIdRepos(Id);
         }
-     
-      
-      
-     
     }
 }

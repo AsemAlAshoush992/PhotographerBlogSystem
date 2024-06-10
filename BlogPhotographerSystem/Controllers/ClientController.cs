@@ -31,10 +31,22 @@ namespace BlogPhotographerSystem.Controllers
             _problemService = problemService;
             _galleryService = galleryService;
         }
-        //PersonalInformations
+        /// <summary>
+        /// Retrieves personal information by userID of the client.
+        /// </summary>
+        /// <response code="200">Returns the specific personal information by ID.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the personal information.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Get api/Client
+        ///     {        
+        ///       "userID": 2        
+        ///     }
+        /// </remarks>
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> GetPersonalInformationsByUserID([FromBody] int userID)
+        public async Task<IActionResult> GetPersonalInformationByUserID([FromBody] int userID)
         {
 
             if (userID == null)
@@ -50,6 +62,20 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(204, $"Error occurred{ex.Message}");
             }
         }
+
+        /// <summary>
+        /// Retrieves all blogs by userID of the client.
+        /// </summary>
+        /// <response code="200">Returns list of all blogs by userID.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the blogs.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Get api/Client
+        ///     {        
+        ///       "userID": 5        
+        ///     }
+        /// </remarks>
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> GetAllBlogsByUserID(int userID)
@@ -69,7 +95,19 @@ namespace BlogPhotographerSystem.Controllers
             }
         }
 
-        //PrivateGallery
+        /// <summary>
+        /// Retrieves all private galleries by userID of the client.
+        /// </summary>
+        /// <response code="200">Returns list of all private galleries by userID.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the private galleries.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Get api/Client
+        ///     {        
+        ///       "userID": 6        
+        ///     }
+        /// </remarks>
         [HttpGet]
         [Route("[action]/{UserId}")]
         public async Task<IActionResult> GetAllPrivateGalleriesByUserId(int UserId)
@@ -88,8 +126,30 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(404, $"Error occurred{ex.Message}");
             }
         }
-        
-        
+
+        /// <summary>
+        /// Sends a user's blog post for approval.
+        /// </summary>
+        /// <response code="201">The blog post has been successfully sent for approval.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data, or an error occurred during the process.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Post api/Client
+        ///     {        
+        ///        "title": "Rania blog",
+        ///        "description": "lorem .....",
+        ///        "article": "lorem .....",
+        ///        "authorId": 1,
+        ///        "attachments": [
+        ///          {
+        ///            "filePath": "photo/Rania",
+        ///            "fileName": "spring",
+        ///            "fileType": "Image"
+        ///          }
+        ///        ]       
+        ///     }
+        /// </remarks>
         [HttpPost]
         [Route("[action]")]
         public async Task<IActionResult> SendBlogFromUserForApproval(CreateBlogAdminDTO dto)
@@ -106,8 +166,27 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(400, $"Error occurred {ex.Message}");
             }
         }
-        //UpdatePersonalInformationForUserAcount
 
+        /// <summary>
+        /// Updates an existing personal information data of the client.
+        /// </summary>
+        /// <response code="200">The personal information has been updated successfully.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data.</response>
+        /// <response code="404">The personal information was not found or an error occurred during the update.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Put api/Client
+        ///     { 
+        ///       "id": 753,
+        ///       "firstName": "Ahmmed",
+        ///       "lastName": "Mosa",
+        ///       "password": "Ahmmed123#",
+        ///       "birthDate": null,
+        ///       "imagePath": null,
+        ///       "phone": null      
+        ///     }
+        /// </remarks>
         [HttpPut]
         [Route("[action]")]
         public async Task<IActionResult> UpdatePersonalInformationForUserAcount([FromBody] UpdateUserDTO dto)
@@ -124,6 +203,27 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(404, $"Error occurred {ex.Message}");
             }
         }
+
+        /// <summary>
+        /// Updates an existing blog data of the client.
+        /// </summary>
+        /// <response code="200">The blog has been updated successfully.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data.</response>
+        /// <response code="404">The blog was not found or an error occurred during the update.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Put api/Client
+        ///     { 
+        ///       "id": 25,
+        ///       "attachementId": null,
+        ///       "title": "Ibrahim blog",
+        ///       "article": null,
+        ///       "path": null,
+        ///       "fileType": null,
+        ///       "fileName": null
+        ///     }
+        /// </remarks>
         [HttpPut]
         [Route("[action]")]
         public async Task<IActionResult> UpdateBlogForSpecificUser([FromBody] UpdateBlogClientDTO dto)
@@ -141,7 +241,23 @@ namespace BlogPhotographerSystem.Controllers
             }
         }
 
-        //PrivateGallery
+        /// <summary>
+        /// Updates an existing private gallery file of the client.
+        /// </summary>
+        /// <response code="200">The private gallery file has been updated successfully.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data.</response>
+        /// <response code="404">The private gallery file was not found or an error occurred during the update.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Put api/Client
+        ///     { 
+        ///       "id": 21,
+        ///       "path": "photos/Sameer",
+        ///       "fileName": null,
+        ///       "fileType": null
+        ///     }
+        /// </remarks>
         [HttpPut]
         [Route("[action]")]
         public async Task<IActionResult> UpdatePrivateGalleryFile([FromBody] UpdatePrivateGalleryDTO dto)
@@ -158,16 +274,30 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(404, $"Error occurred {ex.Message}");
             }
         }
-        
+
+        /// <summary>
+        /// Deletes a specific blog of the client.
+        /// </summary>
+        /// <response code="200">The blog has been deleted successfully.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data.</response>
+        /// <response code="404">The blog was not found or an error occurred during deletion.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Put api/Client
+        ///     { 
+        ///       "ID": 10
+        ///     }
+        /// </remarks>
         [HttpPut]
-        [Route("[action]")]
-        public async Task<IActionResult> DeleteBlogForSpecificUser([FromBody] UpdateBlogAdminDTO dto)
+        [Route("[action]/{ID}")]
+        public async Task<IActionResult> DeleteBlogForSpecificUser(int ID)
         {
-            if (dto == null)
+            if (ID == null)
                 return BadRequest("Please filling BlogId");
             try
             {
-                await _blogService.DeleteBlog(dto);
+                await _blogService.DeleteBlog(ID);
                 return StatusCode(200, "The Blog has been Deleted successfully");
             }
             catch (Exception ex)
@@ -176,15 +306,29 @@ namespace BlogPhotographerSystem.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes a specific private gallery file of the client.
+        /// </summary>
+        /// <response code="200">The private gallery file has been deleted successfully.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data.</response>
+        /// <response code="404">The private gallery file was not found or an error occurred during deletion.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Put api/Client
+        ///     { 
+        ///       "ID": 10
+        ///     }
+        /// </remarks>
         [HttpPut]
         [Route("[action]")]
-        public async Task<IActionResult> DeletePrivateGalleryFile([FromBody] UpdatePrivateGalleryDTO dto)
+        public async Task<IActionResult> DeletePrivateGalleryFile(int ID)
         {
-            if (dto == null)
+            if (ID == null)
                 return BadRequest("Please filling PrivateGalleryId");
             try
             {
-                await _galleryService.DeleteFilesForClientByPrivateGallery(dto);
+                await _galleryService.DeleteFilesForClientByPrivateGallery(ID);
                 return StatusCode(200, "The Private Gallery File has been Deleted successfully");
             }
             catch (Exception ex)
@@ -192,7 +336,26 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(404, $"Error occurred {ex.Message}");
             }
         }
-        //DeletePrivateGallery
+
+
+        /// <summary>
+        /// Sends an order for a specific service.
+        /// </summary>
+        /// <response code="201">The order has been successfully sent.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data.</response>
+        /// <response code="503">Service unavailable, an error occurred while sending the order.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Post api/Client
+        ///     { 
+        ///       "title": "Portrait Order",
+        ///       "note": "No",
+        ///       "paymentMethod": "Cash",
+        ///       "userID": 10,
+        ///       "serviceName": "Portrait Session"
+        ///     }
+        /// </remarks>
         [HttpPost]
         [Route("[action]")]
         public async Task<IActionResult> SendOrderForSpecificService(CreateOrderClientDTO dto)
@@ -209,6 +372,26 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(503, $"Error occurred {ex.Message}");
             }
         }
+
+        /// <summary>
+        /// Sends an contact request for a specific service.
+        /// </summary>
+        /// <response code="201">The contact request has been successfully sent.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data.</response>
+        /// <response code="503">Service unavailable, an error occurred while sending the contact request.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Post api/Client
+        ///     { 
+        ///       "clientName": "Bob Smith",
+        ///       "email": "bob.smith@yahoo.com",
+        ///       "phone": "00962712345679",
+        ///       "description": "I need Portrait Session",
+        ///       "purpose": "Portrait",
+        ///       "budget": 100
+        ///     }
+        /// </remarks>
         [HttpPost]
         [Route("[action]")]
         public async Task<IActionResult> SendContactRequestForSpecifiService(CreateContactRequestDTO dto)
@@ -225,7 +408,21 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(503, $"Error occurred {ex.Message}");
             }
         }
-
+        /// <summary>
+        /// Uploads files to a user's private gallery.
+        /// </summary>
+        /// <response code="201">The files have been successfully uploaded.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data, or an error occurred during the upload process.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Post api/Client
+        ///     { 
+        ///       "path": "photos/Rami",
+        ///       "fileName": "Rami",
+        ///       "fileType": "Image"
+        ///     }
+        /// </remarks>
         [HttpPost]
         [Route("[action]")]
         public async Task<IActionResult> UploadPrivateGalleryFiles(CreatePrivateGalleryDTO dto)
@@ -242,7 +439,26 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(400, $"Error occurred {ex.Message}");
             }
         }
-        //UploadPrivateGallery
+
+        /// <summary>
+        /// Sends an technical support request for the admin.
+        /// </summary>
+        /// <response code="201">The technical support request has been successfully sent.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data.</response>
+        /// <response code="503">technical support unavailable, an error occurred while sending the technical support request.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Post api/Client
+        ///     { 
+        ///       "title": "Photo Quality",
+        ///       "purpose": "Service",
+        ///       "description": "Poor photo quality.",
+        ///       "userID": 9,
+        ///       "orderId": 10
+        ///     }
+        /// </remarks>
+
         [HttpPost]
         [Route("[action]")]
         public async Task<IActionResult> SendTechnicalSupportRequest(CreateProblemDTO dto)
@@ -259,8 +475,23 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(400, $"Error occurred {ex.Message}");
             }
         }
-        //SendTechnicalSupportRequest
-        //SendContactRequestForSpecifiService
+
+        /// <summary>
+        /// Cancels an order for a specific service for a client.
+        /// </summary>
+        /// <response code="200">The service request has been successfully canceled.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data.</response>
+        /// <response code="404">The order was not found or an error occurred during the cancellation process.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Post api/Client
+        ///     { 
+        ///       "orderId": 20,
+        ///       "userId": 4,
+        ///       "reason": "Poor quality"
+        ///     }
+        /// </remarks>
         [HttpPut]
         [Route("[action]")]
         public async Task<IActionResult> CancelOrderForSpecificServiceForUser([FromBody] CancelOrderClientDTO dto )

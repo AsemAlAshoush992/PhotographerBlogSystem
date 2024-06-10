@@ -18,20 +18,20 @@ namespace BlogPhotographerSystem_Core.IServices
         //Admin Management
         Task<UserDetailsDTO> GetUserDetailsById(int Id);
         //Filter
-        Task<UserDetailsDTO> FilterUsersByPhoneOrEmail(string? email, string? phone);
+        Task<List<UserDetailsDTO>> FilterUsersByPhoneOrEmail(string? email, string? phone);
 
         //Create
         Task CreateNewAdmin(CreateUserAdminDTO dto);
         //Update
         Task UpdateUser(UpdateUserAdminDTO dto);
         //Delete
-        Task DeleteUser(UpdateUserAdminDTO dto);
+        Task DeleteUser(int ID);
 
         //User Management
         Task<UserInfoDTO> GetPersonalInformationsById(int Id);
         //Update
         Task UpdateUserAccount(UpdateUserDTO dto);
         //Delete
-        Task DeleteUserAccount(UpdateUserDTO dto);
+        Task DeleteUserAccount(int ID);
     }
 }

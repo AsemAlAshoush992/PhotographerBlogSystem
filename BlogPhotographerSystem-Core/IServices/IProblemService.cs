@@ -21,7 +21,7 @@ namespace BlogPhotographerSystem_Core.IServices
         //Update
         Task UpdateProblem(UpdateProblemDTO dto);
         //Delete
-        Task DeleteProblem(UpdateProblemDTO dto);
+        Task DeleteProblem(int ID);
         //Client Management
         //Send
         Task SendTechnicalSupportRequest(CreateProblemDTO dto);

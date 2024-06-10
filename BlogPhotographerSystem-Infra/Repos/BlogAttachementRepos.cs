@@ -16,7 +16,7 @@ namespace BlogPhotographerSystem_Infra.Repos
             throw new NotImplementedException();
         }
 
-        public Task DeleteBlogAttachementRepos(BlogAttachement attachement)
+        public Task DeleteBlogAttachementRepos(int ID)
         {
             throw new NotImplementedException();
         }

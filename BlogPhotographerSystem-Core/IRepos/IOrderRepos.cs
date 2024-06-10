@@ -22,7 +22,7 @@ namespace BlogPhotographerSystem_Core.IRepos
         //Update
         Task UpdateOrderRepos(UpdateOrderAdminDTO dto);
         //Delete
-        Task DeleteOrderRepos(UpdateOrderAdminDTO dto);
+        Task DeleteOrderRepos(int ID);
         //Client Management
         //Create
         Task CreateOrderForSpecificServiceRepos(Order order);

@@ -58,9 +58,9 @@ namespace BlogPhotographerSystem_Infra.Services
         {
             await _contactRequestRepos.UpdateContactRequestRepos(dto);
         }
-        public async Task DeleteContactRequest(UpdateContactRequestDTO dto)
+        public async Task DeleteContactRequest(int ID)
         {
-            await _contactRequestRepos.DeleteContactRequestRepos(dto);
+            await _contactRequestRepos.DeleteContactRequestRepos(ID);
         }
     }
 }

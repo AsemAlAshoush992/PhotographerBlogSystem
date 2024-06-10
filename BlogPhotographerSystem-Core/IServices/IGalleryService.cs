@@ -20,11 +20,11 @@ namespace BlogPhotographerSystem_Core.IServices
         Task<PrivateGalleryDetailsDTO> FilterPrivateGalleryByFileTypeOrOrderID(string? FileType, int? orderID);
 
         //Send
-        Task SendFilesForUserByPrivateGallery(CreatePrivateGalleryDTO dto);
+        Task SendFilesForUserByPrivateGallery(SendPrivateGalleryDTO dto);
         //Update
         Task UpdatePrivateGallery(UpdatePrivateGalleryDTO dto);
         //Delete
-        Task DeletePrivateGallery(UpdatePrivateGalleryDTO dto);
+        Task DeletePrivateGallery(int ID);
         //Client Management
         Task<List<PrivateGalleryDetailsDTO>> GetAllPrivateGalleriesByUserId(int orderId);
         //Upload
@@ -32,7 +32,7 @@ namespace BlogPhotographerSystem_Core.IServices
         //Update
         Task UpdateFilesForClientByPrivateGallery(UpdatePrivateGalleryDTO dto);
         //Delete
-        Task DeleteFilesForClientByPrivateGallery(UpdatePrivateGalleryDTO dto);
+        Task DeleteFilesForClientByPrivateGallery(int ID);
 
     }
 }

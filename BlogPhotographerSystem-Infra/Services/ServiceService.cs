@@ -38,9 +38,9 @@ namespace BlogPhotographerSystem_Infra.Services
             await _serviceRepos.CreateServiceRepos(service);
         }
 
-        public async Task DeleteService(UpdateServiceAdminDTO dto)
+        public async Task DeleteService(int ID)
         {
-            await _serviceRepos.DeleteServiceRepos(dto);
+            await _serviceRepos.DeleteServiceRepos(ID);
         }
 
         public async Task<List<ServiceInfoDTO>> GetAllServices()

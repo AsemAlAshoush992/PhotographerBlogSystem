@@ -19,16 +19,16 @@ namespace BlogPhotographerSystem_Core.IRepos
         Task<UserDetailsDTO> GetUserDetailsByIdRepos(int Id);
         Task<List<UserDetailsDTO>> GetAllUsersRepos();
         //Filter
-        Task<UserDetailsDTO> FilterUsersByPhoneOrEmailRepos(string? email, string? phone);
+        Task<List<UserDetailsDTO>> FilterUsersByPhoneOrEmailRepos(string? email, string? phone);
         //Update
         Task UpdateUserRepos(UpdateUserAdminDTO dto);
         //Delete
-        Task DeleteUserRepos(UpdateUserAdminDTO dto);
+        Task DeleteUserRepos(int ID);
         //User Management
         Task<UserInfoDTO> GetPersonalInformationsByIdRepos(int Id);
         //Update
         Task UpdateUserAccountRepos(UpdateUserDTO dto);
         //Delete
-        Task DeleteUserAccountRepos(User user);
+        Task DeleteUserAccountRepos(int ID);
     }
 }

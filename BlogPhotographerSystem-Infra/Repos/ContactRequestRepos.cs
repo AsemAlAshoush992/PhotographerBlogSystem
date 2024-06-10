@@ -42,9 +42,9 @@ namespace BlogPhotographerSystem_Infra.Repos
             throw new NotImplementedException();
         }
 
-        public async Task DeleteContactRequestRepos(UpdateContactRequestDTO dto)
+        public async Task DeleteContactRequestRepos(int ID)
         {
-            var contact = await _context.ContactRequests.SingleOrDefaultAsync(b => b.Id == dto.Id);
+            var contact = await _context.ContactRequests.SingleOrDefaultAsync(b => b.Id == ID);
             contact.ModifiedDate = DateTime.Now;
             contact.ModifiedUserId = 1;
             contact.IsDeleted = true;

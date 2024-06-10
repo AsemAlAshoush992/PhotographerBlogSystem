@@ -21,7 +21,7 @@ namespace BlogPhotographerSystem_Core.IServices
         //Update
         Task UpdateOrder(UpdateOrderAdminDTO dto);
         //Delete
-        Task DeleteOrder(UpdateOrderAdminDTO dto);
+        Task DeleteOrder(int ID);
         //Client Management
         //Send
         Task SendOrderForSpecificService(CreateOrderClientDTO dto);
