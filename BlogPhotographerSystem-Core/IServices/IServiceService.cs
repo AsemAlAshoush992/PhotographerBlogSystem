@@ -1,6 +1,7 @@
 ﻿using BlogPhotographerSystem_Core.DTOs.Blog;
 using BlogPhotographerSystem_Core.DTOs.Category;
 using BlogPhotographerSystem_Core.DTOs.Service;
+using BlogPhotographerSystem_Core.DTOs.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,8 @@ namespace BlogPhotographerSystem_Core.IServices
         //Admin Management
         Task<List<ServiceDetailsDTO>> GetAllServicesForAdmin();
         Task<ServiceDetailsDTO> GetServiceDetailsById(int Id);
-
+        //Filter
+        Task<List<ServiceDetailsDTO>> FilterServicesByNameOrPriceOrQuantity(string? Name, float? Price, int? Quantity);
         //Create
         Task CreateService(CreateServiceAdminDTO dto);
         //Update

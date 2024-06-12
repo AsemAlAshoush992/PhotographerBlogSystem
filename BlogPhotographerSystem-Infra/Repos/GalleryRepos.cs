@@ -44,6 +44,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                         where photo.FileType == FileType.Image
                         && photo.IsPrivate == false
                         && photo.IsDeleted == false
+                        orderby photo.CreationDate descending
                         select new PhotosAndVideosInfoDTO
                         {
                             Path = photo.Path,
@@ -58,6 +59,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                         where video.FileType == FileType.Video
                         && video.IsPrivate == false
                         && video.IsDeleted == false
+                        orderby video.CreationDate descending
                         select new PhotosAndVideosInfoDTO
                         {
                             Path = video.Path,
@@ -85,10 +87,11 @@ namespace BlogPhotographerSystem_Infra.Repos
                             ModifiedUserId = gallery.ModifiedUserId,
                             IsDeleted = gallery.IsDeleted
                         };
+            
             return await query.SingleOrDefaultAsync();
         }
 
-        public async Task<List<PrivateGalleryDetailsDTO>> GetAllPrivateGalleriesByUserId(int UserId)
+        public async Task<List<PrivateGalleryDetailsForClientDTO>> GetAllPrivateGalleriesByUserId(int UserId)
         {
             var query = from user in _context.Users
                         join order in _context.Orders
@@ -98,11 +101,12 @@ namespace BlogPhotographerSystem_Infra.Repos
                         where user.Id == UserId
                         && privateGallery.IsPrivate == true
                         && privateGallery.IsDeleted == false
-                        select new PrivateGalleryDetailsDTO
+                        select new PrivateGalleryDetailsForClientDTO
                         {
                             Path = privateGallery.Path,
                             FileName = privateGallery.FileName,
-                            OrderID = privateGallery.OrderID,
+                            FileType = privateGallery.FileType.ToString(),
+                            OrderID = privateGallery.OrderID
                         };
             return await query.ToListAsync();
         }
@@ -113,7 +117,7 @@ namespace BlogPhotographerSystem_Infra.Repos
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdatePrivateGalleryRepos(UpdatePrivateGalleryDTO dto)
+        public async Task UpdatePrivateGalleryRepos(UpdateGalleryDTO dto)
         {
             var gallery = await _context.Galleries.SingleOrDefaultAsync(b => b.Id == dto.Id);
 
@@ -135,6 +139,16 @@ namespace BlogPhotographerSystem_Infra.Repos
             if (!string.IsNullOrEmpty(dto.FileType))
             {
                 gallery.FileType = (FileType)Enum.Parse(typeof(FileType), dto.FileType);
+
+            }
+            if (dto.IsPrivate.HasValue)
+            {
+                gallery.IsPrivate = dto.IsPrivate.Value;
+
+            }
+            if (dto.OrderID.HasValue)
+            {
+                gallery.OrderID = dto.OrderID.Value;
 
             }
             gallery.ModifiedDate = DateTime.Now;
@@ -163,6 +177,38 @@ namespace BlogPhotographerSystem_Infra.Repos
                             IsDeleted = gallery.IsDeleted
                         };
             return await query.ToListAsync();
+        }
+
+        public async Task UpdateFilesForClientByPrivateGallery(UpdatePrivateGalleryDTO dto)
+        {
+            var gallery = await _context.Galleries.SingleOrDefaultAsync(b => b.Id == dto.Id);
+
+            if (gallery == null)
+            {
+                throw new Exception("PrivateGallery File not found");
+            }
+
+            if (!string.IsNullOrEmpty(dto.Path))
+            {
+                gallery.Path = dto.Path;
+            }
+
+            if (!string.IsNullOrEmpty(dto.FileName))
+            {
+                gallery.FileName = dto.FileName;
+            }
+
+            if (!string.IsNullOrEmpty(dto.FileType))
+            {
+                gallery.FileType = (FileType)Enum.Parse(typeof(FileType), dto.FileType);
+
+            }
+           
+            gallery.ModifiedDate = DateTime.Now;
+            gallery.ModifiedUserId = 1;
+
+            _context.Update(gallery);
+            await _context.SaveChangesAsync();
         }
     }
 }

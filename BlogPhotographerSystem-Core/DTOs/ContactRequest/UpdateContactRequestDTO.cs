@@ -16,8 +16,5 @@ namespace BlogPhotographerSystem_Core.DTOs.ContactRequest
         public string? Purpose { get; set; }
         public float? Budget { get; set; }
         public int? UserID { get; set; }
-        public DateTime ModifiedDate { get; set; }
-        public int ModifiedUserId { get; set; }
-        public bool? IsDeleted { get; set; }
     }
 }

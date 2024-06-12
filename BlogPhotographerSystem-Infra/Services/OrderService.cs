@@ -37,14 +37,14 @@ namespace BlogPhotographerSystem_Infra.Services
 
         }
 
-        public Task<OrderDetailsDTO> FilterOrderByTitleOrUserIdOrServiceIdOrStatus(string? title, int? userId, int? serviceId, string? status)
+        public async Task<List<OrderDetailsDTO>> FilterOrderByTitleOrUserIdOrServiceIdOrStatus(string? title, int? userId, int? serviceId, string? status)
         {
-            throw new NotImplementedException();
+            return await _orderRepos.FilterOrderByTitleOrUserIdOrServiceIdOrStatusRepos(title, userId, serviceId, status);
         }
 
-        public Task<List<OrderDetailsDTO>> GetAllOrders()
+        public async Task<List<OrderDetailsDTO>> GetAllOrders()
         {
-            throw new NotImplementedException();
+            return await _orderRepos.GetAllOrdersRepos();
         }
 
         public async Task<OrderDetailsDTO> GetOrderDetailsById(int Id)

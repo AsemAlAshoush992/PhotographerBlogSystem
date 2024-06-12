@@ -20,6 +20,10 @@ namespace BlogPhotographerSystem_Infra.Services
         {
             _serviceRepos = serviceRepos;
         }
+        public async Task<List<ServiceDetailsDTO>> FilterServicesByNameOrPriceOrQuantity(string? name, float? price, int? quantity)
+        {
+            return await _serviceRepos.FilterServicesByNameOrPriceOrQuantityRepos(name, price, quantity);
+        }
         public async Task CreateService(CreateServiceAdminDTO dto)
         {
             Service service = new Service()
@@ -43,14 +47,16 @@ namespace BlogPhotographerSystem_Infra.Services
             await _serviceRepos.DeleteServiceRepos(ID);
         }
 
+       
+
         public async Task<List<ServiceInfoDTO>> GetAllServices()
         {
             return await _serviceRepos.GetAllServicesRepos();
         }
 
-        public Task<List<ServiceDetailsDTO>> GetAllServicesForAdmin()
+        public async Task<List<ServiceDetailsDTO>> GetAllServicesForAdmin()
         {
-            throw new NotImplementedException();
+            return await _serviceRepos.GetAllServicesForAdminRepos();
         }
 
         public async Task<ServiceDetailsDTO> GetServiceDetailsById(int Id)

@@ -3,6 +3,7 @@ using BlogPhotographerSystem_Core.DTOs.Blog;
 using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.Models.Entity;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,17 +62,17 @@ namespace BlogPhotographerSystem_Infra.Repos
                         where blog.AuthorID == userId
                         && blog.IsDeleted == false
                         && blog.IsApproved == true
-                        select new BlogDetailsForUserDTO
-                        {
-                            Title = blog.Title,
-                            Article = blog.Article,
-                            BlogDate = blog.BlogDate,
-                            AuthorName = user.FirstName + " " + user.LastName,
-                            FilePath = attachement.Path
-                        };
+            group new { blog, user, attachement } by new { blog.Id, blog.Title, blog.Article, blog.BlogDate, user.FirstName, user.LastName } into blogGroup
+            select new BlogDetailsForUserDTO
+            {
+                Title = blogGroup.Key.Title,
+                Article = blogGroup.Key.Article,
+                BlogDate = blogGroup.Key.BlogDate,
+                AuthorName = blogGroup.Key.FirstName + " " + blogGroup.Key.LastName,
+                FilePaths = blogGroup.Select(bg => bg.attachement.Path).ToList()
+            };
             return await query.ToListAsync();
         }
-
         public async Task<List<BlogsDetailsDTO>> GetAllBlogsDetailsRepos()
         {
             var query = from blog in _context.Blogs
@@ -129,14 +130,33 @@ namespace BlogPhotographerSystem_Infra.Repos
                             BlogDate = blogGroup.FirstOrDefault().blogCards.BlogDate,
                             AuthorName = blogGroup.FirstOrDefault().user.FirstName + " " + blogGroup.FirstOrDefault().user.LastName,
                             ImagePath = blogGroup.FirstOrDefault().attachement.Path
-                        };
+                        } into blogCardsDTO
+                        orderby blogCardsDTO.BlogDate descending
+                        select blogCardsDTO;
 
             return await query.ToListAsync();
         }
 
-        public Task<BlogDetailsForUserDTO> GetBlogDetailsById(int blogid)
+        public async Task<BlogDetailsForUserDTO> GetBlogDetailsByIdRepos(int blogid)
         {
-            throw new NotImplementedException();
+            var query = from blogD in _context.Blogs
+                        join user in _context.Users
+                        on blogD.AuthorID equals user.Id
+                        join file in _context.BlogAttachements
+                        on blogD.Id equals file.BlogID
+                        where blogD.Id == blogid
+                        && blogD.IsDeleted == false
+                        && blogD.IsApproved == true
+                        group new { blogD, user, file } by new { blogD.Id, blogD.Title, blogD.Article, blogD.BlogDate, user.FirstName, user.LastName } into blogGroup
+                        select new BlogDetailsForUserDTO
+                        {
+                            Title = blogGroup.Key.Title,
+                            Article = blogGroup.Key.Article,
+                            BlogDate = blogGroup.Key.BlogDate,
+                            AuthorName = blogGroup.Key.FirstName + " " + blogGroup.Key.LastName,
+                            FilePaths = blogGroup.Select(bg => bg.file.Path).ToList()
+                        };
+            return await query.SingleOrDefaultAsync();
         }
 
         public async Task<BlogsDetailsDTO> GetBlogDetailsForAdminByIdRepos(int Id)

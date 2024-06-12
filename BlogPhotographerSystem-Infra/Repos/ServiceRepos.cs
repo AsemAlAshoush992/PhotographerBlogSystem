@@ -1,6 +1,7 @@
 ﻿using BlogPhotographerSystem_Core.Context;
 using BlogPhotographerSystem_Core.DTOs.Blog;
 using BlogPhotographerSystem_Core.DTOs.Service;
+using BlogPhotographerSystem_Core.DTOs.User;
 using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.Models.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -23,8 +25,33 @@ namespace BlogPhotographerSystem_Infra.Repos
         {
             _context = context;
         }
-        //Guest Management
-        //Get All Services Info
+        public async Task<List<ServiceDetailsDTO>> FilterServicesByNameOrPriceOrQuantityRepos(string? name, float? price, int? quantity)
+        {
+            bool flag = name == null && price == null && quantity == null ? true : false;
+            var query = from filter in _context.Services
+                        where filter.Name == name || filter.Price == price || filter.Quantity == quantity || flag
+                        select new ServiceDetailsDTO
+                        {
+                            Id = filter.Id,
+                            Name = filter.Name,
+                            Description = filter.Description,
+                            ImagePath = filter.ImagePath,
+                            Price = filter.Price,
+                            Quantity = filter.Quantity,
+                            IsHaveDiscount = filter.IsHaveDiscount,
+                            DisacountAmount = filter.DisacountAmount,
+                            DiscountType = filter.DiscountType.ToString(),
+                            CategoryID = filter.CategoryID,
+                            CreationDate = filter.CreationDate,
+                            ModifiedDate = filter.ModifiedDate,
+                            CreatorUserId = filter.CreatorUserId,
+                            ModifiedUserId = filter.ModifiedUserId,
+                            IsDeleted = filter.IsDeleted
+
+                        };
+            return await query.ToListAsync();
+
+        }
         public async Task<List<ServiceInfoDTO>> GetAllServicesRepos()
         {
             var query = from service in _context.Services
@@ -121,9 +148,28 @@ namespace BlogPhotographerSystem_Infra.Repos
             await _context.SaveChangesAsync();
         }
         //Get All Services Details
-        public Task<List<ServiceDetailsDTO>> GetAllServicesForAdminRepos()
+        public async Task<List<ServiceDetailsDTO>> GetAllServicesForAdminRepos()
         {
-            throw new NotImplementedException();
+            var query = from service in _context.Services
+                        select new ServiceDetailsDTO
+                        {
+                            Id = service.Id,
+                            Name = service.Name,
+                            Description = service.Description,
+                            ImagePath = service.ImagePath,
+                            Price = service.Price,
+                            Quantity = service.Quantity,
+                            IsHaveDiscount = service.IsHaveDiscount,
+                            DisacountAmount = service.DisacountAmount,
+                            DiscountType = service.DiscountType.ToString(),
+                            CategoryID = service.CategoryID,
+                            CreationDate = service.CreationDate,
+                            ModifiedDate = service.ModifiedDate,
+                            CreatorUserId = service.CreatorUserId,
+                            ModifiedUserId = service.ModifiedUserId,
+                            IsDeleted = service.IsDeleted
+                        };
+            return await query.ToListAsync();
         }
 
         //Get Services Details By Id
@@ -151,5 +197,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                         };
             return await query.SingleOrDefaultAsync();
         }
+
+
     }
 }

@@ -51,7 +51,7 @@ namespace BlogPhotographerSystem_Infra.Services
             return await _galleryRepos.GetPublicGalleryDetailsByIdRepos(Id);
         }
 
-        public async Task<List<PrivateGalleryDetailsDTO>> GetAllPrivateGalleriesByUserId(int UserId)
+        public async Task<List<PrivateGalleryDetailsForClientDTO>> GetAllPrivateGalleriesByUserId(int UserId)
         {
             return await _galleryRepos.GetAllPrivateGalleriesByUserId(UserId);
         }
@@ -71,10 +71,10 @@ namespace BlogPhotographerSystem_Infra.Services
 
         public async Task UpdateFilesForClientByPrivateGallery(UpdatePrivateGalleryDTO dto)
         {
-            await _galleryRepos.UpdatePrivateGalleryRepos(dto);
+            await _galleryRepos.UpdateFilesForClientByPrivateGallery(dto);
         }
 
-        public async Task UpdatePrivateGallery(UpdatePrivateGalleryDTO dto)
+        public async Task UpdatePrivateGallery(UpdateGalleryDTO dto)
         {
             await _galleryRepos.UpdatePrivateGalleryRepos(dto);
         }

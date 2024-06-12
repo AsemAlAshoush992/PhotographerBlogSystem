@@ -14,7 +14,7 @@ namespace BlogPhotographerSystem_Core.IServices
         Task<OrderDetailsDTO> GetOrderDetailsById(int Id);
         Task<List<OrderDetailsDTO>> GetAllOrders();
         //Filter
-        Task<OrderDetailsDTO> FilterOrderByTitleOrUserIdOrServiceIdOrStatus(string? title, int? userId, int? serviceId, string? status );
+        Task<List<OrderDetailsDTO>> FilterOrderByTitleOrUserIdOrServiceIdOrStatus(string? title, int? userId, int? serviceId, string? status );
 
         //Create
         //Task CreateNewOrder(CreateOrderAdminDTO dto);

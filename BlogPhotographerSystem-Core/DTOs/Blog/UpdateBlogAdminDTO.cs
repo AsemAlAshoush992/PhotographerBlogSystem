@@ -15,8 +15,5 @@ namespace BlogPhotographerSystem_Core.DTOs.Blog
         public DateTime? BlogDate { get; set; }
         public bool? IsApproved { get; set; }
         public int? AuthorID { get; set; }
-        public DateTime ModifiedDate { get; set; }
-        public int ModifiedUserId { get; set; }
-        public bool? IsDeleted { get; set; }
     }
 }

@@ -18,8 +18,5 @@ namespace BlogPhotographerSystem_Core.DTOs.Service
         public float? DisacountAmount { get; set; }
         public string? DiscountType { get; set; }
         public int? CategoryID { get; set; }
-        public DateTime ModifiedDate { get; set; }
-        public int ModifiedUserId { get; set; }
-        public bool? IsDeleted { get; set; }
     }
 }

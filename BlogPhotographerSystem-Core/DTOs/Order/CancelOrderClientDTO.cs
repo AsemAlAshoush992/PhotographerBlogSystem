@@ -9,7 +9,6 @@ namespace BlogPhotographerSystem_Core.DTOs.Order
     public class CancelOrderClientDTO
     {
         public int OrderId { get; set; }
-        public int UserId { get; set; }
-        public string Reason { get; set; }
+        public string? Reason { get; set; }
     }
 }

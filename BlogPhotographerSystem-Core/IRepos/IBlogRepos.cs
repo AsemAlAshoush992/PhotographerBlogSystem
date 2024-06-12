@@ -12,7 +12,7 @@ namespace BlogPhotographerSystem_Core.IRepos
     {
         //Guest Management
         Task<List<BlogsCardsDTO>> GetAllBlogsInfoRepos();
-        Task<BlogDetailsForUserDTO> GetBlogDetailsById(int blogid);
+        Task<BlogDetailsForUserDTO> GetBlogDetailsByIdRepos(int blogid);
         //Admin Management
         Task<List<BlogsDetailsDTO>> GetAllBlogsDetailsRepos();
         Task<BlogsDetailsDTO> GetBlogDetailsForAdminByIdRepos(int Id);

@@ -61,7 +61,7 @@ namespace BlogPhotographerSystem_Infra.Services
         //Admin Management 
         public async Task<BlogDetailsForUserDTO> GetBlogDetailsById(int blogid)
         {
-            throw new NotImplementedException();
+            return await _blogRepos.GetBlogDetailsByIdRepos(blogid);
         }
 
         public async Task<BlogsDetailsDTO> GetBlogDetailsForAdminById(int Id)

@@ -18,14 +18,16 @@ namespace BlogPhotographerSystem_Core.IRepos
         //Admin Management
         Task<PrivateGalleryDetailsDTO> GetPublicGalleryDetailsByIdRepos(int Id);
         Task<List<PrivateGalleryDetailsDTO>> GetPublicGalleriesRepos();
+        //Update
+        Task UpdateFilesForClientByPrivateGallery(UpdatePrivateGalleryDTO dto);
         //Filter
         Task<PrivateGalleryDetailsDTO> FilterPrivateGalleryByFileTypeOrOrderIDRepos(string? FileType, int? orderID);
         //Client Management
-        Task<List<PrivateGalleryDetailsDTO>> GetAllPrivateGalleriesByUserId(int orderId);
+        Task<List<PrivateGalleryDetailsForClientDTO>> GetAllPrivateGalleriesByUserId(int orderId);
         //Send
         Task SendFilesForUserByPrivateGalleryRepos( Gallery gallery);
         //Update
-        Task UpdatePrivateGalleryRepos(UpdatePrivateGalleryDTO dto);
+        Task UpdatePrivateGalleryRepos(UpdateGalleryDTO dto);
         //Delete
         Task DeletePrivateGalleryRepos(int ID);
     }

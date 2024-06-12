@@ -318,7 +318,7 @@ namespace BlogPhotographerSystem.Controllers
         /// 
         ///     Get api/Admin
         ///     {        
-        ///       "ID": 4        
+        ///       "ID": 3        
         ///     }
         /// </remarks>
         [HttpGet]
@@ -367,6 +367,65 @@ namespace BlogPhotographerSystem.Controllers
             }
         }
         /// <summary>
+        /// Filters services based on their Name or Price or Quantity.
+        /// </summary>
+        /// <response code="200">Returns the list of services that match the provided Name or Price or Quantity.</response>
+        /// <response code="204">No services match the provided criteria or an error occurred.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Get api/Admin
+        ///     {        
+        ///       "Name": "Fashion Shoot",
+        ///       "Price": 300,
+        ///       "Quantity": 10
+        ///     }
+        /// </remarks>
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> FilterServicesByNameOrPriceOrQuantity(string? name, float? price, int? quantity)
+        {
+            try
+            {
+                return StatusCode(200, await _service.FilterServicesByNameOrPriceOrQuantity(name, price, quantity));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(204, $"Error occurred {ex.Message}");
+            }
+        }
+        /// <summary>
+        /// Filters orders based on their title, userId, serviceId or status.
+        /// </summary>
+        /// <response code="200">Returns the list of orders that match the provided title, userId, serviceId or status.</response>
+        /// <response code="204">No orders match the provided criteria or an error occurred.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Get api/Admin
+        ///     {        
+        ///       "title": "Wedding Order",
+        ///       "userId": 8,
+        ///       "serviceId": 4,
+        ///       "status": "Pending"
+        ///     }
+        /// </remarks>
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> FilterOrdersByTitleOrUserIdOrServiceIdOrStatus(string? title, int? userId, int? serviceId, string? status)
+        {
+            try
+            {
+                return StatusCode(200, await _orderService.FilterOrderByTitleOrUserIdOrServiceIdOrStatus(title, userId, serviceId, status));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(204, $"Error occurred {ex.Message}");
+            }
+        }
+        //FilterOrdersByTitleOrUserIdOrServiceIdOrStatus
+
+        /// <summary>
         /// Retrieves all public galleries of the admin.
         /// </summary>
         /// <response code="200">Returns list of all public galleries created by admin.</response>
@@ -384,6 +443,90 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(204, $"Error occurred {ex.Message}");
             }
         }
+
+
+        /// <summary>
+        /// Retrieves all users of the admin.
+        /// </summary>
+        /// <response code="200">Returns list of all users created.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the users.</response>
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> GetAllUsersForAdmin()
+        {
+            try
+            {
+                return StatusCode(200, await _userService.GetAllUsersDetails());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(204, $"Error occurred {ex.Message}");
+            }
+        }
+
+
+
+        /// <summary>
+        /// Retrieves all services of the admin.
+        /// </summary>
+        /// <response code="200">Returns list of all services created by admin.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the services.</response>
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> GetAllServicesDetailsForAdmin()
+        {
+            try
+            {
+                return StatusCode(200, await _service.GetAllServicesForAdmin());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(204, $"Error occurred {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Retrieves all orders of the admin.
+        /// </summary>
+        /// <response code="200">Returns list of all orders created.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the orders.</response>
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> GetAllOrdersDetailsForAdmin()
+        {
+            try
+            {
+                return StatusCode(200, await _orderService.GetAllOrders());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(204, $"Error occurred {ex.Message}");
+            }
+        }
+
+
+        /// <summary>
+        /// Retrieves all problems of the admin.
+        /// </summary>
+        /// <response code="200">Returns list of all problems created by admin.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the problems.</response>
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> GetAllProblemsDetailsForAdmin()
+        {
+            try
+            {
+                return StatusCode(200, await _problemService.GetAllProblems());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(204, $"Error occurred {ex.Message}");
+            }
+        }
+
+
+
+
         /// <summary>
         /// Creates a new service of the admin.
         /// </summary>
@@ -549,10 +692,7 @@ namespace BlogPhotographerSystem.Controllers
         ///       "article": null,
         ///       "blogDate": "2024-06-10T17:47:40.882Z",
         ///       "isApproved": true,
-        ///       "authorID": null,
-        ///       "modifiedDate": "2024-06-10T17:47:40.882Z",
-        ///       "modifiedUserId": null,
-        ///       "isDeleted": null      
+        ///       "authorID": null     
         ///     }
         /// </remarks>
         [HttpPut]
@@ -589,12 +729,9 @@ namespace BlogPhotographerSystem.Controllers
         ///       "price": 15,
         ///       "quantity": null,
         ///       "isHaveDiscount": true,
-        ///       "disacountAmount": null,
-        ///       "discountType": null,
-        ///       "categoryID": null,
-        ///       "modifiedDate": "2024-06-10T17:55:16.997Z",
-        ///       "modifiedUserId": 0,
-        ///       "isDeleted": null     
+        ///       "disacountAmount": 60,
+        ///       "discountType": "Percent",
+        ///       "categoryID": null   
         ///     }
         /// </remarks>
         [HttpPut]
@@ -626,16 +763,13 @@ namespace BlogPhotographerSystem.Controllers
         ///     Put api/Admin
         ///     {        
         ///       "id": 106,
-        ///       "clientName": "Wael",
+        ///       "clientName": "Wael Morad",
         ///       "email": null,
         ///       "phone": null,
         ///       "description": null,
         ///       "purpose": null,
         ///       "budget": 40,
-        ///       "userID": null,
-        ///       "modifiedDate": "2024-06-10T17:58:09.010Z",
-        ///       "modifiedUserId": 0,
-        ///       "isDeleted": null   
+        ///       "userID": null
         ///     }
         /// </remarks>
         [HttpPut]
@@ -672,9 +806,8 @@ namespace BlogPhotographerSystem.Controllers
         ///       "email": "Omar.defallah@gmail.com",
         ///       "imagePath": "photos/Omar",
         ///       "phone": null,
-        ///       "birthDate": "2024-06-10T18:03:30.366Z",
-        ///       "modifiedUserId": 0,
-        ///       "isDeleted": null  
+        ///       "userType" : "Admin",
+        ///       "birthDate": "2024-06-12T17:38:34.972Z" 
         ///     }
         /// </remarks>
         [HttpPut]
@@ -708,10 +841,7 @@ namespace BlogPhotographerSystem.Controllers
         ///       "id": 11,
         ///       "title": "Category 11",
         ///       "description": null,
-        ///       "imagePath": null,
-        ///       "modifiedDate": "2024-06-10T18:14:17.496Z",
-        ///       "modifiedUserId": null,
-        ///       "isDeleted": null
+        ///       "imagePath": null
         ///     }
         /// </remarks>
         [HttpPut]
@@ -746,13 +876,10 @@ namespace BlogPhotographerSystem.Controllers
         ///       "orderDate": "2024-06-10T18:17:07.604Z",
         ///       "title": "Macro order",
         ///       "note": null,
-        ///       "status": null,
-        ///       "paymentMethod": null,
+        ///       "status": "Processing",
+        ///       "paymentMethod": "MasterCard",
         ///       "userID": null,
-        ///       "serviceID": null,
-        ///       "modifiedDate": "2024-06-10T18:17:07.604Z",
-        ///       "modifiedUserId": null,
-        ///       "isDeleted": null
+        ///       "serviceID": null
         ///     }
         /// </remarks>
         [HttpPut]
@@ -788,10 +915,7 @@ namespace BlogPhotographerSystem.Controllers
         ///       "purpose": null,
         ///       "description": null,
         ///       "userID": 10,
-        ///       "orderID": null,
-        ///       "modifiedDate": "2024-06-10T18:25:48.562Z",
-        ///       "modifiedUserId": null,
-        ///       "isDeleted": null
+        ///       "orderID": null
         ///     }
         /// </remarks>
         [HttpPut]
@@ -823,19 +947,16 @@ namespace BlogPhotographerSystem.Controllers
         ///     Put api/Admin
         ///     {       
         ///       "id": 22,
-        ///       "path": "Image/Sami/file",
+        ///       "path": "Image/Sami",
         ///       "fileName": "Sami",
-        ///       "fileType": null,
-        ///       "isPrivate": null,
-        ///       "orderID": null,
-        ///       "modifiedDate": "2024-06-10T18:45:33.681Z",
-        ///       "modifiedUserId": null,
-        ///       "isDeleted": null
+        ///       "fileType": "Image",
+        ///       "isPrivate": true,
+        ///       "orderID": null
         ///     }
         /// </remarks>
         [HttpPut]
         [Route("[action]")]
-        public async Task<IActionResult> UpdateGalleryData([FromBody] UpdatePrivateGalleryDTO dto)
+        public async Task<IActionResult> UpdateGalleryData([FromBody] UpdateGalleryDTO dto)
         {
             if (dto == null)
                 return BadRequest("Please filling All Data");
@@ -1106,10 +1227,10 @@ namespace BlogPhotographerSystem.Controllers
         /// 
         ///     Put api/Admin
         ///     {        
-        ///       "path": "photos/shadi",
-        ///       "fileName": null,
-        ///       "fileType": null,
-        ///       "orderID": null        
+        ///       "path": "videos/shadi",
+        ///       "fileName": "shadi",
+        ///       "fileType": "Video",
+        ///       "orderID": 5        
         ///     }
         /// </remarks>
         [HttpPost]
@@ -1121,7 +1242,7 @@ namespace BlogPhotographerSystem.Controllers
             try
             {
                 await _galleryService.SendFilesForUserByPrivateGallery(dto);
-                return StatusCode(201, "New Private Gallery Files Has Been Sent");
+                return StatusCode(201, "New Private Gallery File For A Specific Order Has Been Sent");
             }
             catch (Exception ex)
             {
@@ -1142,8 +1263,8 @@ namespace BlogPhotographerSystem.Controllers
         ///     }
         /// </remarks>
         [HttpPut]
-        [Route("[action]/{ID}")]
-        public async Task<IActionResult> ConfirmUserBlogAndPublish([FromRoute] int blogID)
+        [Route("[action]/{blogID}")]
+        public async Task<IActionResult> ConfirmUserBlogAndPublish(int blogID)
         {
             if (blogID == null)
                 return BadRequest("Please filling BlogId");

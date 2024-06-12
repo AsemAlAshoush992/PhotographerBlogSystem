@@ -75,9 +75,26 @@ namespace BlogPhotographerSystem_Infra.Repos
             return await query.ToListAsync();
         }
 
-        public Task<List<UserDetailsDTO>> GetAllUsersRepos()
+        public async Task<List<UserDetailsDTO>> GetAllUsersRepos()
         {
-            throw new NotImplementedException();
+            var query = from user in _dbContext.Users
+                        select new UserDetailsDTO
+                        {
+                            Id = user.Id,
+                            FirstName = user.FirstName,
+                            LastName = user.LastName,
+                            Email = user.Email,
+                            BirthDate = user.BirthDate,
+                            ImagePath = user.ImagePath,
+                            Phone = user.Phone,
+                            UserType = user.UserType.ToString(),
+                            CreationDate = user.CreationDate,
+                            ModifiedDate = user.ModifiedDate,
+                            CreatorUserId = user.CreatorUserId,
+                            ModifiedUserId = user.ModifiedUserId,
+                            IsDeleted = user.IsDeleted
+                        };
+            return await query.ToListAsync() ;
         }
 
         public async Task<UserInfoDTO> GetPersonalInformationsByIdRepos(int Id)
@@ -88,8 +105,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                         where user.Id == Id
                         select new UserInfoDTO
                         {
-                            FirstName = user.FirstName,
-                            LastName = user.LastName,
+                            FullName = user.FirstName + " " + user.LastName,
                             Email = user.Email,
                             Password = login.Password,
                             BirthDate = user.BirthDate,
@@ -201,9 +217,13 @@ namespace BlogPhotographerSystem_Infra.Repos
             {
                 user.Phone = dto.Phone;
             }
-            if (dto.BirthDate != null)
+            if (!string.IsNullOrEmpty(dto.UserType))
             {
-                user.BirthDate = (DateTime)dto.BirthDate;
+                user.UserType = (UserType)Enum.Parse(typeof(UserType), dto.UserType);
+            }
+            if (dto.BirthDate.HasValue)
+            {
+                user.BirthDate = dto.BirthDate.Value;
             }
             user.ModifiedDate = DateTime.Now;
             user.ModifiedUserId = 1;

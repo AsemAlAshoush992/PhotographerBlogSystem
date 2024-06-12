@@ -35,9 +35,9 @@ namespace BlogPhotographerSystem_Infra.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<ProblemDetailsDTO>> GetAllProblems()
+        public async Task<List<ProblemDetailsDTO>> GetAllProblems()
         {
-            throw new NotImplementedException();
+            return await _problemRepos.GetAllProblemsRepos();
         }
 
         public async Task<ProblemDetailsDTO> GetProblemDetailsById(int Id)

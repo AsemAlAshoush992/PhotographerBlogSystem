@@ -12,6 +12,6 @@ namespace BlogPhotographerSystem_Core.DTOs.Blog
         public string Article { get; set; }
         public DateTime BlogDate { get; set; }
         public string AuthorName { get; set; }
-        public string FilePath { get; set; }
+        public List<string>? FilePaths { get; set; }
     }
 }

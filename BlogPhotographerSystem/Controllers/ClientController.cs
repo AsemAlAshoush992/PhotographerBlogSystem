@@ -45,8 +45,8 @@ namespace BlogPhotographerSystem.Controllers
         ///     }
         /// </remarks>
         [HttpGet]
-        [Route("[action]")]
-        public async Task<IActionResult> GetPersonalInformationByUserID([FromBody] int userID)
+        [Route("[action]/{userID}")]
+        public async Task<IActionResult> GetPersonalInformationByUserID(int userID)
         {
 
             if (userID == null)
@@ -73,11 +73,11 @@ namespace BlogPhotographerSystem.Controllers
         /// 
         ///     Get api/Client
         ///     {        
-        ///       "userID": 5        
+        ///       "userID": 1        
         ///     }
         /// </remarks>
         [HttpGet]
-        [Route("[action]")]
+        [Route("[action]/{userID}")]
         public async Task<IActionResult> GetAllBlogsByUserID(int userID)
         {
 
@@ -105,7 +105,7 @@ namespace BlogPhotographerSystem.Controllers
         /// 
         ///     Get api/Client
         ///     {        
-        ///       "userID": 6        
+        ///       "userID": 4        
         ///     }
         /// </remarks>
         [HttpGet]
@@ -178,13 +178,13 @@ namespace BlogPhotographerSystem.Controllers
         /// 
         ///     Put api/Client
         ///     { 
-        ///       "id": 753,
-        ///       "firstName": "Ahmmed",
-        ///       "lastName": "Mosa",
-        ///       "password": "Ahmmed123#",
+        ///       "id": 4,
+        ///       "firstName": "Shadi",
+        ///       "lastName": "Khalil",
+        ///       "password": "Shadik123@",
         ///       "birthDate": null,
         ///       "imagePath": null,
-        ///       "phone": null      
+        ///       "phone": null     
         ///     }
         /// </remarks>
         [HttpPut]
@@ -216,7 +216,7 @@ namespace BlogPhotographerSystem.Controllers
         ///     Put api/Client
         ///     { 
         ///       "id": 25,
-        ///       "attachementId": null,
+        ///       "attachementId": 37,
         ///       "title": "Ibrahim blog",
         ///       "article": null,
         ///       "path": null,
@@ -321,7 +321,7 @@ namespace BlogPhotographerSystem.Controllers
         ///     }
         /// </remarks>
         [HttpPut]
-        [Route("[action]")]
+        [Route("[action]/{ID}")]
         public async Task<IActionResult> DeletePrivateGalleryFile(int ID)
         {
             if (ID == null)
@@ -439,7 +439,7 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(400, $"Error occurred {ex.Message}");
             }
         }
-
+        //one problem has one order but one user has many problem
         /// <summary>
         /// Sends an technical support request for the admin.
         /// </summary>
@@ -454,8 +454,8 @@ namespace BlogPhotographerSystem.Controllers
         ///       "title": "Photo Quality",
         ///       "purpose": "Service",
         ///       "description": "Poor photo quality.",
-        ///       "userID": 9,
-        ///       "orderId": 10
+        ///       "userID": 2,
+        ///       "orderId": 31
         ///     }
         /// </remarks>
 
@@ -475,7 +475,7 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(400, $"Error occurred {ex.Message}");
             }
         }
-
+        
         /// <summary>
         /// Cancels an order for a specific service for a client.
         /// </summary>
@@ -488,7 +488,6 @@ namespace BlogPhotographerSystem.Controllers
         ///     Post api/Client
         ///     { 
         ///       "orderId": 20,
-        ///       "userId": 4,
         ///       "reason": "Poor quality"
         ///     }
         /// </remarks>

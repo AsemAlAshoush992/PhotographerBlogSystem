@@ -15,7 +15,8 @@ namespace BlogPhotographerSystem_Core.IRepos
         //Admin
         Task<List<ServiceDetailsDTO>> GetAllServicesForAdminRepos();
         Task<ServiceDetailsDTO> GetServiceDetailsByIdRepos(int Id);
-
+        //Filter
+        Task<List<ServiceDetailsDTO>> FilterServicesByNameOrPriceOrQuantityRepos(string? Name, float? Price, int? Quantity);
         //Create
         Task CreateServiceRepos(Service service);
         //Update

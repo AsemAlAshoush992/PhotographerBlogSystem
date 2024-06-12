@@ -44,9 +44,24 @@ namespace BlogPhotographerSystem_Infra.Repos
             throw new NotImplementedException();
         }
 
-        public Task<List<ProblemDetailsDTO>> GetAllProblemsRepos()
+        public async Task<List<ProblemDetailsDTO>> GetAllProblemsRepos()
         {
-            throw new NotImplementedException();
+            var query = from problem in _context.Problems
+                        select new ProblemDetailsDTO
+                        {
+                            Id = problem.Id,
+                            Title = problem.Title,
+                            Purpose = problem.Purpose,
+                            Description = problem.Description,
+                            UserID = problem.UserID,
+                            OrderID = problem.OrderID,
+                            CreationDate = problem.CreationDate,
+                            ModifiedDate = problem.ModifiedDate,
+                            CreatorUserId = problem.CreatorUserId,
+                            ModifiedUserId = problem.ModifiedUserId,
+                            IsDeleted = problem.IsDeleted
+                        };
+            return await query.ToListAsync();
         }
 
         public async Task<ProblemDetailsDTO> GetProblemDetailsByIdRepos(int Id)
@@ -76,7 +91,7 @@ namespace BlogPhotographerSystem_Infra.Repos
 
             if (problem == null)
             {
-                throw new Exception("Problem not found");
+                throw new Exception("The problem not found");
             }
 
             if (!string.IsNullOrEmpty(dto.Title))

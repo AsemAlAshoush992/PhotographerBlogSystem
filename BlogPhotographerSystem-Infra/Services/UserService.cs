@@ -1,6 +1,7 @@
 ﻿using BlogPhotographerSystem_Core.DTOs.User;
 using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.IServices;
+using BlogPhotographerSystem_Core.Migrations;
 using BlogPhotographerSystem_Core.Models.Entity;
 using BlogPhotographerSystem_Infra.Repos;
 using System;
@@ -19,6 +20,12 @@ namespace BlogPhotographerSystem_Infra.Services
         public UserService(IUserRepos userRepos)
         {
             _userRepos = userRepos;
+        }
+
+        //GetAll
+        public async Task<List<UserDetailsDTO>> GetAllUsersDetails()
+        {
+            return await _userRepos.GetAllUsersRepos();
         }
         public async Task CreateNewAdmin(CreateUserAdminDTO dto)
         {

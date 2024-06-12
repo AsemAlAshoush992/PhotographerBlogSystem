@@ -1,6 +1,7 @@
 ﻿using BlogPhotographerSystem_Core.Context;
 using BlogPhotographerSystem_Core.DTOs.Blog;
 using BlogPhotographerSystem_Core.DTOs.Order;
+using BlogPhotographerSystem_Core.DTOs.User;
 using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.Models.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -25,11 +26,14 @@ namespace BlogPhotographerSystem_Infra.Repos
         public async Task CancelOrderForServiceRepos(CancelOrderClientDTO dto)
         {
             var order = await _context.Orders.SingleOrDefaultAsync
-                (b => b.UserID == dto.UserId && b.Id == dto.OrderId);
+                (b => b.Id == dto.OrderId);
             order.ModifiedDate = DateTime.Now;
             order.ModifiedUserId = order.UserID;
             order.Status = Status.Cancelled;
-            order.Note = dto.Reason;
+            if(!string.IsNullOrEmpty(dto.Reason)) 
+            { 
+                order.Note = dto.Reason;
+            }
 
             _context.Update(order);
             await _context.SaveChangesAsync();
@@ -57,14 +61,58 @@ namespace BlogPhotographerSystem_Infra.Repos
             await _context.SaveChangesAsync();
         }
 
-        public Task<OrderDetailsDTO> FilterOrderByTitleOrUserIdOrServiceIdOrStatusRepos(string? title, int? userId, int? serviceId, string? status)
+        public async Task<List<OrderDetailsDTO>> FilterOrderByTitleOrUserIdOrServiceIdOrStatusRepos(string? title, int? userId, int? serviceId, string? status)
         {
-            throw new NotImplementedException();
+            Status foo = Status.Pending;
+            if (!string.IsNullOrEmpty(status) && Enum.IsDefined(typeof(Status), status))
+            {
+                foo = (Status)Enum.Parse(typeof(Status), status);
+            }
+
+            bool flag = title == null && userId == null && serviceId == null && status == null ? true : false;
+            var query = from filter in _context.Orders
+                        where filter.Title == title || filter.UserID == userId || filter.ServiceID == serviceId || filter.Status == foo || flag
+                        select new OrderDetailsDTO
+                        {
+                            Id = filter.Id,
+                            OrderDate = filter.OrderDate,
+                            Title = filter.Title,
+                            Note = filter.Note,
+                            Status = filter.Status.ToString(),
+                            PaymentMethod = filter.PaymentMethod.ToString(),
+                            UserID = filter.UserID,
+                            ServiceID = filter.ServiceID,
+                            CreationDate = filter.CreationDate,
+                            ModifiedDate = filter.ModifiedDate,
+                            CreatorUserId = filter.CreatorUserId,
+                            ModifiedUserId = filter.ModifiedUserId,
+                            IsDeleted = filter.IsDeleted
+
+                        };
+            return await query.ToListAsync();
+
         }
 
-        public Task<List<OrderDetailsDTO>> GetAllOrdersRepos()
+        public async Task<List<OrderDetailsDTO>> GetAllOrdersRepos()
         {
-            throw new NotImplementedException();
+            var query = from order in _context.Orders
+                        select new OrderDetailsDTO
+                        {
+                            Id= order.Id,
+                            OrderDate = order.OrderDate,
+                            Title = order.Title,
+                            Note = order.Note,
+                            Status = order.Status.ToString(),
+                            PaymentMethod = order.PaymentMethod.ToString(),
+                            UserID = order.UserID,
+                            ServiceID = order.ServiceID,
+                            CreationDate = order.CreationDate,
+                            ModifiedDate = order.ModifiedDate,
+                            CreatorUserId = order.CreatorUserId,
+                            ModifiedUserId = order.ModifiedUserId,
+                            IsDeleted = order.IsDeleted,
+                        };
+            return await query.ToListAsync();
         }
 
         public async Task<int> GetIdForSpecificService(string serviceName)
@@ -79,6 +127,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                         where order.Id == Id
                         select new OrderDetailsDTO
                         {
+                            Id = order.Id,
                             OrderDate = order.OrderDate,
                             Title = order.Title,
                             Note = order.Note,
@@ -101,7 +150,7 @@ namespace BlogPhotographerSystem_Infra.Repos
 
             if (oder == null)
             {
-                throw new Exception("Order not found");
+                throw new Exception("The order not found");
             }
 
             if (!string.IsNullOrEmpty(dto.Title))

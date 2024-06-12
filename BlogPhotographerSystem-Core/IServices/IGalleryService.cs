@@ -22,11 +22,11 @@ namespace BlogPhotographerSystem_Core.IServices
         //Send
         Task SendFilesForUserByPrivateGallery(SendPrivateGalleryDTO dto);
         //Update
-        Task UpdatePrivateGallery(UpdatePrivateGalleryDTO dto);
+        Task UpdatePrivateGallery(UpdateGalleryDTO dto);
         //Delete
         Task DeletePrivateGallery(int ID);
         //Client Management
-        Task<List<PrivateGalleryDetailsDTO>> GetAllPrivateGalleriesByUserId(int orderId);
+        Task<List<PrivateGalleryDetailsForClientDTO>> GetAllPrivateGalleriesByUserId(int orderId);
         //Upload
         Task UploadFilesForUserByPrivateGallery(CreatePrivateGalleryDTO dto);
         //Update

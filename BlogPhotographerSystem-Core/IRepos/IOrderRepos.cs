@@ -15,7 +15,7 @@ namespace BlogPhotographerSystem_Core.IRepos
         Task<OrderDetailsDTO> GetOrderDetailsByIdRepos(int Id);
         Task<List<OrderDetailsDTO>> GetAllOrdersRepos();
         //Filter
-        Task<OrderDetailsDTO> FilterOrderByTitleOrUserIdOrServiceIdOrStatusRepos(string? title, int? userId, int? serviceId, string? status);
+        Task<List<OrderDetailsDTO>> FilterOrderByTitleOrUserIdOrServiceIdOrStatusRepos(string? title, int? userId, int? serviceId, string? status);
 
         //Create
         Task CreateNewOrderRepos(Order order);

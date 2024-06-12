@@ -27,7 +27,7 @@ namespace BlogPhotographerSystem.Controllers
         }
 
         /// <summary>
-        /// Retrieves all blog posts of the admin.
+        /// Retrieves all blog posts of Guest.
         /// </summary>
         /// <response code="200">Returns the list of all blog posts created.</response>
         /// <response code="404">No content found or an error occurred while retrieving the blogs.</response>
@@ -38,6 +38,34 @@ namespace BlogPhotographerSystem.Controllers
             try
             {
                 return StatusCode(201, await _blogService.GetAllBlogsInfo());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(503, $"Error Ocurred {ex.Message}");
+            }
+        }
+
+
+        /// <summary>
+        /// Retrieves blog post Deatails of Guest.
+        /// </summary>
+        /// <response code="200">Returns the post Deatails created.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the blog Details.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Post api/Guest
+        ///     {        
+        ///       "blogId": 10      
+        ///     }
+        /// </remarks>
+        [HttpGet]
+        [Route("[action]/{blogId}")]
+        public async Task<IActionResult> GetBlogDetailsForUserById( int blogId)
+        {
+            try
+            {
+                return StatusCode(201, await _blogService.GetBlogDetailsById(blogId));
             }
             catch (Exception ex)
             {
@@ -120,6 +148,7 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(503, $"Error Ocurred {ex.Message}");
             }
         }
+        
 
         /// <summary>
         /// Creates a new client.
@@ -168,9 +197,10 @@ namespace BlogPhotographerSystem.Controllers
         /// 
         ///     Put api/Guest
         ///     {        
-        ///       "userName": "alice.johnson@hotmail.com",
-        ///       "password": "Charlie3$"    
+        ///       "userName": "david.wilson",
+        ///       "password": "Davidwil4%"   
         ///     }
+        /// </remarks>
         [HttpPut]
         [Route("[action]")]
         public async Task<IActionResult> LoginUserAccount([FromBody] CreateLoginDTO dto)
@@ -199,10 +229,11 @@ namespace BlogPhotographerSystem.Controllers
         /// 
         ///     Put api/Guest
         ///     {        
-        ///       "userID": "alice.johnson@hotmail.com"   
+        ///       "userID": 10   
         ///     }
+        /// </remarks>
         [HttpPut]
-        [Route("[action]")]
+        [Route("[action]/{userID}")]
         public async Task<IActionResult> LogoutUserAcount([FromBody] int userID)
         {
             if (userID == null)
@@ -231,9 +262,10 @@ namespace BlogPhotographerSystem.Controllers
         /// 
         ///     Put api/Guest
         ///     {        
-        ///       "userName": "david.wilson@gmail.com",
+        ///       "userName": "david.wilson",
         ///       "password": "davidw123!"  
         ///     }
+        /// </remarks>
         [HttpPut]
         [Route("[action]")]
         public async Task<IActionResult> ResetPasswordUserAcount([FromBody]CreateLoginDTO dto)

@@ -17,6 +17,7 @@ namespace BlogPhotographerSystem_Core.IServices
 
         //Admin Management
         Task<UserDetailsDTO> GetUserDetailsById(int Id);
+        Task<List<UserDetailsDTO>> GetAllUsersDetails();
         //Filter
         Task<List<UserDetailsDTO>> FilterUsersByPhoneOrEmail(string? email, string? phone);
 
