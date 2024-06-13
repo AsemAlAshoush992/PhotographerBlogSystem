@@ -9,8 +9,6 @@ namespace BlogPhotographerSystem_Core.DTOs.Order
 {
     public class CreateOrderClientDTO
     {
-        public string Title { get; set; }
-        public string? Note { get; set; }
         public string PaymentMethod { get; set; }
         public int UserID { get; set; }
         public string ServiceName { get; set; }

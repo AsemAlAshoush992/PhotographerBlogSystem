@@ -9,8 +9,8 @@ namespace BlogPhotographerSystem_Core.DTOs.Gallery
     public class SendPrivateGalleryDTO
     {
         public string Path { get; set; }
-        public string FileName { get; set; }
-        public string FileType { get; set; }
+        //public string? FileName { get; set; }
+        //public string FileType { get; set; }
         public int OrderID { get; set; }
     }
 }

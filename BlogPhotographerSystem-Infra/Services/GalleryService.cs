@@ -58,11 +58,26 @@ namespace BlogPhotographerSystem_Infra.Services
 
         public async Task SendFilesForUserByPrivateGallery(SendPrivateGalleryDTO dto)
         {
+            string fileType;
+            string extension = Path.GetExtension(dto.Path).ToUpperInvariant();
+
+            if (extension == ".JPEG" || extension == ".JPG" || extension == ".PNG" || extension == ".GIF" || extension == ".TIFF" || extension == ".WEBP")
+            {
+                fileType = "Image";
+            }
+            else if (extension == ".MP4" || extension == ".AVI" || extension == ".MOV" || extension == ".WMV" || extension == ".MKV" || extension == ".FLV" || extension == ".WEBM")
+            {
+                fileType = "Video";
+            }
+            else
+            {
+                fileType = "Document";
+            }
             Gallery gallery = new Gallery()
             {
                 Path = dto.Path,
-                FileName = dto.FileName,
-                FileType = (FileType)Enum.Parse(typeof(FileType), dto.FileType),
+                FileName = Path.GetFileNameWithoutExtension(dto.Path),
+                FileType = (FileType)Enum.Parse(typeof(FileType),fileType ),
                 IsPrivate = true,
                 OrderID = dto.OrderID
             };

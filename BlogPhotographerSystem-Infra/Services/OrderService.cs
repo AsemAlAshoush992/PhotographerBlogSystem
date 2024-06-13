@@ -54,15 +54,58 @@ namespace BlogPhotographerSystem_Infra.Services
 
         public async Task SendOrderForSpecificService(CreateOrderClientDTO dto)
         {
+            string message;
+            if (dto.ServiceName == "Wedding Package")
+            {
+                message = "Need full wedding coverage.";
+            }
+            else if (dto.ServiceName == "Portrait Session")
+            {
+                message = "Portrait session for portfolio.";
+            }
+            else if (dto.ServiceName == "Travel Photoshoot")
+            {
+                message = "Travel photos for blog.";
+            }
+            else if (dto.ServiceName == "Event Coverage")
+            {
+                message = "Corporate event coverage.";
+            }
+            else if (dto.ServiceName == "Product Photography")
+            {
+                message = "Photos for online store.";
+            }
+
+            else if (dto.ServiceName == "Fashion Shoot")
+            {
+                message = "Fashion shoot for magazine.";
+            }
+            else if (dto.ServiceName == "Sports Photography")
+            {
+                message = "Photos for sports team.";
+            }
+            else if (dto.ServiceName == "Wildlife Session")
+            {
+                message = "Wildlife photography session.";
+            }
+            else if (dto.ServiceName == "Astrophotography")
+            {
+                message = "Astrophotography session.";
+            }
+            else 
+            {
+                message = "Macro photos for project.";
+            }
+
             Order order = new Order()
             {
                 OrderDate = DateTime.Now,
-                Title = dto.Title,
-                Note = dto.Note,
+                Title = dto.ServiceName + " " + "Order",
+                Note = message,
                 Status = Status.Pending,
                 PaymentMethod = (PaymentMethod)Enum.Parse(typeof(PaymentMethod), dto.PaymentMethod),
                 UserID = dto.UserID,
-                ServiceID = await _orderRepos.GetIdForSpecificService(dto.ServiceName),
+                ServiceID = await _orderRepos.GetIdForSpecificService(dto.ServiceName)
             };
             await _orderRepos.CreateOrderForSpecificServiceRepos(order);
 

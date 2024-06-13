@@ -141,12 +141,8 @@ namespace BlogPhotographerSystem.Controllers
         ///        "description": "lorem .....",
         ///        "article": "lorem .....",
         ///        "authorId": 1,
-        ///        "attachments": [
-        ///          {
-        ///            "filePath": "photo/Rania",
-        ///            "fileName": "spring",
-        ///            "fileType": "Image"
-        ///          }
+        ///        "filePath": [
+        ///          "photo/Rania.JPEG"
         ///        ]       
         ///     }
         /// </remarks>
@@ -349,11 +345,9 @@ namespace BlogPhotographerSystem.Controllers
         /// 
         ///     Post api/Client
         ///     { 
-        ///       "title": "Portrait Order",
-        ///       "note": "No",
         ///       "paymentMethod": "Cash",
         ///       "userID": 10,
-        ///       "serviceName": "Portrait Session"
+        ///       "serviceName": "Travel Photoshoot"
         ///     }
         /// </remarks>
         [HttpPost]

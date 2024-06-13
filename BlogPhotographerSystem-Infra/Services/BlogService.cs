@@ -45,13 +45,28 @@ namespace BlogPhotographerSystem_Infra.Services
                 AuthorID = dto.AuthorId
             };
             int blogId = await _blogRepos.CreateBlogRepos(blog);
-            foreach (var attachmentDto in dto.Attachments)
+            foreach (var attachmentDto in dto.FilePath)
             {
+                string fileType;
+                string extension = Path.GetExtension(attachmentDto).ToUpperInvariant();
+
+                if (extension == ".JPEG" || extension == ".JPG" || extension == ".PNG" || extension == ".GIF" || extension == ".TIFF" || extension == ".WEBP")
+                {
+                    fileType = "Image";
+                }
+                else if (extension == ".MP4" || extension == ".AVI" || extension == ".MOV" || extension == ".WMV" || extension == ".MKV" || extension == ".FLV" || extension == ".WEBM")
+                {
+                    fileType = "Video";
+                }
+                else
+                {
+                    fileType = "Document";
+                }
                 BlogAttachement attachement = new BlogAttachement()
                 {
-                    Path = attachmentDto.FilePath,
-                    FileName = attachmentDto.FileName,
-                    FileType = (FileType)Enum.Parse(typeof(FileType), attachmentDto.FileType),
+                    Path = attachmentDto,
+                    FileName = Path.GetFileNameWithoutExtension(attachmentDto),
+                    FileType = (FileType)Enum.Parse(typeof(FileType), fileType),
                     BlogID = blogId
                 };
                 await _blogRepos.CreateBlogAttachmentsRepos(attachement);
@@ -83,13 +98,28 @@ namespace BlogPhotographerSystem_Infra.Services
 
             int blogId = await _blogRepos.CreateBlogRepos(blog);
 
-            foreach (var attachmentDto in dto.Attachments)
+            foreach (var attachmentDto in dto.FilePath)
             {
+                string fileType;
+                string extension = Path.GetExtension(attachmentDto).ToUpperInvariant();
+
+                if (extension == ".JPEG" || extension == ".JPG" || extension == ".PNG" || extension == ".GIF" || extension == ".TIFF" || extension == ".WEBP")
+                {
+                    fileType = "Image";
+                }
+                else if (extension == ".MP4" || extension == ".AVI" || extension == ".MOV" || extension == ".WMV" || extension == ".MKV" || extension == ".FLV" || extension == ".WEBM")
+                {
+                    fileType = "Video";
+                }
+                else
+                {
+                    fileType = "Document";
+                }
                 BlogAttachement attachement = new BlogAttachement()
                 {
-                    Path = attachmentDto.FilePath,
-                    FileName = attachmentDto.FileName,
-                    FileType = (FileType)Enum.Parse(typeof(FileType), attachmentDto.FileType),
+                    Path = attachmentDto,
+                    FileName = Path.GetFileNameWithoutExtension(attachmentDto),
+                    FileType = (FileType)Enum.Parse(typeof(FileType), fileType),
                     BlogID = blogId
                 };
                 await _blogRepos.CreateBlogAttachmentsRepos(attachement);

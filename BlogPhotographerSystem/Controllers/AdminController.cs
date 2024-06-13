@@ -578,14 +578,9 @@ namespace BlogPhotographerSystem.Controllers
         ///        "title": "Saleh blog",
         ///        "description": "lorem .....",
         ///        "article": "lorem .....",
-        ///        "isApproved": true,
         ///        "authorId": 1,
-        ///        "attachments": [
-        ///          {
-        ///            "filePath": "photo/saleh",
-        ///            "fileName": "spring",
-        ///            "fileType": "Image"
-        ///          }
+        ///        "filePath": [
+        ///        "photo/saleh.JPEG"
         ///        ]       
         ///     }
         /// </remarks>
