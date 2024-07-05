@@ -102,7 +102,28 @@ namespace BlogPhotographerSystem_Infra.Repos
                         };
             return await query.SingleOrDefaultAsync();
         }
-
+        public async Task<List<ContactRequestDetailsDTO>> GetAllContactRequestDetailsByUserIdRepos(int userId)
+        {
+            var query = from contact in _context.ContactRequests
+                        where contact.UserID == userId
+                        select new ContactRequestDetailsDTO
+                        {
+                            Id = contact.Id,
+                            ClientName = contact.ClientName,
+                            Email = contact.Email,
+                            Phone = contact.Phone,
+                            Description = contact.Description,
+                            Purpose = contact.Purpose,
+                            Budget = contact.Budget,
+                            UserID = contact.UserID,
+                            CreationDate = contact.CreationDate,
+                            ModifiedDate = contact.ModifiedDate,
+                            CreatorUserId = contact.CreatorUserId,
+                            ModifiedUserId = contact.ModifiedUserId,
+                            IsDeleted = contact.IsDeleted
+                        };
+            return await query.ToListAsync();
+        }
         public async Task UpdateContactRequestRepos(UpdateContactRequestDTO dto)
         {
             var contact = await _context.ContactRequests.SingleOrDefaultAsync(b => b.Id == dto.Id);

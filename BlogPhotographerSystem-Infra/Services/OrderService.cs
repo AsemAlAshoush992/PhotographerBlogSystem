@@ -26,11 +26,6 @@ namespace BlogPhotographerSystem_Infra.Services
             await _orderRepos.CancelOrderForServiceRepos(dto);
         }
 
-        public Task CreateNewOrder(CreateOrderAdminDTO dto)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task DeleteOrder(int ID)
         {
             await _orderRepos.DeleteOrderRepos(ID);

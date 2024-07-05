@@ -108,6 +108,42 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(204, $"Error occurred{ex.Message}");
             }
         }
+
+        /// <summary>
+        /// Retrieves All contact requests by userID of the admin.
+        /// </summary>
+        /// <response code="200">Returns the specific contact request by ID.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the contact request.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Get api/Admin
+        ///     {        
+        ///       "userID": 4        
+        ///     }
+        /// </remarks>
+        [HttpGet]
+        [Route("[action]/{userID}")]
+        public async Task<IActionResult> GetAllContactRequestDetailsByUserID(int userID)
+        {
+
+            if (userID == null)
+            {
+                return BadRequest("Please filling UserID");
+            }
+            try
+            {
+                return StatusCode(200, await _contactRequestService.GetAllContactRequestDetailsByUserId(userID));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(204, $"Error occurred{ex.Message}");
+            }
+        }
+
+
+
+
         /// <summary>
         /// Retrieves blog details by ID of the admin.
         /// </summary>
@@ -333,34 +369,6 @@ namespace BlogPhotographerSystem.Controllers
             try
             {
                 return StatusCode(200, await _galleryService.GetPublicGalleryDetailsById(ID));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(204, $"Error occurred {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// Filters users based on their email or phone number.
-        /// </summary>
-        /// <response code="200">Returns the list of users that match the provided email or phone number.</response>
-        /// <response code="204">No users match the provided criteria or an error occurred.</response>
-        /// <remarks>
-        /// Sample request:
-        /// 
-        ///     Get api/Admin
-        ///     {        
-        ///       "Email": "asem.saleh2017@gmail.com",
-        ///       "Phone": "00962795747446"
-        ///     }
-        /// </remarks>
-        [HttpGet]
-        [Route("[action]")]
-        public async Task<IActionResult> FilterUsersByPhoneOrEmail(string? Email, string? Phone)
-        {
-            try
-            {
-                return StatusCode(200, await _userService.FilterUsersByPhoneOrEmail(Email, Phone));
             }
             catch (Exception ex)
             {
@@ -1081,7 +1089,7 @@ namespace BlogPhotographerSystem.Controllers
             try
             {
                 await _galleryService.DeletePrivateGallery(ID);
-                return StatusCode(200, "The PrivateGallery has been Deleted successfully");
+                return StatusCode(200, "The Private Gallery has been Deleted successfully");
             }
             catch (Exception ex)
             {

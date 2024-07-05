@@ -13,8 +13,7 @@ namespace BlogPhotographerSystem_Core.IRepos
         //Admin Management
         Task<ContactRequestDetailsDTO> GetContactRequestDetailsByIdRepos(int Id);
         Task<List<ContactRequestDetailsDTO>> GetAllContactRequestsRepos();
-        //Filter
-        Task<ContactRequestDetailsDTO> FilterContactRequestByPhoneOrEmailOrUserIdRepos(string? Phone, string? Email, int? UserId);
+        Task<List<ContactRequestDetailsDTO>> GetAllContactRequestDetailsByUserIdRepos(int userId);
 
         //Create
         Task CreateNewContactRequestRepos(ContactRequest contactRequest);

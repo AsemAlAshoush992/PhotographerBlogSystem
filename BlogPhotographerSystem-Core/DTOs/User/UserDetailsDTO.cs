@@ -14,7 +14,7 @@ namespace BlogPhotographerSystem_Core.DTOs.User
         public string LastName { get; set; }
         public string Email { get; set; }
         public DateTime BirthDate { get; set; }
-        public string ImagePath { get; set; }
+        public string? ImagePath { get; set; }
         public string Phone { get; set; }
         public string UserType { get; set; }
         public DateTime CreationDate { get; set; }

@@ -15,9 +15,6 @@ namespace BlogPhotographerSystem_Core.IServices
         Task<List<ProblemDetailsDTO>> GetAllProblems();
         //Filter
         Task<List<ProblemDetailsDTO>> FilterProblemByUserIdOrOrderId(int? orderId, int? userId);
-
-        //Create
-        Task CreateNewProblem(CreateProblemDTO dto);
         //Update
         Task UpdateProblem(UpdateProblemDTO dto);
         //Delete

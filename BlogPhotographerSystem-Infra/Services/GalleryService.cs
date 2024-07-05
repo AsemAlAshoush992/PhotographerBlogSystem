@@ -21,20 +21,11 @@ namespace BlogPhotographerSystem_Infra.Services
             _galleryRepos = galleryRepos;
         }
 
-        public async Task DeleteFilesForClientByPrivateGallery(int ID)
-        {
-            await _galleryRepos.DeletePrivateGalleryRepos(ID);
-        }
-
         public async Task DeletePrivateGallery(int ID)
         {
             await _galleryRepos.DeletePrivateGalleryRepos(ID);
         }
 
-        public Task<PrivateGalleryDetailsDTO> FilterPrivateGalleryByFileTypeOrOrderID(string? FileType, int? orderID)
-        {
-            throw new NotImplementedException();
-        }
         //Guest Management
         public async Task<List<PhotosAndVideosInfoDTO>> GetAllPhotosForPublicGallery()
         {

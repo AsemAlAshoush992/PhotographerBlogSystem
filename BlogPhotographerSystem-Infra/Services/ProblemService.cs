@@ -20,11 +20,6 @@ namespace BlogPhotographerSystem_Infra.Services
             _problemRepos = problemRepos;
         }
 
-        public Task CreateNewProblem(CreateProblemDTO dto)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task DeleteProblem(int ID)
         {
             await _problemRepos.DeleteProblemRepos(ID);

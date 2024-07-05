@@ -14,7 +14,7 @@ namespace BlogPhotographerSystem_Core.Models.Entity
         public string LastName { get; set; }
         public string Email { get; set; }
         public DateTime BirthDate { get; set; }
-        public string ImagePath { get; set; }
+        public string? ImagePath { get; set; }
         public string Phone { get; set; }
         public UserType UserType { get; set; }
     }

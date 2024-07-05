@@ -16,9 +16,6 @@ namespace BlogPhotographerSystem_Core.IServices
         //Admin Management
         Task<PrivateGalleryDetailsDTO> GetPublicGalleryDetailsById(int Id);
         Task<List<PrivateGalleryDetailsDTO>> GetPublicGalleries();
-        //Filter
-        Task<PrivateGalleryDetailsDTO> FilterPrivateGalleryByFileTypeOrOrderID(string? FileType, int? orderID);
-
         //Send
         Task SendFilesForUserByPrivateGallery(SendPrivateGalleryDTO dto);
         //Update
@@ -33,8 +30,6 @@ namespace BlogPhotographerSystem_Core.IServices
         Task UploadFilesForPublicGallery(CreatePublicGalleryDTO dto);
         //Update
         Task UpdateFilesForClientByPrivateGallery(UpdatePrivateGalleryDTO dto);
-        //Delete
-        Task DeleteFilesForClientByPrivateGallery(int ID);
 
     }
 }

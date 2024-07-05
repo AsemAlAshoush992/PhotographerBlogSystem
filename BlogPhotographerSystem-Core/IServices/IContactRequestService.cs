@@ -13,10 +13,7 @@ namespace BlogPhotographerSystem_Core.IServices
         //Admin Management
         Task<ContactRequestDetailsDTO> GetContactRequestDetailsById(int Id);
         Task<List<ContactRequestDetailsDTO>> GetAllContactRequests();
-        //Filter
-        Task<ContactRequestDetailsDTO> FilterContactRequestByPhoneOrEmailOrUserId(string? Phone, string? Email, int? UserId);
-        //Create
-        Task CreateNewContactRequest(CreateContactRequestDTO dto);
+        Task<List<ContactRequestDetailsDTO>> GetAllContactRequestDetailsByUserId(int UserId);
         //Update
         Task UpdateContactRequest(UpdateContactRequestDTO dto);
         //Delete

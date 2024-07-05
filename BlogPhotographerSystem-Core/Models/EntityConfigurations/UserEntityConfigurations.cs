@@ -33,6 +33,7 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.Phone).IsRequired();
             builder.Property(x => x.BirthDate).IsRequired();
             builder.Property(x => x.ModifiedDate).IsRequired(false);
+            builder.Property(x => x.ImagePath).IsRequired(false);
             //Unique Constraint
             builder.HasIndex(x => x.Email).IsUnique();
             builder.HasIndex(x => x.Phone).IsUnique();

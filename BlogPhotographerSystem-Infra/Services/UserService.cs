@@ -35,7 +35,7 @@ namespace BlogPhotographerSystem_Infra.Services
                 LastName = dto.LastName,
                 Email = dto.Email,
                 BirthDate = dto.BirthDate,
-                ImagePath = dto.ImagePath,
+                ImagePath = !string.IsNullOrEmpty(dto.ImagePath)? dto.ImagePath: null,
                 Phone = dto.Phone,
                 UserType = UserType.Admin
             };
@@ -47,15 +47,6 @@ namespace BlogPhotographerSystem_Infra.Services
                 UserID = UsertId,
             };
             await _userRepos.CreateLoginRepos(login);
-        }
-        public Task DeleteUserAccount(int ID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<List<UserDetailsDTO>> FilterUsersByPhoneOrEmail(string? email, string? phone)
-        {
-            return await _userRepos.FilterUsersByPhoneOrEmailRepos(email, phone);
         }
 
         public async Task<UserInfoDTO> GetPersonalInformationsById(int Id)

@@ -25,6 +25,20 @@ namespace BlogPhotographerSystem_Infra.Services
         {
             _serviceRepos = serviceRepos;
         }
+        public async Task<List<ServiceInfoDTO>> GetAllServices()
+        {
+            return await _serviceRepos.GetAllServicesRepos();
+        }
+
+        public async Task<List<ServiceDetailsDTO>> GetAllServicesForAdmin()
+        {
+            return await _serviceRepos.GetAllServicesForAdminRepos();
+        }
+
+        public async Task<ServiceDetailsDTO> GetServiceDetailsById(int Id)
+        {
+            return await _serviceRepos.GetServiceDetailsByIdRepos(Id);
+        }
         public async Task<List<ServiceDetailsDTO>> FilterServicesByNameOrPriceOrQuantity(string? name, float? price, int? quantity)
         {
             return await _serviceRepos.FilterServicesByNameOrPriceOrQuantityRepos(name, price, quantity);
@@ -53,23 +67,6 @@ namespace BlogPhotographerSystem_Infra.Services
         public async Task DeleteService(int ID)
         {
             await _serviceRepos.DeleteServiceRepos(ID);
-        }
-
-       
-
-        public async Task<List<ServiceInfoDTO>> GetAllServices()
-        {
-            return await _serviceRepos.GetAllServicesRepos();
-        }
-
-        public async Task<List<ServiceDetailsDTO>> GetAllServicesForAdmin()
-        {
-            return await _serviceRepos.GetAllServicesForAdminRepos();
-        }
-
-        public async Task<ServiceDetailsDTO> GetServiceDetailsById(int Id)
-        {
-            return await _serviceRepos.GetServiceDetailsByIdRepos(Id);
         }
 
         public async Task UpdateService(UpdateServiceAdminDTO dto)

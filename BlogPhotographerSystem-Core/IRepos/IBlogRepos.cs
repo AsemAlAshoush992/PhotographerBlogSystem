@@ -27,13 +27,8 @@ namespace BlogPhotographerSystem_Core.IRepos
         Task ConfirmUserBlogRepos(int blogID);
         //Client Management
         Task<List<BlogDetailsForUserDTO>> GetAllBlogsByUserIdRepos(int userId);
-        //Create
-        Task<int> CreateClientBlogRepos(Blog blog);
-        Task CreateClientBlogAttachementRepos(BlogAttachement attachement);
         //Update
         Task UpdateClientBlogRepos(UpdateBlogClientDTO dto);
-        //Delete
-        Task DeleteClientBlogRepos(int ID);
 
     }
 }

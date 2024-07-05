@@ -20,13 +20,9 @@ namespace BlogPhotographerSystem_Infra.Services
             _contactRequestRepos = contactRequestRepos;
         }
 
-        public Task CreateNewContactRequest(CreateContactRequestDTO dto)
+        public async Task<List<ContactRequestDetailsDTO>> GetAllContactRequestDetailsByUserId(int UserId)
         {
-            throw new NotImplementedException();
-        }
-        public Task<ContactRequestDetailsDTO> FilterContactRequestByPhoneOrEmailOrUserId(string? Phone, string? Email, int? UserId)
-        {
-            throw new NotImplementedException();
+            return await _contactRequestRepos.GetAllContactRequestDetailsByUserIdRepos(UserId);
         }
 
         public async Task<List<ContactRequestDetailsDTO>> GetAllContactRequests()

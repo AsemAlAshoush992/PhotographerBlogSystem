@@ -362,7 +362,7 @@ namespace BlogPhotographerSystem.Controllers
                 return BadRequest("Please filling PrivateGalleryId");
             try
             {
-                await _galleryService.DeleteFilesForClientByPrivateGallery(ID);
+                await _galleryService.DeletePrivateGallery(ID);
                 return StatusCode(200, "The Private Gallery File has been Deleted successfully");
             }
             catch (Exception ex)

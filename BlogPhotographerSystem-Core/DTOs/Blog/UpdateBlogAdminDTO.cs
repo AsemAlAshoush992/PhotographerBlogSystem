@@ -9,11 +9,15 @@ namespace BlogPhotographerSystem_Core.DTOs.Blog
     public class UpdateBlogAdminDTO
     {
         public int Id { get; set; }
+        public int AttachementId { get; set; }
         public string? Title { get; set; }
         public string? Description { get; set; }
         public string? Article { get; set; }
         public DateTime? BlogDate { get; set; }
         public bool? IsApproved { get; set; }
         public int? AuthorID { get; set; }
+        public string? Path { get; set; }
+        public string? FileType { get; set; }
+        public string? FileName { get; set; }
     }
 }

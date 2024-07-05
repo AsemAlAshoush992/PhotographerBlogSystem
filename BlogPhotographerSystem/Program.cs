@@ -32,7 +32,6 @@ builder.Services.AddSwaggerGen(options =>
 
 //IService and ServiceClass
 builder.Services.AddScoped<IBlogService, BlogService>();
-builder.Services.AddScoped<IBlogAttachementService, BlogAttachementService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IGalleryService, GalleryService>();
@@ -43,7 +42,6 @@ builder.Services.AddScoped<IContactRequestService, ContactRequestService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 //IRepos and ReposClass
 builder.Services.AddScoped<IBlogRepos, BlogRepos>();
-builder.Services.AddScoped<IBlogAttachementRepos, BlogAttachementRepos>();
 builder.Services.AddScoped<ICategoryRepos, CategoryRepos>();
 builder.Services.AddScoped<IUserRepos, UserRepos>();
 builder.Services.AddScoped<IGalleryRepos, GalleryRepos>();

@@ -38,20 +38,6 @@ namespace BlogPhotographerSystem_Infra.Repos
             await _context.BlogAttachements.AddAsync(attachement);
             await _context.SaveChangesAsync();
         }
-        public Task CreateClientBlogAttachementRepos(BlogAttachement attachement)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> CreateClientBlogRepos(Blog blog)
-        {
-            throw new NotImplementedException();
-        }
-        public Task DeleteClientBlogRepos(int ID)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<List<BlogDetailsForUserDTO>> GetAllBlogsByUserIdRepos(int userId)
         {
             var query = from user in _context.Users
@@ -97,30 +83,12 @@ namespace BlogPhotographerSystem_Infra.Repos
 
         public async Task<List<BlogsCardsDTO>> GetAllBlogsInfoRepos()
         {
-            //var query = from blogCards in _context.Blogs
-            //            join attachement in _context.BlogAttachements
-            //            on blogCards.Id equals attachement.BlogID
-            //            where attachement.FileType == FileType.Image
-            //            && blogCards.IsDeleted == false
-            //            && blogCards.IsApproved == true
-            //            join user in _context.Users
-            //            on blogCards.AuthorID equals user.Id
-            //            select new BlogsCardsDTO
-            //            {
-            //                Title = blogCards.Title,
-            //                Description = blogCards.Description,
-            //                BlogDate = blogCards.BlogDate,
-            //                AuthorName = user.FirstName + " " + user.LastName,
-            //                ImagePath = attachement.Path
-            //            };
-            //return await query.ToListAsync();
             var query = from blogCards in _context.Blogs
                         join attachement in _context.BlogAttachements
                         on blogCards.Id equals attachement.BlogID
                         join user in _context.Users
                         on blogCards.AuthorID equals user.Id
-                        where attachement.FileType == FileType.Image
-                        && blogCards.IsDeleted == false
+                        where blogCards.IsDeleted == false
                         && blogCards.IsApproved == true
                         group new { blogCards, attachement, user } by new { blogCards.Id } into blogGroup
                         select new BlogsCardsDTO
@@ -184,12 +152,16 @@ namespace BlogPhotographerSystem_Infra.Repos
         public async Task UpdateBlogRepos(UpdateBlogAdminDTO dto)
         {
             var blog = await _context.Blogs.SingleOrDefaultAsync(b => b.Id == dto.Id);
-
+            var Attachement = await _context.BlogAttachements.SingleOrDefaultAsync
+                (b => b.BlogID == dto.Id && b.Id == dto.AttachementId);
             if (blog == null)
             {
                 throw new Exception("Blog not found");
             }
-
+            if (Attachement == null)
+            {
+                throw new Exception("File not found");
+            }
             if (!string.IsNullOrEmpty(dto.Title))
             {
                 blog.Title = dto.Title;
@@ -219,10 +191,40 @@ namespace BlogPhotographerSystem_Infra.Repos
             {
                 blog.BlogDate = dto.BlogDate.Value;
             }
+            if (!string.IsNullOrEmpty(dto.Path))
+            {
+                Attachement.Path = dto.Path;
+            }
+
+            if (!String.IsNullOrEmpty(dto.Path))
+            {
+                Attachement.FileName = Path.GetFileNameWithoutExtension(dto.Path);
+            }
+            if (!String.IsNullOrEmpty(dto.Path))
+            {
+                string fileType;
+                string extension = Path.GetExtension(dto.Path).ToUpperInvariant();
+
+                if (extension == ".JPEG" || extension == ".JPG" || extension == ".PNG" || extension == ".GIF" || extension == ".TIFF" || extension == ".WEBP")
+                {
+                    fileType = "Image";
+                }
+                else if (extension == ".MP4" || extension == ".AVI" || extension == ".MOV" || extension == ".WMV" || extension == ".MKV" || extension == ".FLV" || extension == ".WEBM")
+                {
+                    fileType = "Video";
+                }
+                else
+                {
+                    fileType = "Document";
+                }
+                Attachement.FileType = (FileType)Enum.Parse(typeof(FileType), fileType);
+            }
+            blog.BlogDate = DateTime.Now;
             blog.ModifiedDate = DateTime.Now;
             blog.ModifiedUserId = 1;
 
-            _context.Update(blog);
+            _context.Blogs.Update(blog);
+            _context.BlogAttachements.Update(Attachement);
             await _context.SaveChangesAsync();
 
         }
@@ -260,6 +262,11 @@ namespace BlogPhotographerSystem_Infra.Repos
                 throw new Exception("Blog not found");
             }
 
+            if (Attachement == null)
+            {
+                throw new Exception("File not found");
+            }
+
             if (!string.IsNullOrEmpty(dto.Title))
             {
                 blog.Title = dto.Title;
@@ -273,16 +280,31 @@ namespace BlogPhotographerSystem_Infra.Repos
             {
                 Attachement.Path = dto.Path;
             }
-            if (!string.IsNullOrEmpty(dto.FileName))
+           
+            if(!String.IsNullOrEmpty(dto.Path))
             {
-                Attachement.FileName = dto.FileName;
+                Attachement.FileName = Path.GetFileNameWithoutExtension(dto.Path);
             }
-            if (!string.IsNullOrEmpty(dto.FileType))
+            if (!String.IsNullOrEmpty(dto.Path))
             {
-                Attachement.FileType = (FileType)Enum.Parse(typeof(FileType), dto.FileType);
-                
-            }
+                string fileType;
+                string extension = Path.GetExtension(dto.Path).ToUpperInvariant();
 
+                if (extension == ".JPEG" || extension == ".JPG" || extension == ".PNG" || extension == ".GIF" || extension == ".TIFF" || extension == ".WEBP")
+                {
+                    fileType = "Image";
+                }
+                else if (extension == ".MP4" || extension == ".AVI" || extension == ".MOV" || extension == ".WMV" || extension == ".MKV" || extension == ".FLV" || extension == ".WEBM")
+                {
+                    fileType = "Video";
+                }
+                else
+                {
+                    fileType = "Document";
+                }
+                Attachement.FileType = (FileType)Enum.Parse(typeof(FileType), fileType);
+            }
+            blog.BlogDate = DateTime.Now;
             blog.ModifiedDate = DateTime.Now;
             blog.ModifiedUserId = blog.AuthorID;
 
