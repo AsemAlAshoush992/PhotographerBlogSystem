@@ -31,7 +31,7 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.FileType).IsRequired();
             builder.Property(x => x.OrderID).IsRequired(false);
             //Size 
-            builder.Property(x => x.FileName).HasMaxLength(30);
+            builder.Property(x => x.FileName).HasMaxLength(200);
             //Nvarchar
             builder.Property(x => x.FileName).IsUnicode();
             //Default Constraint
@@ -39,7 +39,6 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.IsPrivate).HasDefaultValue(false);
             //Check Constraint
             builder.ToTable(t => t.HasCheckConstraint("CH_Gallery_FileName", "LENGTH(FileName) >= 3"));
-            builder.ToTable(t => t.HasCheckConstraint("CH_Gallery_FileName", @"NOT (FileName REGEXP '[~!@#$%^&*()_+=-]')"));
         }
     }
 }

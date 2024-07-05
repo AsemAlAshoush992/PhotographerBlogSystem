@@ -234,10 +234,11 @@ namespace BlogPhotographerSystem.Controllers
         /// </remarks>
         [HttpPut]
         [Route("[action]/{userID}")]
-        public async Task<IActionResult> LogoutUserAcount([FromBody] int userID)
+        public async Task<IActionResult> LogoutUserAcount( int userID)
         {
             if (userID == null)
             {
+
                 return BadRequest("Please filling All Data");
             }   
             try

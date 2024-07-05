@@ -127,6 +127,44 @@ namespace BlogPhotographerSystem.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Retrieves all private galleries by userID without orders of the client.
+        /// </summary>
+        /// <response code="200">Returns list of all private galleries by userID.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the private galleries.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Get api/Client
+        ///     {        
+        ///       "userID": 4        
+        ///     }
+        /// </remarks>
+        [HttpGet]
+        [Route("[action]/{UserId}")]
+        public async Task<IActionResult> GetAllPrivateGalleriesByUserIdWithoutOrders(int UserId)
+        {
+
+            if (UserId == null)
+            {
+                return BadRequest("Please filling UserId");
+            }
+            try
+            {
+                return StatusCode(200, await _galleryService.GetAllPrivateGalleriesByUserIdWithoutOrders(UserId));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, $"Error occurred{ex.Message}");
+            }
+        }
+
+
+
+
+
+
         /// <summary>
         /// Sends a user's blog post for approval.
         /// </summary>
@@ -148,7 +186,7 @@ namespace BlogPhotographerSystem.Controllers
         /// </remarks>
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> SendBlogFromUserForApproval(CreateBlogAdminDTO dto)
+        public async Task<IActionResult> SendBlogFromUserForApproval( CreateBlogAdminDTO dto)
         {
             if (dto == null)
                 return BadRequest("Please filling All Data");

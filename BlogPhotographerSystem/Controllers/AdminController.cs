@@ -168,6 +168,7 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(204, $"Error occurred{ex.Message}");
             }
         }
+       
         /// <summary>
         /// Retrieves service details by ID of the admin.
         /// </summary>
@@ -366,6 +367,38 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(204, $"Error occurred {ex.Message}");
             }
         }
+
+
+        /// <summary>
+        /// Filters Problems based on their UserId or OrderId.
+        /// </summary>
+        /// <response code="200">Returns the list of users that match the provided email or phone number.</response>
+        /// <response code="204">No users match the provided criteria or an error occurred.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Get api/Admin
+        ///     {        
+        ///       "UserId": 10,
+        ///       "OrderId": 5
+        ///     }
+        /// </remarks>
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> FilterProblemsByUserIdOrOrderId(int? UserId, int? OrderId)
+        {
+            try
+            {
+                return StatusCode(200, await _problemService.FilterProblemByUserIdOrOrderId(UserId, OrderId));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(204, $"Error occurred {ex.Message}");
+            }
+        }
+
+        ///FilterProblemsByUserIdOrOrderId
+
         /// <summary>
         /// Filters services based on their Name or Price or Quantity.
         /// </summary>
@@ -524,7 +557,37 @@ namespace BlogPhotographerSystem.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Uploads files to a user's private gallery.
+        /// </summary>
+        /// <response code="201">The files have been successfully uploaded.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data, or an error occurred during the upload process.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Post api/Client
+        ///     { 
+        ///       "path": "photos/Rami",
+        ///       "fileName": "Rami",
+        ///       "fileType": "Image"
+        ///     }
+        /// </remarks>
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> UploadPublicGalleryFiles(CreatePublicGalleryDTO dto)
+        {
+            if (dto == null)
+                return BadRequest("Please filling All Data");
+            try
+            {
+                await _galleryService.UploadFilesForPublicGallery(dto);
+                return StatusCode(201, "New File Has Been created");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Error occurred {ex.Message}");
+            }
+        }
 
 
         /// <summary>
@@ -539,7 +602,7 @@ namespace BlogPhotographerSystem.Controllers
         ///     {        
         ///       "name": "Macro Photography",
         ///       "description": "Macro photography session.",
-        ///       "imagePath": "/services/macro.jpg",
+        ///       "imagePath": "macro.jpg",
         ///       "price": 50,
         ///       "quantity": 2,
         ///       "isHaveDiscount": true,
@@ -550,7 +613,7 @@ namespace BlogPhotographerSystem.Controllers
         /// </remarks>
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> CreateNewService(CreateServiceAdminDTO dto)
+        public async Task<IActionResult> CreateNewService( CreateServiceAdminDTO  dto)
         {
             if (dto == null)
                 return BadRequest("Please filling All Data");
@@ -586,7 +649,7 @@ namespace BlogPhotographerSystem.Controllers
         /// </remarks>
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> CreateNewBlog(CreateBlogAdminDTO dto)
+        public async Task<IActionResult> CreateNewBlog( CreateBlogAdminDTO dto)
         {
             if (dto == null)
                 return BadRequest("Please filling All Data");

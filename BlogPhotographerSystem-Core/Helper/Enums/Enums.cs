@@ -31,7 +31,8 @@ namespace BlogPhotographerSystem_Core.Helper.Enums
             Processing,
             Delivered,
             Completed,
-            Cancelled
+            Cancelled,
+            None
         }
         public enum UserType
         {

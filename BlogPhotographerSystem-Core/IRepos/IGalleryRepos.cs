@@ -24,6 +24,7 @@ namespace BlogPhotographerSystem_Core.IRepos
         Task<PrivateGalleryDetailsDTO> FilterPrivateGalleryByFileTypeOrOrderIDRepos(string? FileType, int? orderID);
         //Client Management
         Task<List<PrivateGalleryDetailsForClientDTO>> GetAllPrivateGalleriesByUserId(int orderId);
+        Task<List<PrivateGalleryDetailsForClientDTO>> GetAllPrivateGalleriesByUserIdWithoutOrdersRepos(int UserId);
         //Send
         Task SendFilesForUserByPrivateGalleryRepos( Gallery gallery);
         //Update

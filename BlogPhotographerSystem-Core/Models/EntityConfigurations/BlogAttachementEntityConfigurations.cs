@@ -31,14 +31,14 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.FileType).IsRequired();
             builder.Property(x => x.BlogID).IsRequired(false);
             //Size 
-            builder.Property(x => x.FileName).HasMaxLength(25);
+            builder.Property(x => x.FileName).HasMaxLength(200);
             //Nvarchar
             builder.Property(x => x.FileName).IsUnicode();
             //Default Constraint
             builder.Property(x => x.FileType).HasDefaultValue((FileType)Enum.Parse(typeof(FileType), "Image"));
             //Check Constraint
             builder.ToTable(t => t.HasCheckConstraint("CH_BlogAttachement_FileName", "LENGTH(FileName) >= 3"));
-            builder.ToTable(t => t.HasCheckConstraint("CH_BlogAttachement_FileName", @"NOT (FileName REGEXP '[~!@#$%^&*()_+=-]')"));   
+            //builder.ToTable(t => t.HasCheckConstraint("CH_BlogAttachement_FileName", @"NOT (FileName REGEXP '[~!@#$%^&*()_+=-]')"));   
         }
     }
 }

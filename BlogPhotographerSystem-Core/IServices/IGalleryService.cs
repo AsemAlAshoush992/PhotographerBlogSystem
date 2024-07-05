@@ -27,8 +27,10 @@ namespace BlogPhotographerSystem_Core.IServices
         Task DeletePrivateGallery(int ID);
         //Client Management
         Task<List<PrivateGalleryDetailsForClientDTO>> GetAllPrivateGalleriesByUserId(int orderId);
+        Task<List<PrivateGalleryDetailsForClientDTO>> GetAllPrivateGalleriesByUserIdWithoutOrders(int UserId);
         //Upload
         Task UploadFilesForUserByPrivateGallery(CreatePrivateGalleryDTO dto);
+        Task UploadFilesForPublicGallery(CreatePublicGalleryDTO dto);
         //Update
         Task UpdateFilesForClientByPrivateGallery(UpdatePrivateGalleryDTO dto);
         //Delete

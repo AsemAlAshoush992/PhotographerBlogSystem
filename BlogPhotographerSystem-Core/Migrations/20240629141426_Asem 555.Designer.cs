@@ -3,6 +3,7 @@ using System;
 using BlogPhotographerSystem_Core.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogPhotographerSystem_Core.Migrations
 {
     [DbContext(typeof(BlogPhotographerSystemDBContext))]
-    partial class BlogPhotographerSystemDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240629141426_Asem 555")]
+    partial class Asem555
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,12 +39,12 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("BlogDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 6, 29, 19, 34, 20, 991, DateTimeKind.Local).AddTicks(7699));
+                        .HasDefaultValue(new DateTime(2024, 6, 29, 17, 14, 26, 560, DateTimeKind.Local).AddTicks(5284));
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 6, 29, 19, 34, 20, 991, DateTimeKind.Local).AddTicks(6470));
+                        .HasDefaultValue(new DateTime(2024, 6, 29, 17, 14, 26, 560, DateTimeKind.Local).AddTicks(3163));
 
                     b.Property<int>("CreatorUserId")
                         .ValueGeneratedOnAdd()
@@ -98,7 +101,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 6, 29, 19, 34, 20, 991, DateTimeKind.Local).AddTicks(4709));
+                        .HasDefaultValue(new DateTime(2024, 6, 29, 17, 14, 26, 560, DateTimeKind.Local).AddTicks(622));
 
                     b.Property<int>("CreatorUserId")
                         .ValueGeneratedOnAdd()
@@ -107,9 +110,9 @@ namespace BlogPhotographerSystem_Core.Migrations
 
                     b.Property<string>("FileName")
                         .IsRequired()
-                        .HasMaxLength(200)
+                        .HasMaxLength(25)
                         .IsUnicode(true)
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("varchar(25)");
 
                     b.Property<int>("FileType")
                         .ValueGeneratedOnAdd()
@@ -150,7 +153,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 6, 29, 19, 34, 20, 986, DateTimeKind.Local).AddTicks(9393));
+                        .HasDefaultValue(new DateTime(2024, 6, 29, 17, 14, 26, 555, DateTimeKind.Local).AddTicks(2658));
 
                     b.Property<int>("CreatorUserId")
                         .ValueGeneratedOnAdd()
@@ -207,7 +210,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 6, 29, 19, 34, 20, 987, DateTimeKind.Local).AddTicks(6117));
+                        .HasDefaultValue(new DateTime(2024, 6, 29, 17, 14, 26, 556, DateTimeKind.Local).AddTicks(1309));
 
                     b.Property<int>("CreatorUserId")
                         .ValueGeneratedOnAdd()
@@ -270,7 +273,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 6, 29, 19, 34, 20, 992, DateTimeKind.Local).AddTicks(2781));
+                        .HasDefaultValue(new DateTime(2024, 6, 29, 17, 14, 26, 561, DateTimeKind.Local).AddTicks(2464));
 
                     b.Property<int>("CreatorUserId")
                         .ValueGeneratedOnAdd()
@@ -279,9 +282,9 @@ namespace BlogPhotographerSystem_Core.Migrations
 
                     b.Property<string>("FileName")
                         .IsRequired()
-                        .HasMaxLength(200)
+                        .HasMaxLength(30)
                         .IsUnicode(true)
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("varchar(30)");
 
                     b.Property<int>("FileType")
                         .ValueGeneratedOnAdd()
@@ -317,7 +320,7 @@ namespace BlogPhotographerSystem_Core.Migrations
 
                     b.ToTable("Galleries", t =>
                         {
-                            t.HasCheckConstraint("CH_Gallery_FileName", "LENGTH(FileName) >= 3");
+                            t.HasCheckConstraint("CH_Gallery_FileName", "NOT (FileName REGEXP '[~!@#$%^&*()_+=-]')");
                         });
                 });
 
@@ -330,7 +333,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 6, 29, 19, 34, 20, 987, DateTimeKind.Local).AddTicks(4225));
+                        .HasDefaultValue(new DateTime(2024, 6, 29, 17, 14, 26, 555, DateTimeKind.Local).AddTicks(8912));
 
                     b.Property<int>("CreatorUserId")
                         .ValueGeneratedOnAdd()
@@ -394,7 +397,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 6, 29, 19, 34, 20, 987, DateTimeKind.Local).AddTicks(7695));
+                        .HasDefaultValue(new DateTime(2024, 6, 29, 17, 14, 26, 556, DateTimeKind.Local).AddTicks(3360));
 
                     b.Property<int>("CreatorUserId")
                         .ValueGeneratedOnAdd()
@@ -456,7 +459,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 6, 29, 19, 34, 20, 992, DateTimeKind.Local).AddTicks(694));
+                        .HasDefaultValue(new DateTime(2024, 6, 29, 17, 14, 26, 561, DateTimeKind.Local).AddTicks(22));
 
                     b.Property<int>("CreatorUserId")
                         .ValueGeneratedOnAdd()
@@ -523,7 +526,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 6, 29, 19, 34, 20, 989, DateTimeKind.Local).AddTicks(2082));
+                        .HasDefaultValue(new DateTime(2024, 6, 29, 17, 14, 26, 557, DateTimeKind.Local).AddTicks(3272));
 
                     b.Property<int>("CreatorUserId")
                         .ValueGeneratedOnAdd()
@@ -595,7 +598,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 6, 29, 19, 34, 20, 989, DateTimeKind.Local).AddTicks(9260));
+                        .HasDefaultValue(new DateTime(2024, 6, 29, 17, 14, 26, 557, DateTimeKind.Local).AddTicks(8391));
 
                     b.Property<int>("CreatorUserId")
                         .ValueGeneratedOnAdd()

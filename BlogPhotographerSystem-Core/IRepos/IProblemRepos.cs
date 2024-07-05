@@ -14,7 +14,7 @@ namespace BlogPhotographerSystem_Core.IRepos
         Task<ProblemDetailsDTO> GetProblemDetailsByIdRepos(int Id);
         Task<List<ProblemDetailsDTO>> GetAllProblemsRepos();
         //Filter
-        Task<ProblemDetailsDTO> FilterProblemByUserIdOrOrderIdRepos(int? orderId, int? userId);
+        Task<List<ProblemDetailsDTO>> FilterProblemByUserIdOrOrderIdRepos(int? userId, int? orderId);
 
         //Create
         Task CreateNewProblemRepos(Problem problem);
