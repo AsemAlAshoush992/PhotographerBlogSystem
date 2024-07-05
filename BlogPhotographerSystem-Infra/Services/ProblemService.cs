@@ -30,9 +30,9 @@ namespace BlogPhotographerSystem_Infra.Services
             await _problemRepos.DeleteProblemRepos(ID);
         }
 
-        public Task<ProblemDetailsDTO> FilterProblemByUserIdOrOrderId(int? orderId, int? userId)
+        public async Task<List<ProblemDetailsDTO>> FilterProblemByUserIdOrOrderId(int? userId, int? orderId)
         {
-            throw new NotImplementedException();
+            return await _problemRepos.FilterProblemByUserIdOrOrderIdRepos(userId, orderId);
         }
 
         public async Task<List<ProblemDetailsDTO>> GetAllProblems()

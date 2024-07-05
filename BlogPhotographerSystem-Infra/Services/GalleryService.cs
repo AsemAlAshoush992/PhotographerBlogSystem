@@ -55,6 +55,10 @@ namespace BlogPhotographerSystem_Infra.Services
         {
             return await _galleryRepos.GetAllPrivateGalleriesByUserId(UserId);
         }
+        public async Task<List<PrivateGalleryDetailsForClientDTO>> GetAllPrivateGalleriesByUserIdWithoutOrders(int UserId)
+        {
+            return await _galleryRepos.GetAllPrivateGalleriesByUserIdWithoutOrdersRepos(UserId);
+        }
 
         public async Task SendFilesForUserByPrivateGallery(SendPrivateGalleryDTO dto)
         {
@@ -96,12 +100,28 @@ namespace BlogPhotographerSystem_Infra.Services
 
         public async Task UploadFilesForUserByPrivateGallery(CreatePrivateGalleryDTO dto)
         {
+            string fileType;
+            string extension = Path.GetExtension(dto.Path).ToUpperInvariant();
+
+            if (extension == ".JPEG" || extension == ".JPG" || extension == ".PNG" || extension == ".GIF" || extension == ".TIFF" || extension == ".WEBP")
+            {
+                fileType = "Image";
+            }
+            else if (extension == ".MP4" || extension == ".AVI" || extension == ".MOV" || extension == ".WMV" || extension == ".MKV" || extension == ".FLV" || extension == ".WEBM")
+            {
+                fileType = "Video";
+            }
+            else
+            {
+                fileType = "Document";
+            }
             Gallery gallery = new Gallery()
             {
                 Path = dto.Path,
-                FileName = dto.FileName,
-                FileType = (FileType)Enum.Parse(typeof(FileType), dto.FileType),
+                FileName = Path.GetFileNameWithoutExtension(dto.Path),
+                FileType = (FileType)Enum.Parse(typeof(FileType), fileType),
                 IsPrivate = true,
+                CreatorUserId = dto.UserID
             };
             await _galleryRepos.SendFilesForUserByPrivateGalleryRepos(gallery);
         }
@@ -109,6 +129,34 @@ namespace BlogPhotographerSystem_Infra.Services
         public async Task<List<PrivateGalleryDetailsDTO>> GetPublicGalleries()
         {
            return await _galleryRepos.GetPublicGalleriesRepos();
+        }
+
+        public async Task UploadFilesForPublicGallery(CreatePublicGalleryDTO dto)
+        {
+            string fileType;
+            string extension = Path.GetExtension(dto.Path).ToUpperInvariant();
+
+            if (extension == ".JPEG" || extension == ".JPG" || extension == ".PNG" || extension == ".GIF" || extension == ".TIFF" || extension == ".WEBP")
+            {
+                fileType = "Image";
+            }
+            else if (extension == ".MP4" || extension == ".AVI" || extension == ".MOV" || extension == ".WMV" || extension == ".MKV" || extension == ".FLV" || extension == ".WEBM")
+            {
+                fileType = "Video";
+            }
+            else
+            {
+                fileType = "Document";
+            }
+            Gallery gallery = new Gallery()
+            {
+                Path = dto.Path,
+                FileName = dto.FileName,
+                FileType = (FileType)Enum.Parse(typeof(FileType), fileType),
+                IsPrivate = false,
+                CreatorUserId = 1
+            };
+            await _galleryRepos.SendFilesForUserByPrivateGalleryRepos(gallery);
         }
     }
 }

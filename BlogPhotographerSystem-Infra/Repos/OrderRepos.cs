@@ -63,7 +63,7 @@ namespace BlogPhotographerSystem_Infra.Repos
 
         public async Task<List<OrderDetailsDTO>> FilterOrderByTitleOrUserIdOrServiceIdOrStatusRepos(string? title, int? userId, int? serviceId, string? status)
         {
-            Status foo = Status.Pending;
+            Status foo = Status.None;
             if (!string.IsNullOrEmpty(status) && Enum.IsDefined(typeof(Status), status))
             {
                 foo = (Status)Enum.Parse(typeof(Status), status);

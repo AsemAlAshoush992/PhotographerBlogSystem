@@ -108,7 +108,6 @@ namespace BlogPhotographerSystem_Infra.Services
                 ServiceID = await _orderRepos.GetIdForSpecificService(dto.ServiceName)
             };
             await _orderRepos.CreateOrderForSpecificServiceRepos(order);
-
         }
 
         public async Task UpdateOrder(UpdateOrderAdminDTO dto)

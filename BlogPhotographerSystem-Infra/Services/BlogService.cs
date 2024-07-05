@@ -47,8 +47,9 @@ namespace BlogPhotographerSystem_Infra.Services
             int blogId = await _blogRepos.CreateBlogRepos(blog);
             foreach (var attachmentDto in dto.FilePath)
             {
+               
                 string fileType;
-                string extension = Path.GetExtension(attachmentDto).ToUpperInvariant();
+               string extension = Path.GetExtension(attachmentDto).ToUpperInvariant();
 
                 if (extension == ".JPEG" || extension == ".JPG" || extension == ".PNG" || extension == ".GIF" || extension == ".TIFF" || extension == ".WEBP")
                 {
@@ -62,12 +63,15 @@ namespace BlogPhotographerSystem_Infra.Services
                 {
                     fileType = "Document";
                 }
+              
+     
                 BlogAttachement attachement = new BlogAttachement()
                 {
                     Path = attachmentDto,
                     FileName = Path.GetFileNameWithoutExtension(attachmentDto),
                     FileType = (FileType)Enum.Parse(typeof(FileType), fileType),
-                    BlogID = blogId
+                    BlogID = blogId,
+                    CreatorUserId = 1
                 };
                 await _blogRepos.CreateBlogAttachmentsRepos(attachement);
             }
@@ -86,6 +90,7 @@ namespace BlogPhotographerSystem_Infra.Services
 
         public async Task CreateBlog(CreateBlogAdminDTO dto)
         {
+
             Blog blog = new Blog()
             {
                 Title = dto.Title,
@@ -93,13 +98,14 @@ namespace BlogPhotographerSystem_Infra.Services
                 Article = dto.Article,
                 BlogDate = DateTime.Now,
                 IsApproved = true,
-                AuthorID = 1 
+                AuthorID = 1
             };
 
             int blogId = await _blogRepos.CreateBlogRepos(blog);
 
             foreach (var attachmentDto in dto.FilePath)
             {
+
                 string fileType;
                 string extension = Path.GetExtension(attachmentDto).ToUpperInvariant();
 
@@ -115,6 +121,8 @@ namespace BlogPhotographerSystem_Infra.Services
                 {
                     fileType = "Document";
                 }
+
+                
                 BlogAttachement attachement = new BlogAttachement()
                 {
                     Path = attachmentDto,

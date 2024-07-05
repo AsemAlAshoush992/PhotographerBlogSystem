@@ -3,12 +3,16 @@ using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.IServices;
 using BlogPhotographerSystem_Core.Models.Entity;
 using BlogPhotographerSystem_Infra.Repos;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using ZstdSharp;
 using static BlogPhotographerSystem_Core.Helper.Enums.Enums;
 
 namespace BlogPhotographerSystem_Infra.Services
@@ -16,6 +20,7 @@ namespace BlogPhotographerSystem_Infra.Services
     public class ServiceService : IServiceService
     {
         private readonly IServiceRepos _serviceRepos;
+        
         public ServiceService(IServiceRepos serviceRepos)
         {
             _serviceRepos = serviceRepos;
@@ -24,8 +29,11 @@ namespace BlogPhotographerSystem_Infra.Services
         {
             return await _serviceRepos.FilterServicesByNameOrPriceOrQuantityRepos(name, price, quantity);
         }
+
+      
         public async Task CreateService(CreateServiceAdminDTO dto)
         {
+            
             Service service = new Service()
             {
                 Name = dto.Name,

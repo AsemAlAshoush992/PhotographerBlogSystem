@@ -5,6 +5,7 @@ using BlogPhotographerSystem_Core.Models.Entity;
 using BlogPhotographerSystem_Infra.Repos;
 using BlogPhotographerSystem_Infra.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Reflection;
@@ -59,6 +60,7 @@ Serilog.Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configurat
                 WriteTo.File(configuration.GetValue<string>("LogerPath"), rollingInterval: RollingInterval.Day).
                 CreateLogger();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -73,6 +75,17 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+//Load Static Files from Server To view on Browser
+app.UseStaticFiles();
+var imagesDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Files");
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(imagesDirectory),
+    RequestPath = "/Files"
+});
+
+
 
 app.UseAuthorization();
 

@@ -1,6 +1,7 @@
 ﻿using BlogPhotographerSystem_Core.Context;
 using BlogPhotographerSystem_Core.DTOs.Blog;
 using BlogPhotographerSystem_Core.DTOs.Problem;
+using BlogPhotographerSystem_Core.DTOs.Service;
 using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.Models.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace BlogPhotographerSystem_Infra.Repos
 {
@@ -39,9 +41,27 @@ namespace BlogPhotographerSystem_Infra.Repos
             await _context.SaveChangesAsync();
         }
 
-        public Task<ProblemDetailsDTO> FilterProblemByUserIdOrOrderIdRepos(int? orderId, int? userId)
+        public async Task<List<ProblemDetailsDTO>> FilterProblemByUserIdOrOrderIdRepos(int? userId , int? orderId)
         {
-            throw new NotImplementedException();
+            bool flag = userId == null && orderId == null? true : false;
+            var query = from filter in _context.Problems
+                        where filter.UserID == userId || filter.OrderID == orderId || flag
+                        select new ProblemDetailsDTO
+                        {
+                            Id = filter.Id,
+                            Title = filter.Title,
+                            Purpose = filter.Purpose,
+                            Description = filter.Description,
+                            UserID = filter.UserID,
+                            OrderID = filter.OrderID,
+                            CreationDate = filter.CreationDate,
+                            ModifiedDate = filter.ModifiedDate,
+                            CreatorUserId = filter.CreatorUserId,
+                            ModifiedUserId = filter.ModifiedUserId,
+                            IsDeleted = filter.IsDeleted
+
+                        };
+            return await query.ToListAsync();
         }
 
         public async Task<List<ProblemDetailsDTO>> GetAllProblemsRepos()

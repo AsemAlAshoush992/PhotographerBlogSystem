@@ -8,6 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Files\ClientBlogImages\**" />
+    <Content Remove="Files\ClientBlogImages\**" />
+    <EmbeddedResource Remove="Files\ClientBlogImages\**" />
+    <None Remove="Files\ClientBlogImages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.20" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.18">
       <PrivateAssets>all</PrivateAssets>
@@ -17,6 +26,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.6.2" />
     <PackageReference Include="MySql.Data" Version="8.4.0" />
     <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.16" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
@@ -31,11 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Files\Images\" />
-    <Folder Include="Files\Documents\" />
     <Folder Include="Files\" />
-    <Folder Include="Files\Videos\" />
   </ItemGroup>
 
 </Project>

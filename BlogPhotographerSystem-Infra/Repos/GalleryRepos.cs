@@ -91,6 +91,24 @@ namespace BlogPhotographerSystem_Infra.Repos
             return await query.SingleOrDefaultAsync();
         }
 
+        public async Task<List<PrivateGalleryDetailsForClientDTO>> GetAllPrivateGalleriesByUserIdWithoutOrdersRepos(int UserId)
+        {
+            var query = from privateGallery in _context.Galleries
+                        where privateGallery.CreatorUserId == UserId
+                        && privateGallery.IsPrivate == true
+                        && privateGallery.IsDeleted == false
+                        && privateGallery.OrderID == null
+                        select new PrivateGalleryDetailsForClientDTO
+                        {
+                            Path = privateGallery.Path,
+                            FileName = privateGallery.FileName,
+                            FileType = privateGallery.FileType.ToString(),
+                            OrderID = privateGallery.OrderID
+                        };
+            return await query.ToListAsync();
+        }
+
+
         public async Task<List<PrivateGalleryDetailsForClientDTO>> GetAllPrivateGalleriesByUserId(int UserId)
         {
             var query = from user in _context.Users
