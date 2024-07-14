@@ -77,35 +77,125 @@ namespace BlogPhotographerSystem.Controllers
             }
         }
 
-        /// <summary>
-        /// Retrieves contact request by ID of the admin.
-        /// </summary>
-        /// <response code="200">Returns the specific contact request by ID.</response>
-        /// <response code="404">No content found or an error occurred while retrieving the contact request.</response>
-        /// <remarks>
-        /// Sample request:
-        /// 
-        ///     Get api/Admin
-        ///     {        
-        ///       "ID": 2        
-        ///     }
-        /// </remarks>
-        [HttpGet]
-        [Route("[action]/{ID}")]
-        public async Task<IActionResult> GetContactRequestDetailsByID(int ID)
-        {
 
-            if (ID == null)
-            {
-                return BadRequest("Please filling ContactRequestID");
-            }
+
+        /// <summary>
+        /// Retrieves all categories of the admin.
+        /// </summary>
+        /// <response code="200">Returns the list of all the Categories created by admin.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the Categories.</response>
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> GetAllCategoriesForAdmin()
+        {
             try
             {
-                return StatusCode(200, await _contactRequestService.GetContactRequestDetailsById(ID));
+                return StatusCode(200, await _categoryService.GetAllCategoriesForAdmin());
             }
             catch (Exception ex)
             {
                 return StatusCode(204, $"Error occurred{ex.Message}");
+            }
+        }
+
+
+
+        /// <summary>
+        /// Retrieves all public galleries of the admin.
+        /// </summary>
+        /// <response code="200">Returns list of all public galleries created by admin.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the public galleries.</response>
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> GetAllPublicGalleries()
+        {
+            try
+            {
+                return StatusCode(200, await _galleryService.GetPublicGalleries());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(204, $"Error occurred {ex.Message}");
+            }
+        }
+
+
+
+        /// <summary>
+        /// Retrieves all users of the admin.
+        /// </summary>
+        /// <response code="200">Returns list of all users created.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the users.</response>
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> GetAllUsersForAdmin()
+        {
+            try
+            {
+                return StatusCode(200, await _userService.GetAllUsersDetails());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(204, $"Error occurred {ex.Message}");
+            }
+        }
+
+
+        /// <summary>
+        /// Retrieves all services of the admin.
+        /// </summary>
+        /// <response code="200">Returns list of all services created by admin.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the services.</response>
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> GetAllServicesDetailsForAdmin()
+        {
+            try
+            {
+                return StatusCode(200, await _service.GetAllServicesForAdmin());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(204, $"Error occurred {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Retrieves all orders of the admin.
+        /// </summary>
+        /// <response code="200">Returns list of all orders created.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the orders.</response>
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> GetAllOrdersDetailsForAdmin()
+        {
+            try
+            {
+                return StatusCode(200, await _orderService.GetAllOrders());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(204, $"Error occurred {ex.Message}");
+            }
+        }
+
+
+        /// <summary>
+        /// Retrieves all problems of the admin.
+        /// </summary>
+        /// <response code="200">Returns list of all problems created by admin.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the problems.</response>
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> GetAllProblemsDetailsForAdmin()
+        {
+            try
+            {
+                return StatusCode(200, await _problemService.GetAllProblems());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(204, $"Error occurred {ex.Message}");
             }
         }
 
@@ -235,24 +325,7 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(204, $"Error occurred{ex.Message}");
             }
         }
-        /// <summary>
-        /// Retrieves all categories of the admin.
-        /// </summary>
-        /// <response code="200">Returns the list of all the Categories created by admin.</response>
-        /// <response code="404">No content found or an error occurred while retrieving the Categories.</response>
-        [HttpGet]
-        [Route("[action]")]
-        public async Task<IActionResult> GetAllCategoriesForAdmin()
-        {
-            try
-            {
-                return StatusCode(200, await _categoryService.GetAllCategoriesForAdmin());
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(204, $"Error occurred{ex.Message}");
-            }
-        }
+   
         /// <summary>
         /// Retrieves category details by ID of the admin.
         /// </summary>
@@ -378,6 +451,38 @@ namespace BlogPhotographerSystem.Controllers
 
 
         /// <summary>
+        /// Retrieves contact request by ID of the admin.
+        /// </summary>
+        /// <response code="200">Returns the specific contact request by ID.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the contact request.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Get api/Admin
+        ///     {        
+        ///       "ID": 2        
+        ///     }
+        /// </remarks>
+        [HttpGet]
+        [Route("[action]/{ID}")]
+        public async Task<IActionResult> GetContactRequestDetailsByID(int ID)
+        {
+
+            if (ID == null)
+            {
+                return BadRequest("Please filling ContactRequestID");
+            }
+            try
+            {
+                return StatusCode(200, await _contactRequestService.GetContactRequestDetailsById(ID));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(204, $"Error occurred{ex.Message}");
+            }
+        }
+
+        /// <summary>
         /// Filters Problems based on their UserId or OrderId.
         /// </summary>
         /// <response code="200">Returns the list of users that match the provided email or phone number.</response>
@@ -466,104 +571,6 @@ namespace BlogPhotographerSystem.Controllers
         }
         //FilterOrdersByTitleOrUserIdOrServiceIdOrStatus
 
-        /// <summary>
-        /// Retrieves all public galleries of the admin.
-        /// </summary>
-        /// <response code="200">Returns list of all public galleries created by admin.</response>
-        /// <response code="404">No content found or an error occurred while retrieving the public galleries.</response>
-        [HttpGet]
-        [Route("[action]")]
-        public async Task<IActionResult> GetAllPublicGalleries()
-        {
-            try
-            {
-                return StatusCode(200, await _galleryService.GetPublicGalleries());
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(204, $"Error occurred {ex.Message}");
-            }
-        }
-
-
-        /// <summary>
-        /// Retrieves all users of the admin.
-        /// </summary>
-        /// <response code="200">Returns list of all users created.</response>
-        /// <response code="404">No content found or an error occurred while retrieving the users.</response>
-        [HttpGet]
-        [Route("[action]")]
-        public async Task<IActionResult> GetAllUsersForAdmin()
-        {
-            try
-            {
-                return StatusCode(200, await _userService.GetAllUsersDetails());
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(204, $"Error occurred {ex.Message}");
-            }
-        }
-
-
-
-        /// <summary>
-        /// Retrieves all services of the admin.
-        /// </summary>
-        /// <response code="200">Returns list of all services created by admin.</response>
-        /// <response code="404">No content found or an error occurred while retrieving the services.</response>
-        [HttpGet]
-        [Route("[action]")]
-        public async Task<IActionResult> GetAllServicesDetailsForAdmin()
-        {
-            try
-            {
-                return StatusCode(200, await _service.GetAllServicesForAdmin());
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(204, $"Error occurred {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// Retrieves all orders of the admin.
-        /// </summary>
-        /// <response code="200">Returns list of all orders created.</response>
-        /// <response code="404">No content found or an error occurred while retrieving the orders.</response>
-        [HttpGet]
-        [Route("[action]")]
-        public async Task<IActionResult> GetAllOrdersDetailsForAdmin()
-        {
-            try
-            {
-                return StatusCode(200, await _orderService.GetAllOrders());
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(204, $"Error occurred {ex.Message}");
-            }
-        }
-
-
-        /// <summary>
-        /// Retrieves all problems of the admin.
-        /// </summary>
-        /// <response code="200">Returns list of all problems created by admin.</response>
-        /// <response code="404">No content found or an error occurred while retrieving the problems.</response>
-        [HttpGet]
-        [Route("[action]")]
-        public async Task<IActionResult> GetAllProblemsDetailsForAdmin()
-        {
-            try
-            {
-                return StatusCode(200, await _problemService.GetAllProblems());
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(204, $"Error occurred {ex.Message}");
-            }
-        }
 
         /// <summary>
         /// Uploads files to a user's private gallery.
@@ -576,8 +583,7 @@ namespace BlogPhotographerSystem.Controllers
         ///     Post api/Client
         ///     { 
         ///       "path": "photos/Rami",
-        ///       "fileName": "Rami",
-        ///       "fileType": "Image"
+        ///       "fileName": "Rami"
         ///     }
         /// </remarks>
         [HttpPost]
@@ -684,8 +690,7 @@ namespace BlogPhotographerSystem.Controllers
         ///     {        
         ///       "title": "Landscape Photography",
         ///       "description": "Category for landscape photography articles",
-        ///       "imagePath": "/images/landscape.jpg",
-        ///       "creatorUserId": 1      
+        ///       "imagePath": "landscape.jpg",    
         ///     }
         /// </remarks>
         [HttpPost]
@@ -718,7 +723,7 @@ namespace BlogPhotographerSystem.Controllers
         ///       "firstName": "Khaled",
         ///       "lastName": "Ali",
         ///       "email": "Khaled.Ali88@yahoo.com",
-        ///       "password": "Khaled123#",
+        ///       "password": "khaledB123#",
         ///       "birthDate": "1988-06-12T17:43:07.185Z",
         ///       "imagePath": "photos/Khaled",
         ///       "phone": "00962799553026"      
@@ -741,6 +746,40 @@ namespace BlogPhotographerSystem.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Sends files to a user's private gallery by admin.
+        /// </summary>
+        /// <response code="201">New private gallery files have been successfully sent.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data.</response>
+        /// <response code="503">Service unavailable, an error occurred while sending the files.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Put api/Admin
+        ///     {        
+        ///       "path": "videos/shadi",
+        ///       "orderID": 5        
+        ///     }
+        /// </remarks>
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> SendPrivateGalleryFiles(SendPrivateGalleryDTO dto)
+        {
+            if (dto == null)
+                return BadRequest("Please filling All Data");
+            try
+            {
+                await _galleryService.SendFilesForUserByPrivateGallery(dto);
+                return StatusCode(201, "New Private Gallery File For A Specific Order Has Been Sent");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(503, $"Error occurred {ex.Message}");
+            }
+        }
+
+
         /// <summary>
         /// Updates an existing blog data of the admin.
         /// </summary>
@@ -758,7 +797,8 @@ namespace BlogPhotographerSystem.Controllers
         ///       "article": null,
         ///       "blogDate": "2024-06-10T17:47:40.882Z",
         ///       "isApproved": true,
-        ///       "authorID": null     
+        ///       "authorID": null,
+        ///       "path": "Wildlif.png"
         ///     }
         /// </remarks>
         [HttpPut]
@@ -1282,39 +1322,7 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(404, $"Error occurred {ex.Message}");
             }
         }
-        /// <summary>
-        /// Sends files to a user's private gallery by admin.
-        /// </summary>
-        /// <response code="201">New private gallery files have been successfully sent.</response>
-        /// <response code="400">Bad request, indicating missing or invalid data.</response>
-        /// <response code="503">Service unavailable, an error occurred while sending the files.</response>
-        /// <remarks>
-        /// Sample request:
-        /// 
-        ///     Put api/Admin
-        ///     {        
-        ///       "path": "videos/shadi",
-        ///       "fileName": "shadi",
-        ///       "fileType": "Video",
-        ///       "orderID": 5        
-        ///     }
-        /// </remarks>
-        [HttpPost]
-        [Route("[action]")]
-        public async Task<IActionResult> SendPrivateGalleryFiles(SendPrivateGalleryDTO dto)
-        {
-            if (dto == null)
-                return BadRequest("Please filling All Data");
-            try
-            {
-                await _galleryService.SendFilesForUserByPrivateGallery(dto);
-                return StatusCode(201, "New Private Gallery File For A Specific Order Has Been Sent");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(503, $"Error occurred {ex.Message}");
-            }
-        }
+  
         /// <summary>
         /// Confirm user blog and post to client by admin.
         /// </summary>

@@ -15,7 +15,6 @@ namespace BlogPhotographerSystem_Infra.Services
     public class OrderService : IOrderService
     {
         private readonly IOrderRepos _orderRepos;
-
         public OrderService(IOrderRepos orderRepos)
         {
             _orderRepos = orderRepos;

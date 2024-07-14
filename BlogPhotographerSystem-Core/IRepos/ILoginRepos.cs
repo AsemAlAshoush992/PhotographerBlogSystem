@@ -11,7 +11,8 @@ namespace BlogPhotographerSystem_Core.IRepos
     public interface ILoginRepos
     {
         //Guest Management
-        Task LoginReposClient(CreateLoginDTO dto);
+        Task<int> GetUserIdAfterLoginOperations(string email, string password);
+        //Task LoginReposClient(CreateLoginDTO dto);
         Task ResetPasswordRepos(CreateLoginDTO dto);
         Task LogoutRepos(int userID);
     }

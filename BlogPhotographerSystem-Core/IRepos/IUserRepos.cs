@@ -14,6 +14,7 @@ namespace BlogPhotographerSystem_Core.IRepos
         //Guest Management
         Task<int> CreateUserRepos(User user);
         Task CreateLoginRepos(Login login);
+        Task<User> GetUserById(int userId);
 
         //Admin Management
         Task<UserDetailsDTO> GetUserDetailsByIdRepos(int Id);

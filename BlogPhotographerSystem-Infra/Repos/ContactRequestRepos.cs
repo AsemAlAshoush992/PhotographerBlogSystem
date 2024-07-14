@@ -33,7 +33,7 @@ namespace BlogPhotographerSystem_Infra.Repos
         public async Task CreateContactRequestForServiceRepos(ContactRequest contactRequest)
         {
             
-            await _context.ContactRequests.AddRangeAsync(contactRequest);
+            await _context.ContactRequests.AddAsync(contactRequest);
             await _context.SaveChangesAsync();
         }
 

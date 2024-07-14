@@ -5,6 +5,7 @@ using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.Models.Entity;
 using Microsoft.EntityFrameworkCore;
 using Mysqlx.Crud;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,7 +86,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                             LastName = user.LastName,
                             Email = user.Email,
                             BirthDate = user.BirthDate,
-                            ImagePath = user.ImagePath,
+                            ImagePath = $"https://localhost:7071/{user.ImagePath}",
                             Phone = user.Phone,
                             UserType = user.UserType.ToString(),
                             CreationDate = user.CreationDate,
@@ -109,7 +110,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                             Email = user.Email,
                             Password = login.Password,
                             BirthDate = user.BirthDate,
-                            ImagePath = user.ImagePath,
+                            ImagePath = $"https://localhost:7071/{user.ImagePath}",
                             Phone = user.Phone
                         };
             return await query.SingleOrDefaultAsync();
@@ -126,7 +127,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                             LastName = user.LastName,
                             Email = user.Email,
                             BirthDate = user.BirthDate,
-                            ImagePath = user.ImagePath,
+                            ImagePath = $"https://localhost:7071/{user.ImagePath}",
                             Phone = user.Phone,
                             UserType = user.UserType.ToString(),
                             CreationDate = user.CreationDate,
@@ -230,6 +231,15 @@ namespace BlogPhotographerSystem_Infra.Repos
 
             _dbContext.Update(user);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<User> GetUserById (int userId)
+        {
+            var query = from user in _dbContext.Users
+                        where user.Id == userId
+                        select user;
+            return await query.SingleOrDefaultAsync();
+
         }
     }
 }

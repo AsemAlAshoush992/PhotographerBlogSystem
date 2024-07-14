@@ -4,6 +4,7 @@ using BlogPhotographerSystem_Core.DTOs.Gallery;
 using BlogPhotographerSystem_Core.DTOs.Order;
 using BlogPhotographerSystem_Core.DTOs.Problem;
 using BlogPhotographerSystem_Core.DTOs.User;
+using BlogPhotographerSystem_Core.Helper;
 using BlogPhotographerSystem_Core.IServices;
 using BlogPhotographerSystem_Infra.Services;
 using Microsoft.AspNetCore.Http;
@@ -77,17 +78,17 @@ namespace BlogPhotographerSystem.Controllers
         ///     }
         /// </remarks>
         [HttpGet]
-        [Route("[action]/{userID}")]
-        public async Task<IActionResult> GetAllBlogsByUserID(int userID)
+        [Route("[action]")]
+        public async Task<IActionResult> GetAllBlogsByUserID([FromHeader] string token/*,int userID*/)
         {
-
-            if (userID == null)
+            int userID = TokenHelper.IsValidToken2(token);
+            if (!TokenHelper.IsValidToken(token))
             {
-                return BadRequest("Please filling UserID");
+                return BadRequest("you're token failed");
             }
             try
             {
-                return StatusCode(200, await _blogService.GetAllBlogsByUserId(userID));
+               return StatusCode(200, await _blogService.GetAllBlogsByUserId(userID));
             }
             catch (Exception ex)
             {
@@ -161,10 +162,6 @@ namespace BlogPhotographerSystem.Controllers
         }
 
 
-
-
-
-
         /// <summary>
         /// Sends a user's blog post for approval.
         /// </summary>
@@ -201,175 +198,6 @@ namespace BlogPhotographerSystem.Controllers
             }
         }
 
-        /// <summary>
-        /// Updates an existing personal information data of the client.
-        /// </summary>
-        /// <response code="200">The personal information has been updated successfully.</response>
-        /// <response code="400">Bad request, indicating missing or invalid data.</response>
-        /// <response code="404">The personal information was not found or an error occurred during the update.</response>
-        /// <remarks>
-        /// Sample request:
-        /// 
-        ///     Put api/Client
-        ///     { 
-        ///       "id": 4,
-        ///       "firstName": "Shadi",
-        ///       "lastName": "Khalil",
-        ///       "password": "Shadik123@",
-        ///       "birthDate": null,
-        ///       "imagePath": null,
-        ///       "phone": null     
-        ///     }
-        /// </remarks>
-        [HttpPut]
-        [Route("[action]")]
-        public async Task<IActionResult> UpdatePersonalInformationForUserAcount([FromBody] UpdateUserDTO dto)
-        {
-            if (dto == null)
-                return BadRequest("Please filling All Data");
-            try
-            {
-                await _userService.UpdateUserAccount(dto);
-                return StatusCode(200, "The Personal Information has been Updated successfully");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(404, $"Error occurred {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// Updates an existing blog data of the client.
-        /// </summary>
-        /// <response code="200">The blog has been updated successfully.</response>
-        /// <response code="400">Bad request, indicating missing or invalid data.</response>
-        /// <response code="404">The blog was not found or an error occurred during the update.</response>
-        /// <remarks>
-        /// Sample request:
-        /// 
-        ///     Put api/Client
-        ///     { 
-        ///       "id": 25,
-        ///       "attachementId": 37,
-        ///       "title": "Ibrahim blog",
-        ///       "article": null,
-        ///       "path": null,
-        ///       "fileType": null,
-        ///       "fileName": null
-        ///     }
-        /// </remarks>
-        [HttpPut]
-        [Route("[action]")]
-        public async Task<IActionResult> UpdateBlogForSpecificUser([FromBody] UpdateBlogClientDTO dto)
-        {
-            if (dto == null)
-                return BadRequest("Please filling All Data");
-            try
-            {
-                await _blogService.UpdateClientBlog(dto);
-                return StatusCode(200, "The Blog has been Updated successfully");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(404, $"Error occurred {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// Updates an existing private gallery file of the client.
-        /// </summary>
-        /// <response code="200">The private gallery file has been updated successfully.</response>
-        /// <response code="400">Bad request, indicating missing or invalid data.</response>
-        /// <response code="404">The private gallery file was not found or an error occurred during the update.</response>
-        /// <remarks>
-        /// Sample request:
-        /// 
-        ///     Put api/Client
-        ///     { 
-        ///       "id": 21,
-        ///       "path": "photos/Sameer",
-        ///       "fileName": null,
-        ///       "fileType": null
-        ///     }
-        /// </remarks>
-        [HttpPut]
-        [Route("[action]")]
-        public async Task<IActionResult> UpdatePrivateGalleryFile([FromBody] UpdatePrivateGalleryDTO dto)
-        {
-            if (dto == null)
-                return BadRequest("Please filling All Data");
-            try
-            {
-                await _galleryService.UpdateFilesForClientByPrivateGallery(dto);
-                return StatusCode(200, "The Private Gallery File has been Updated successfully");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(404, $"Error occurred {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// Deletes a specific blog of the client.
-        /// </summary>
-        /// <response code="200">The blog has been deleted successfully.</response>
-        /// <response code="400">Bad request, indicating missing or invalid data.</response>
-        /// <response code="404">The blog was not found or an error occurred during deletion.</response>
-        /// <remarks>
-        /// Sample request:
-        /// 
-        ///     Put api/Client
-        ///     { 
-        ///       "ID": 10
-        ///     }
-        /// </remarks>
-        [HttpPut]
-        [Route("[action]/{ID}")]
-        public async Task<IActionResult> DeleteBlogForSpecificUser(int ID)
-        {
-            if (ID == null)
-                return BadRequest("Please filling BlogId");
-            try
-            {
-                await _blogService.DeleteBlog(ID);
-                return StatusCode(200, "The Blog has been Deleted successfully");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(404, $"Error occurred {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// Deletes a specific private gallery file of the client.
-        /// </summary>
-        /// <response code="200">The private gallery file has been deleted successfully.</response>
-        /// <response code="400">Bad request, indicating missing or invalid data.</response>
-        /// <response code="404">The private gallery file was not found or an error occurred during deletion.</response>
-        /// <remarks>
-        /// Sample request:
-        /// 
-        ///     Put api/Client
-        ///     { 
-        ///       "ID": 10
-        ///     }
-        /// </remarks>
-        [HttpPut]
-        [Route("[action]/{ID}")]
-        public async Task<IActionResult> DeletePrivateGalleryFile(int ID)
-        {
-            if (ID == null)
-                return BadRequest("Please filling PrivateGalleryId");
-            try
-            {
-                await _galleryService.DeletePrivateGallery(ID);
-                return StatusCode(200, "The Private Gallery File has been Deleted successfully");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(404, $"Error occurred {ex.Message}");
-            }
-        }
 
 
         /// <summary>
@@ -451,8 +279,7 @@ namespace BlogPhotographerSystem.Controllers
         ///     Post api/Client
         ///     { 
         ///       "path": "photos/Rami",
-        ///       "fileName": "Rami",
-        ///       "fileType": "Image"
+        ///       "userID": 6,
         ///     }
         /// </remarks>
         [HttpPost]
@@ -507,6 +334,174 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(400, $"Error occurred {ex.Message}");
             }
         }
+
+
+        /// <summary>
+        /// Updates an existing personal information data of the client.
+        /// </summary>
+        /// <response code="200">The personal information has been updated successfully.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data.</response>
+        /// <response code="404">The personal information was not found or an error occurred during the update.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Put api/Client
+        ///     { 
+        ///       "id": 4,
+        ///       "firstName": "Shadi",
+        ///       "lastName": "Khalil",
+        ///       "password": "Shadik123@",
+        ///       "birthDate": null,
+        ///       "imagePath": null,
+        ///       "phone": null     
+        ///     }
+        /// </remarks>
+        [HttpPut]
+        [Route("[action]")]
+        public async Task<IActionResult> UpdatePersonalInformationForUserAcount([FromBody] UpdateUserDTO dto)
+        {
+            if (dto == null)
+                return BadRequest("Please filling All Data");
+            try
+            {
+                await _userService.UpdateUserAccount(dto);
+                return StatusCode(200, "The Personal Information has been Updated successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, $"Error occurred {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Updates an existing blog data of the client.
+        /// </summary>
+        /// <response code="200">The blog has been updated successfully.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data.</response>
+        /// <response code="404">The blog was not found or an error occurred during the update.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Put api/Client
+        ///     { 
+        ///       "id": 25,
+        ///       "attachementId": 37,
+        ///       "title": "Ibrahim blog",
+        ///       "article": null,
+        ///       "path": null
+        ///     }
+        /// </remarks>
+        [HttpPut]
+        [Route("[action]")]
+        public async Task<IActionResult> UpdateBlogForSpecificUser([FromBody] UpdateBlogClientDTO dto)
+        {
+            if (dto == null)
+                return BadRequest("Please filling All Data");
+            try
+            {
+                await _blogService.UpdateClientBlog(dto);
+                return StatusCode(200, "The Blog has been Updated successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, $"Error occurred {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Updates an existing private gallery file of the client.
+        /// </summary>
+        /// <response code="200">The private gallery file has been updated successfully.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data.</response>
+        /// <response code="404">The private gallery file was not found or an error occurred during the update.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Put api/Client
+        ///     { 
+        ///       "id": 21,
+        ///       "path": "photos/Sameer"
+        ///     }
+        /// </remarks>
+        [HttpPut]
+        [Route("[action]")]
+        public async Task<IActionResult> UpdatePrivateGalleryFile([FromBody] UpdatePrivateGalleryDTO dto)
+        {
+            if (dto == null)
+                return BadRequest("Please filling All Data");
+            try
+            {
+                await _galleryService.UpdateFilesForClientByPrivateGallery(dto);
+                return StatusCode(200, "The Private Gallery File has been Updated successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, $"Error occurred {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Deletes a specific blog of the client.
+        /// </summary>
+        /// <response code="200">The blog has been deleted successfully.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data.</response>
+        /// <response code="404">The blog was not found or an error occurred during deletion.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Put api/Client
+        ///     { 
+        ///       "ID": 10
+        ///     }
+        /// </remarks>
+        [HttpPut]
+        [Route("[action]/{ID}")]
+        public async Task<IActionResult> DeleteBlogForSpecificUser(int ID)
+        {
+            if (ID == null)
+                return BadRequest("Please filling BlogId");
+            try
+            {
+                await _blogService.DeleteBlog(ID);
+                return StatusCode(200, "The Blog has been Deleted successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, $"Error occurred {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Deletes a specific private gallery file of the client.
+        /// </summary>
+        /// <response code="200">The private gallery file has been deleted successfully.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data.</response>
+        /// <response code="404">The private gallery file was not found or an error occurred during deletion.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Put api/Client
+        ///     { 
+        ///       "ID": 10
+        ///     }
+        /// </remarks>
+        [HttpPut]
+        [Route("[action]/{ID}")]
+        public async Task<IActionResult> DeletePrivateGalleryFile(int ID)
+        {
+            if (ID == null)
+                return BadRequest("Please filling PrivateGalleryId");
+            try
+            {
+                await _galleryService.DeletePrivateGallery(ID);
+                return StatusCode(200, "The Private Gallery File has been Deleted successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, $"Error occurred {ex.Message}");
+            }
+        }
+
         
         /// <summary>
         /// Cancels an order for a specific service for a client.

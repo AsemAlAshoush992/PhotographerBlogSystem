@@ -55,7 +55,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                 Article = blogGroup.Key.Article,
                 BlogDate = blogGroup.Key.BlogDate,
                 AuthorName = blogGroup.Key.FirstName + " " + blogGroup.Key.LastName,
-                FilePaths = blogGroup.Select(bg => bg.attachement.Path).ToList()
+                FilePaths = blogGroup.Select(bg => $"https://localhost:7071/{bg.attachement.Path}").ToList()
             };
             return await query.ToListAsync();
         }
@@ -97,7 +97,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                             Description = blogGroup.FirstOrDefault().blogCards.Description,
                             BlogDate = blogGroup.FirstOrDefault().blogCards.BlogDate,
                             AuthorName = blogGroup.FirstOrDefault().user.FirstName + " " + blogGroup.FirstOrDefault().user.LastName,
-                            ImagePath = blogGroup.FirstOrDefault().attachement.Path
+                            ImagePath = $"https://localhost:7071/{blogGroup.FirstOrDefault().attachement.Path}"
                         } into blogCardsDTO
                         orderby blogCardsDTO.BlogDate descending
                         select blogCardsDTO;
@@ -122,7 +122,8 @@ namespace BlogPhotographerSystem_Infra.Repos
                             Article = blogGroup.Key.Article,
                             BlogDate = blogGroup.Key.BlogDate,
                             AuthorName = blogGroup.Key.FirstName + " " + blogGroup.Key.LastName,
-                            FilePaths = blogGroup.Select(bg => bg.file.Path).ToList()
+                            FilePaths = blogGroup.Select(bg => $"https://localhost:7071/{bg.file.Path}").ToList()
+                           
                         };
             return await query.SingleOrDefaultAsync();
         }
@@ -194,14 +195,7 @@ namespace BlogPhotographerSystem_Infra.Repos
             if (!string.IsNullOrEmpty(dto.Path))
             {
                 Attachement.Path = dto.Path;
-            }
-
-            if (!String.IsNullOrEmpty(dto.Path))
-            {
                 Attachement.FileName = Path.GetFileNameWithoutExtension(dto.Path);
-            }
-            if (!String.IsNullOrEmpty(dto.Path))
-            {
                 string fileType;
                 string extension = Path.GetExtension(dto.Path).ToUpperInvariant();
 
@@ -219,6 +213,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                 }
                 Attachement.FileType = (FileType)Enum.Parse(typeof(FileType), fileType);
             }
+
             blog.BlogDate = DateTime.Now;
             blog.ModifiedDate = DateTime.Now;
             blog.ModifiedUserId = 1;
@@ -279,14 +274,7 @@ namespace BlogPhotographerSystem_Infra.Repos
             if (!string.IsNullOrEmpty(dto.Path))
             {
                 Attachement.Path = dto.Path;
-            }
-           
-            if(!String.IsNullOrEmpty(dto.Path))
-            {
                 Attachement.FileName = Path.GetFileNameWithoutExtension(dto.Path);
-            }
-            if (!String.IsNullOrEmpty(dto.Path))
-            {
                 string fileType;
                 string extension = Path.GetExtension(dto.Path).ToUpperInvariant();
 
@@ -304,6 +292,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                 }
                 Attachement.FileType = (FileType)Enum.Parse(typeof(FileType), fileType);
             }
+           
             blog.BlogDate = DateTime.Now;
             blog.ModifiedDate = DateTime.Now;
             blog.ModifiedUserId = blog.AuthorID;

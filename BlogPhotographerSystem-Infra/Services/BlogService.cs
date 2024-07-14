@@ -14,6 +14,7 @@ namespace BlogPhotographerSystem_Infra.Services
     public class BlogService : IBlogService
     {
         private readonly IBlogRepos _blogRepos;
+     
         public BlogService(IBlogRepos blogRepos)
         {
             _blogRepos = blogRepos;

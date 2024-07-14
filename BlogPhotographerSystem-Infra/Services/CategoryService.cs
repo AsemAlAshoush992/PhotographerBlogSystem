@@ -34,7 +34,9 @@ namespace BlogPhotographerSystem_Infra.Services
             {
                 Title = dto.Title,
                 Description = dto.Description,
-                ImagePath = dto.ImagePath
+                ImagePath = dto.ImagePath,
+                CreatorUserId = 1,
+                CreationDate = DateTime.Now
             };
             await _categoryRepos.CreateCategoryRepos(category);
         }

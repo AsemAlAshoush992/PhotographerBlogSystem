@@ -17,7 +17,5 @@ namespace BlogPhotographerSystem_Core.DTOs.Blog
         public bool? IsApproved { get; set; }
         public int? AuthorID { get; set; }
         public string? Path { get; set; }
-        public string? FileType { get; set; }
-        public string? FileName { get; set; }
     }
 }

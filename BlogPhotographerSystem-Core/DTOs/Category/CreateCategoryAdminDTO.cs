@@ -11,6 +11,5 @@ namespace BlogPhotographerSystem_Core.DTOs.Category
         public string Title { get; set; }
         public string Description { get; set; }
         public string ImagePath { get; set; }
-        public int CreatorUserId { get; set; }
     }
 }

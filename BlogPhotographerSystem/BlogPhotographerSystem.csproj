@@ -26,6 +26,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="7.6.2" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.6.2" />
     <PackageReference Include="MySql.Data" Version="8.4.0" />
     <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.16" />
@@ -38,10 +39,6 @@
   <ItemGroup>
     <ProjectReference Include="..\BlogPhotographerSystem-Core\BlogPhotographerSystem-Core.csproj" />
     <ProjectReference Include="..\BlogPhotographerSystem-Infra\BlogPhotographerSystem-Infra.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Files\" />
   </ItemGroup>
 
 </Project>

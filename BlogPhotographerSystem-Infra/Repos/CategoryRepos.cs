@@ -4,6 +4,7 @@ using BlogPhotographerSystem_Core.DTOs.Category;
 using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.Models.Entity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                         {
                             Title = category.Title,
                             Description = category.Description,
-                            ImagePath = category.ImagePath
+                            ImagePath = $"https://localhost:7071/{category.ImagePath}"
                         };
             return await query.ToListAsync();
         }
@@ -47,7 +48,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                             Id = category.Id,
                             Title = category.Title,
                             Description = category.Description,
-                            ImagePath = category.ImagePath,
+                            ImagePath = $"https://localhost:7071/{category.ImagePath}",
                             CreationDate = category.CreationDate,
                             ModifiedDate = category.ModifiedDate,
                             CreatorUserId = category.CreatorUserId,
@@ -66,7 +67,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                             Id = category.Id,
                             Title = category.Title,
                             Description = category.Description,
-                            ImagePath = category.ImagePath,
+                            ImagePath = $"https://localhost:7071/{category.ImagePath}",
                             CreationDate = category.CreationDate,
                             ModifiedDate = category.ModifiedDate,
                             CreatorUserId = category.CreatorUserId,

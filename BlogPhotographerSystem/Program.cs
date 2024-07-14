@@ -52,12 +52,12 @@ builder.Services.AddScoped<IContactRequestRepos, ContactRequestRepos>();
 builder.Services.AddScoped<ILoginRepos, LoginRepos>();
 builder.Services.AddDbContext<BlogPhotographerSystemDBContext>(option => option.UseMySQL(builder.Configuration.GetConnectionString("mysqlconnect")));
 
+
 //serilog
 var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 Serilog.Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration).
                 WriteTo.File(configuration.GetValue<string>("LogerPath"), rollingInterval: RollingInterval.Day).
                 CreateLogger();
-
 
 var app = builder.Build();
 

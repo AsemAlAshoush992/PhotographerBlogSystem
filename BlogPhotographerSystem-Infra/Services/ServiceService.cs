@@ -20,7 +20,6 @@ namespace BlogPhotographerSystem_Infra.Services
     public class ServiceService : IServiceService
     {
         private readonly IServiceRepos _serviceRepos;
-        
         public ServiceService(IServiceRepos serviceRepos)
         {
             _serviceRepos = serviceRepos;

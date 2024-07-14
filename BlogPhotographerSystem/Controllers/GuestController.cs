@@ -197,8 +197,8 @@ namespace BlogPhotographerSystem.Controllers
         /// 
         ///     Put api/Guest
         ///     {        
-        ///       "userName": "david.wilson",
-        ///       "password": "Davidwil4%"   
+        ///       "userName": "Majed.Mohammed7@yahoo.com",
+        ///       "password": "MajedM323#"   
         ///     }
         /// </remarks>
         [HttpPut]
@@ -209,8 +209,8 @@ namespace BlogPhotographerSystem.Controllers
                 return BadRequest("Please filling All Data");
             try
             {
-                await _loginService.Login(dto);
-                return StatusCode(201, "Login has been successfully");
+                 var token = await _loginService.GenerateUserAccessToken(dto);
+                return StatusCode(200, token);
             }
             catch (Exception ex)
             {

@@ -12,7 +12,7 @@ namespace BlogPhotographerSystem.Controllers
     {
         [HttpPost]
         [Route("[action]")]
-        public async Task<string> UploadImageAndGetURL(IFormFile file)
+        public async Task<IActionResult> UploadImageAndGetURL(IFormFile file)
         {
             string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "Files");
             if (file == null || file.Length == 0)
@@ -20,11 +20,12 @@ namespace BlogPhotographerSystem.Controllers
                 throw new Exception("Please Enter Valid File");
             }
             string newFileURL = Guid.NewGuid().ToString() + "" + file.FileName;
+            string RelativePath = @"Files/"+ newFileURL;
             using (var inputFile = new FileStream(Path.Combine(uploadFolder, newFileURL), FileMode.Create))
             {
                 await file.CopyToAsync(inputFile);
             }
-            return newFileURL;
+            return StatusCode(201, RelativePath);
         }
 
         [HttpPost]

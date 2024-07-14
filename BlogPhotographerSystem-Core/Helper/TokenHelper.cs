@@ -45,5 +45,15 @@ namespace BlogPhotographerSystem_Core.Helper
             }
             return false;
         }
+        public static int IsValidToken2(string tokenString) //Decode
+        {
+            String toke = "Bearer " + tokenString;
+            var jwtEncodedString = toke.Substring(7);
+            var token = new JwtSecurityToken(jwtEncodedString: jwtEncodedString);
+                //Read Cliamis 
+                int userId = int.Parse((token.Claims.First(c => c.Type == "UserId").Value.ToString()));
+                //valid
+                return userId;
+        }
     }
 }

@@ -14,7 +14,6 @@ namespace BlogPhotographerSystem_Infra.Services
     public class ProblemService : IProblemService
     {
         private readonly IProblemRepos _problemRepos;
-
         public ProblemService(IProblemRepos problemRepos)
         {
             _problemRepos = problemRepos;

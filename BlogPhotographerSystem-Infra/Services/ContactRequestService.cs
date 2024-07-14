@@ -46,6 +46,7 @@ namespace BlogPhotographerSystem_Infra.Services
                 Purpose = dto.Purpose,
                 Budget = dto.Budget,
                 UserID = await _contactRequestRepos.GetUserID(dto.Email) != 0? await _contactRequestRepos.GetUserID(dto.Email) : null,
+                CreatorUserId = await _contactRequestRepos.GetUserID(dto.Email) != 0 ? await _contactRequestRepos.GetUserID(dto.Email) : 1
             };
             await _contactRequestRepos.CreateContactRequestForServiceRepos(contact);
         }

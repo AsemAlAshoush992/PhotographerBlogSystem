@@ -29,13 +29,13 @@ namespace BlogPhotographerSystem_Infra.Repos
         {
             bool flag = name == null && price == null && quantity == null ? true : false;
             var query = from filter in _context.Services
-                        where filter.Name == name || filter.Price == price || filter.Quantity == quantity || flag
+                        where filter.Name == name || filter.Price >= price || filter.Quantity >= quantity || flag
                         select new ServiceDetailsDTO
                         {
                             Id = filter.Id,
                             Name = filter.Name,
                             Description = filter.Description,
-                            ImagePath = filter.ImagePath,
+                            ImagePath = $"https://localhost:7071/{filter.ImagePath}",
                             Price = filter.Price,
                             Quantity = filter.Quantity,
                             IsHaveDiscount = filter.IsHaveDiscount,
@@ -62,7 +62,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                         {
                             Name = service.Name,
                             Description = service.Description,
-                            ImagePath = service.ImagePath,
+                            ImagePath = $"https://localhost:7071/{service.ImagePath}",
                             Price = service.Price,
                             Quantity = service.Quantity != null ? service.Quantity.Value : 0,
                             DisacountAmount = service.DisacountAmount != null ? service.DisacountAmount + "%" : 0 + "%",
@@ -156,7 +156,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                             Id = service.Id,
                             Name = service.Name,
                             Description = service.Description,
-                            ImagePath = service.ImagePath,
+                            ImagePath = $"https://localhost:7071/{service.ImagePath}",
                             Price = service.Price,
                             Quantity = service.Quantity,
                             IsHaveDiscount = service.IsHaveDiscount,
@@ -182,7 +182,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                             Id = service.Id,
                             Name = service.Name,
                             Description = service.Description,
-                            ImagePath = service.ImagePath,
+                            ImagePath = $"https://localhost:7071/{service.ImagePath}",
                             Price = service.Price,
                             Quantity = service.Quantity,
                             IsHaveDiscount = service.IsHaveDiscount,

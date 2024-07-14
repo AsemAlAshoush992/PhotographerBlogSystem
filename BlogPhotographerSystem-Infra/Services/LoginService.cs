@@ -1,4 +1,5 @@
 ﻿using BlogPhotographerSystem_Core.DTOs.Login;
+using BlogPhotographerSystem_Core.Helper;
 using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.IServices;
 using BlogPhotographerSystem_Core.Models.Entity;
@@ -13,13 +14,37 @@ namespace BlogPhotographerSystem_Infra.Services
     public class LoginService : ILoginService
     {
         private readonly ILoginRepos _loginRepos;
-        public LoginService(ILoginRepos loginRepos)
+        private readonly IUserRepos _userRepos;
+        public LoginService(ILoginRepos loginRepos, IUserRepos userRepos)
         {
             _loginRepos = loginRepos;
+            _userRepos = userRepos;
         }
-        public async Task Login(CreateLoginDTO dto)
+        //public async Task Login(CreateLoginDTO dto)
+        //{
+        //    await _loginRepos.LoginReposClient(dto);
+        //}
+        public async Task<string> GenerateUserAccessToken(CreateLoginDTO input)
         {
-            await _loginRepos.LoginReposClient(dto);
+            var user = await TryAuthenticate(input);
+            if (user != null)
+            {
+                return TokenHelper.GenerateJwtToken(user);
+            }
+            throw new Exception("Failed to generate token");
+        }
+        public async Task<User> TryAuthenticate(CreateLoginDTO input)
+        {
+            var userId = await _loginRepos.GetUserIdAfterLoginOperations(input.UserName, input.Password);
+
+            if(userId != 0)
+            {
+                return await _userRepos.GetUserById(userId);
+            }
+            else
+            {
+                throw new Exception("Wrong email or password");
+            }
         }
 
         public async Task Logout(int userID)

@@ -16,7 +16,6 @@ namespace BlogPhotographerSystem_Infra.Services
     public class UserService : IUserService
     {
         private readonly IUserRepos _userRepos;
-
         public UserService(IUserRepos userRepos)
         {
             _userRepos = userRepos;

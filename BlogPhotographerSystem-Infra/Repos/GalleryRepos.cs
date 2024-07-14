@@ -8,6 +8,7 @@ using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using static BlogPhotographerSystem_Core.Helper.Enums.Enums;
@@ -33,10 +34,6 @@ namespace BlogPhotographerSystem_Infra.Repos
             await _context.SaveChangesAsync();
         }
 
-        public Task<PrivateGalleryDetailsDTO> FilterPrivateGalleryByFileTypeOrOrderIDRepos(string? FileType, int? orderID)
-        {
-            throw new NotImplementedException();
-        }
         //Guest Management
         public async Task<List<PhotosAndVideosInfoDTO>> GetAllPhotosForPublicGalleryRepos()
         {
@@ -47,7 +44,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                         orderby photo.CreationDate descending
                         select new PhotosAndVideosInfoDTO
                         {
-                            Path = photo.Path,
+                            Path = $"https://localhost:7071/{photo.Path}",
                             FileName = photo.FileName
                         };
             return await query.ToListAsync();
@@ -62,7 +59,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                         orderby video.CreationDate descending
                         select new PhotosAndVideosInfoDTO
                         {
-                            Path = video.Path,
+                            Path = $"https://localhost:7071/{video.Path}",
                             FileName = video.FileName
                         };
             return await query.ToListAsync();
@@ -76,7 +73,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                         select new PrivateGalleryDetailsDTO
                         {
                             Id = gallery.Id,
-                            Path = gallery.Path,
+                            Path = $"https://localhost:7071/{gallery.Path}",
                             FileName = gallery.FileName,
                             FileType = gallery.FileType.ToString(),
                             IsPrivate = gallery.IsPrivate,
@@ -100,7 +97,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                         && privateGallery.OrderID == null
                         select new PrivateGalleryDetailsForClientDTO
                         {
-                            Path = privateGallery.Path,
+                            Path = $"https://localhost:7071/{privateGallery.Path}",
                             FileName = privateGallery.FileName,
                             FileType = privateGallery.FileType.ToString(),
                             OrderID = privateGallery.OrderID
@@ -121,7 +118,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                         && privateGallery.IsDeleted == false
                         select new PrivateGalleryDetailsForClientDTO
                         {
-                            Path = privateGallery.Path,
+                            Path = $"https://localhost:7071/{privateGallery.Path}",
                             FileName = privateGallery.FileName,
                             FileType = privateGallery.FileType.ToString(),
                             OrderID = privateGallery.OrderID
@@ -179,11 +176,11 @@ namespace BlogPhotographerSystem_Infra.Repos
         public async Task<List<PrivateGalleryDetailsDTO>> GetPublicGalleriesRepos()
         {
             var query = from gallery in _context.Galleries
-                        where gallery.IsPrivate == true
+                        where gallery.IsPrivate == false
                         select new PrivateGalleryDetailsDTO
                         {
                             Id = gallery.Id,
-                            Path = gallery.Path,
+                            Path = $"https://localhost:7071/{gallery.Path}", 
                             FileName = gallery.FileName,
                             FileType = gallery.FileType.ToString(),
                             IsPrivate = gallery.IsPrivate,
@@ -203,7 +200,7 @@ namespace BlogPhotographerSystem_Infra.Repos
 
             if (gallery == null)
             {
-                throw new Exception("PrivateGallery File not found");
+                throw new Exception("Private Gallery File not found");
             }
 
             if (!string.IsNullOrEmpty(dto.Path))
@@ -211,17 +208,28 @@ namespace BlogPhotographerSystem_Infra.Repos
                 gallery.Path = dto.Path;
             }
 
-            if (!string.IsNullOrEmpty(dto.FileName))
+            if (!string.IsNullOrEmpty(dto.Path))
             {
-                gallery.FileName = dto.FileName;
+                gallery.Path = dto.Path;
+                gallery.FileName = Path.GetFileNameWithoutExtension(dto.Path);
+                string fileType;
+                string extension = Path.GetExtension(dto.Path).ToUpperInvariant();
+
+                if (extension == ".JPEG" || extension == ".JPG" || extension == ".PNG" || extension == ".GIF" || extension == ".TIFF" || extension == ".WEBP")
+                {
+                    fileType = "Image";
+                }
+                else if (extension == ".MP4" || extension == ".AVI" || extension == ".MOV" || extension == ".WMV" || extension == ".MKV" || extension == ".FLV" || extension == ".WEBM")
+                {
+                    fileType = "Video";
+                }
+                else
+                {
+                    fileType = "Document";
+                }
+                gallery.FileType = (FileType)Enum.Parse(typeof(FileType), fileType);
             }
 
-            if (!string.IsNullOrEmpty(dto.FileType))
-            {
-                gallery.FileType = (FileType)Enum.Parse(typeof(FileType), dto.FileType);
-
-            }
-           
             gallery.ModifiedDate = DateTime.Now;
             gallery.ModifiedUserId = 1;
 

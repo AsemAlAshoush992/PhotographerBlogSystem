@@ -15,7 +15,6 @@ namespace BlogPhotographerSystem_Infra.Services
     public class GalleryService : IGalleryService
     {
         private readonly IGalleryRepos _galleryRepos;
-
         public GalleryService(IGalleryRepos galleryRepos)
         {
             _galleryRepos = galleryRepos;

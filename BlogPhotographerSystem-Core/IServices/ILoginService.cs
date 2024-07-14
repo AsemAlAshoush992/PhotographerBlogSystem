@@ -12,7 +12,9 @@ namespace BlogPhotographerSystem_Core.IServices
     public interface ILoginService
     {
         //Guest Management
-        public Task Login(CreateLoginDTO dto);
+        Task<string> GenerateUserAccessToken(CreateLoginDTO input);
+        Task<User> TryAuthenticate(CreateLoginDTO input);
+        //Task Login(CreateLoginDTO dto);
         Task ResetPassword(CreateLoginDTO dto);
         Task Logout(int userID);
 

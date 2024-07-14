@@ -19,7 +19,14 @@ namespace BlogPhotographerSystem_Infra.Repos
         {
             _context = context;
         }
-
+        public async Task<int> GetUserIdAfterLoginOperations(string email, string password)
+        {
+            var query = from login in _context.Logins
+                        where login.UserName == email 
+                        && login.Password == password 
+                        select login.UserID;
+              return (int)await query.FirstOrDefaultAsync();
+        }
         public async Task LogoutRepos(int userID)
         {
             var query = await _context.Logins.SingleOrDefaultAsync
