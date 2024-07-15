@@ -163,10 +163,6 @@ namespace BlogPhotographerSystem_Infra.Repos
                             DisacountAmount = service.DisacountAmount,
                             DiscountType = service.DiscountType.ToString(),
                             CategoryID = service.CategoryID,
-                            CreationDate = service.CreationDate,
-                            ModifiedDate = service.ModifiedDate,
-                            CreatorUserId = service.CreatorUserId,
-                            ModifiedUserId = service.ModifiedUserId,
                             IsDeleted = service.IsDeleted
                         };
             return await query.ToListAsync();

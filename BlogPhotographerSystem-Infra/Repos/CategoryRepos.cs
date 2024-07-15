@@ -49,10 +49,6 @@ namespace BlogPhotographerSystem_Infra.Repos
                             Title = category.Title,
                             Description = category.Description,
                             ImagePath = $"https://localhost:7071/{category.ImagePath}",
-                            CreationDate = category.CreationDate,
-                            ModifiedDate = category.ModifiedDate,
-                            CreatorUserId = category.CreatorUserId,
-                            ModifiedUserId = category.ModifiedUserId,
                             IsDeleted = category.IsDeleted
                         };
             return await query.ToListAsync();

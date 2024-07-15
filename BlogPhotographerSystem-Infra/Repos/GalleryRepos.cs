@@ -185,10 +185,6 @@ namespace BlogPhotographerSystem_Infra.Repos
                             FileType = gallery.FileType.ToString(),
                             IsPrivate = gallery.IsPrivate,
                             OrderID = gallery.OrderID,
-                            CreationDate = gallery.CreationDate,
-                            ModifiedDate = gallery.ModifiedDate,
-                            CreatorUserId = gallery.CreatorUserId,
-                            ModifiedUserId = gallery.ModifiedUserId,
                             IsDeleted = gallery.IsDeleted
                         };
             return await query.ToListAsync();

@@ -75,10 +75,6 @@ namespace BlogPhotographerSystem_Infra.Repos
                             Description = problem.Description,
                             UserID = problem.UserID,
                             OrderID = problem.OrderID,
-                            CreationDate = problem.CreationDate,
-                            ModifiedDate = problem.ModifiedDate,
-                            CreatorUserId = problem.CreatorUserId,
-                            ModifiedUserId = problem.ModifiedUserId,
                             IsDeleted = problem.IsDeleted
                         };
             return await query.ToListAsync();

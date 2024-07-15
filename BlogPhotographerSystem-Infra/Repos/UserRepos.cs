@@ -89,10 +89,6 @@ namespace BlogPhotographerSystem_Infra.Repos
                             ImagePath = $"https://localhost:7071/{user.ImagePath}",
                             Phone = user.Phone,
                             UserType = user.UserType.ToString(),
-                            CreationDate = user.CreationDate,
-                            ModifiedDate = user.ModifiedDate,
-                            CreatorUserId = user.CreatorUserId,
-                            ModifiedUserId = user.ModifiedUserId,
                             IsDeleted = user.IsDeleted
                         };
             return await query.ToListAsync() ;
@@ -188,7 +184,7 @@ namespace BlogPhotographerSystem_Infra.Repos
         public async Task UpdateUserRepos(UpdateUserAdminDTO dto)
         {
             var user = await _dbContext.Users.SingleOrDefaultAsync(b => b.Id == dto.Id);
-
+            var login = await _dbContext.Logins.SingleOrDefaultAsync(b => b.UserID == dto.Id);
             if (user == null)
             {
                 throw new Exception("Admin not found");
@@ -209,6 +205,10 @@ namespace BlogPhotographerSystem_Infra.Repos
                 user.Email = dto.Email;
             }
 
+            if (!string.IsNullOrEmpty(dto.Password))
+            {
+                login.Password = dto.Password;
+            }
             if (!string.IsNullOrEmpty(dto.ImagePath))
             {
                 user.ImagePath = dto.ImagePath;

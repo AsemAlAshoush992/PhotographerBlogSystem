@@ -106,10 +106,6 @@ namespace BlogPhotographerSystem_Infra.Repos
                             PaymentMethod = order.PaymentMethod.ToString(),
                             UserID = order.UserID,
                             ServiceID = order.ServiceID,
-                            CreationDate = order.CreationDate,
-                            ModifiedDate = order.ModifiedDate,
-                            CreatorUserId = order.CreatorUserId,
-                            ModifiedUserId = order.ModifiedUserId,
                             IsDeleted = order.IsDeleted,
                         };
             return await query.ToListAsync();

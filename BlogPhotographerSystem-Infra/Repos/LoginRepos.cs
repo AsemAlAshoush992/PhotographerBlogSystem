@@ -24,6 +24,7 @@ namespace BlogPhotographerSystem_Infra.Repos
             var query = from login in _context.Logins
                         where login.UserName == email 
                         && login.Password == password 
+                        && login.IsDeleted == false
                         select login.UserID;
               return (int)await query.FirstOrDefaultAsync();
         }

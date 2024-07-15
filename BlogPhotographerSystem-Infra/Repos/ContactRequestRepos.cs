@@ -71,10 +71,6 @@ namespace BlogPhotographerSystem_Infra.Repos
                             Purpose = contact.Purpose,
                             Budget = contact.Budget,
                             UserID = contact.UserID,
-                            CreationDate = contact.CreationDate,
-                            ModifiedDate = contact.ModifiedDate,
-                            CreatorUserId = contact.CreatorUserId,
-                            ModifiedUserId = contact.ModifiedUserId,
                             IsDeleted = contact.IsDeleted
                         };
             return await query.ToListAsync();

@@ -11,9 +11,8 @@ namespace BlogPhotographerSystem_Core.DTOs.Blog
         public int Id { get; set; }
         public int AttachementId { get; set; }
         public string? Title { get; set; }
+        public string? Description { get; set; }
         public string? Article { get; set; }
         public string? Path { get; set; }
-        public string? FileType { get; set; }
-        public string? FileName { get; set; }
     }
 }

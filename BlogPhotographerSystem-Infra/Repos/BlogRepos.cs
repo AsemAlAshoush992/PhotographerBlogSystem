@@ -66,15 +66,10 @@ namespace BlogPhotographerSystem_Infra.Repos
                         {
                             ID = blog.Id,
                             Title = blog.Title,
-                            Description = blog.Description,
                             Article = blog.Article,
                             BlogDate = blog.BlogDate,
                             IsApproved = blog.IsApproved,
                             AuthorID = blog.AuthorID,
-                            CreationDate = blog.CreationDate,
-                            CreatorUserId = blog.CreatorUserId,
-                            ModifiedDate = blog.ModifiedDate,
-                            ModifiedUserId = blog.ModifiedUserId,
                             IsDeleted = blog.IsDeleted
                         };
             return await query.ToListAsync();
@@ -267,6 +262,10 @@ namespace BlogPhotographerSystem_Infra.Repos
                 blog.Title = dto.Title;
             }
 
+            if (!string.IsNullOrEmpty(dto.Description))
+            {
+                blog.Description = dto.Description;
+            }
             if (!string.IsNullOrEmpty(dto.Article))
             {
                 blog.Article = dto.Article;
@@ -293,7 +292,6 @@ namespace BlogPhotographerSystem_Infra.Repos
                 Attachement.FileType = (FileType)Enum.Parse(typeof(FileType), fileType);
             }
            
-            blog.BlogDate = DateTime.Now;
             blog.ModifiedDate = DateTime.Now;
             blog.ModifiedUserId = blog.AuthorID;
 
