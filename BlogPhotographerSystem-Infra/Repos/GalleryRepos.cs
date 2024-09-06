@@ -4,6 +4,7 @@ using BlogPhotographerSystem_Core.DTOs.Gallery;
 using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.Models.Entity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using static BlogPhotographerSystem_Core.Helper.Enums.Enums;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BlogPhotographerSystem_Infra.Repos
 {
@@ -26,6 +28,8 @@ namespace BlogPhotographerSystem_Infra.Repos
         public async Task DeletePrivateGalleryRepos(int ID)
         {
             var gallery = await _context.Galleries.SingleOrDefaultAsync(b => b.Id == ID);
+            if (gallery == null)
+                throw new Exception("Gallery not found");
             gallery.ModifiedDate = DateTime.Now;
             gallery.ModifiedUserId = 1;
             gallery.IsDeleted = true;
@@ -44,7 +48,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                         orderby photo.CreationDate descending
                         select new PhotosAndVideosInfoDTO
                         {
-                            Path = $"https://localhost:7071/{photo.Path}",
+                            Path = $"https://localhost:44358/{photo.Path}",
                             FileName = photo.FileName
                         };
             return await query.ToListAsync();
@@ -59,7 +63,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                         orderby video.CreationDate descending
                         select new PhotosAndVideosInfoDTO
                         {
-                            Path = $"https://localhost:7071/{video.Path}",
+                            Path = $"https://localhost:44358/{video.Path}",
                             FileName = video.FileName
                         };
             return await query.ToListAsync();
@@ -73,15 +77,11 @@ namespace BlogPhotographerSystem_Infra.Repos
                         select new PrivateGalleryDetailsDTO
                         {
                             Id = gallery.Id,
-                            Path = $"https://localhost:7071/{gallery.Path}",
+                            Path = $"https://localhost:44358/{gallery.Path}",
                             FileName = gallery.FileName,
                             FileType = gallery.FileType.ToString(),
                             IsPrivate = gallery.IsPrivate,
-                            OrderID = gallery.OrderID,
-                            CreationDate = gallery.CreationDate,
-                            ModifiedDate = gallery.ModifiedDate,
-                            CreatorUserId = gallery.CreatorUserId,
-                            ModifiedUserId = gallery.ModifiedUserId,
+                            OrderID = gallery.OrderID,                           
                             IsDeleted = gallery.IsDeleted
                         };
             
@@ -91,40 +91,70 @@ namespace BlogPhotographerSystem_Infra.Repos
         public async Task<List<PrivateGalleryDetailsForClientDTO>> GetAllPrivateGalleriesByUserIdWithoutOrdersRepos(int UserId)
         {
             var query = from privateGallery in _context.Galleries
-                        where privateGallery.CreatorUserId == UserId
+                        where privateGallery.UserId == UserId
                         && privateGallery.IsPrivate == true
                         && privateGallery.IsDeleted == false
                         && privateGallery.OrderID == null
                         select new PrivateGalleryDetailsForClientDTO
                         {
-                            Path = $"https://localhost:7071/{privateGallery.Path}",
+                            Id = privateGallery.Id,
+                            Path = $"https://localhost:44358/{privateGallery.Path}",
                             FileName = privateGallery.FileName,
                             FileType = privateGallery.FileType.ToString(),
-                            OrderID = privateGallery.OrderID
                         };
             return await query.ToListAsync();
         }
 
 
-        public async Task<List<PrivateGalleryDetailsForClientDTO>> GetAllPrivateGalleriesByUserId(int UserId)
+        public async Task<List<PrivateGalleryOrderDetails>> GetAllPrivateGalleriesByUserId(int UserId)
         {
             var query = from user in _context.Users
                         join order in _context.Orders
                         on user.Id equals order.UserID
-                        join privateGallery in _context.Galleries
-                        on order.Id equals privateGallery.OrderID
                         where user.Id == UserId
-                        && privateGallery.IsPrivate == true
-                        && privateGallery.IsDeleted == false
-                        select new PrivateGalleryDetailsForClientDTO
+                        select new PrivateGalleryOrderDetails
                         {
-                            Path = $"https://localhost:7071/{privateGallery.Path}",
-                            FileName = privateGallery.FileName,
-                            FileType = privateGallery.FileType.ToString(),
-                            OrderID = privateGallery.OrderID
+                            OrderID = order.Id,
+                            Images = (from privateGallery in _context.Galleries
+                                      where privateGallery.OrderID == order.Id
+                                      && privateGallery.IsPrivate == true
+                                      && privateGallery.IsDeleted == false
+                                      && privateGallery.FileType == (FileType)Enum.Parse(typeof(FileType), "Image")
+                                      select $"https://localhost:44358/{privateGallery.Path}")
+                                      .Distinct()
+                                      .ToList()
                         };
-            return await query.ToListAsync();
+
+            var result = await query.Where(o => o.Images.Any()).ToListAsync();
+
+            return result;
         }
+
+
+        public async Task<List<PrivateGalleryOrderDetails>> GetAllPrivateGalleriesVideosByUserId(int UserId)
+        {
+            var query = from user in _context.Users
+                        join order in _context.Orders
+                        on user.Id equals order.UserID
+                        where user.Id == UserId
+                        select new PrivateGalleryOrderDetails
+                        {
+                            OrderID = order.Id,
+                            Images = (from privateGallery in _context.Galleries
+                                      where privateGallery.OrderID == order.Id
+                                      && privateGallery.IsPrivate == true
+                                      && privateGallery.IsDeleted == false
+                                      && privateGallery.FileType == (FileType)Enum.Parse(typeof(FileType), "Video")
+                                      select $"https://localhost:44358/{privateGallery.Path}")
+                                      .Distinct()
+                                      .ToList()
+                        };
+
+            var result = await query.Where(o => o.Images.Any()).ToListAsync();
+
+            return result;
+        }
+
 
         public async Task SendFilesForUserByPrivateGalleryRepos(Gallery gallery)
         {
@@ -151,21 +181,6 @@ namespace BlogPhotographerSystem_Infra.Repos
                 gallery.FileName = dto.FileName;
             }
 
-            if (!string.IsNullOrEmpty(dto.FileType))
-            {
-                gallery.FileType = (FileType)Enum.Parse(typeof(FileType), dto.FileType);
-
-            }
-            if (dto.IsPrivate.HasValue)
-            {
-                gallery.IsPrivate = dto.IsPrivate.Value;
-
-            }
-            if (dto.OrderID.HasValue)
-            {
-                gallery.OrderID = dto.OrderID.Value;
-
-            }
             gallery.ModifiedDate = DateTime.Now;
             gallery.ModifiedUserId = 1;
 
@@ -177,10 +192,11 @@ namespace BlogPhotographerSystem_Infra.Repos
         {
             var query = from gallery in _context.Galleries
                         where gallery.IsPrivate == false
+                        && gallery.IsDeleted == false
                         select new PrivateGalleryDetailsDTO
                         {
                             Id = gallery.Id,
-                            Path = $"https://localhost:7071/{gallery.Path}", 
+                            Path = $"https://localhost:44358/{gallery.Path}", 
                             FileName = gallery.FileName,
                             FileType = gallery.FileType.ToString(),
                             IsPrivate = gallery.IsPrivate,

@@ -24,9 +24,9 @@ namespace BlogPhotographerSystem_Infra.Services
         {
             _serviceRepos = serviceRepos;
         }
-        public async Task<List<ServiceInfoDTO>> GetAllServices()
+        public async Task<List<ServiceInfoDTO>> GetAllServices(int Id)
         {
-            return await _serviceRepos.GetAllServicesRepos();
+            return await _serviceRepos.GetAllServicesRepos(Id);
         }
 
         public async Task<List<ServiceDetailsDTO>> GetAllServicesForAdmin()

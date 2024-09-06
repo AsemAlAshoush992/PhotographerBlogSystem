@@ -17,10 +17,6 @@ namespace BlogPhotographerSystem_Core.DTOs.Order
         public string PaymentMethod { get; set; }
         public int? UserID { get; set; }
         public int? ServiceID { get; set; }
-        public DateTime CreationDate { get; set; }
-        public DateTime? ModifiedDate { get; set; }
-        public int CreatorUserId { get; set; }
-        public int? ModifiedUserId { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

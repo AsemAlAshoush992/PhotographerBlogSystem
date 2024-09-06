@@ -39,14 +39,14 @@ namespace BlogPhotographerSystem_Infra.Services
             return await _problemRepos.GetProblemDetailsByIdRepos(Id);
         }
 
-        public async Task SendTechnicalSupportRequest(CreateProblemDTO dto)
+        public async Task SendTechnicalSupportRequest(CreateProblemDTO dto, int userId)
         {
             Problem problem = new Problem()
             {
                 Title = dto.Title,
                 Purpose = dto.Purpose,
                 Description = dto.Description,
-                UserID = dto.UserID,
+                UserID = userId,
                 OrderID = dto.OrderId
             };
             await _problemRepos.CreateNewProblemRepos(problem);

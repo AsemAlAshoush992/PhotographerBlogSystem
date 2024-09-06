@@ -28,7 +28,7 @@ namespace BlogPhotographerSystem_Core.IRepos
         //User Management
         Task<UserInfoDTO> GetPersonalInformationsByIdRepos(int Id);
         //Update
-        Task UpdateUserAccountRepos(UpdateUserDTO dto);
+        Task UpdateUserAccountRepos(UpdateUserDTO dto, int userId);
         //Delete
         Task DeleteUserAccountRepos(int ID);
     }

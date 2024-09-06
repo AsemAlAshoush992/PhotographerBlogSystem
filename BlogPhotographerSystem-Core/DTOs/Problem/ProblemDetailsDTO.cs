@@ -14,10 +14,6 @@ namespace BlogPhotographerSystem_Core.DTOs.Problem
         public string Description { get; set; }
         public int? UserID { get; set; }
         public int? OrderID { get; set; }
-        public DateTime CreationDate { get; set; }
-        public DateTime? ModifiedDate { get; set; }
-        public int CreatorUserId { get; set; }
-        public int? ModifiedUserId { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

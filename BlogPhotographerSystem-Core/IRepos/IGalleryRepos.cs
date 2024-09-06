@@ -21,7 +21,8 @@ namespace BlogPhotographerSystem_Core.IRepos
         //Update
         Task UpdateFilesForClientByPrivateGallery(UpdatePrivateGalleryDTO dto);
         //Client Management
-        Task<List<PrivateGalleryDetailsForClientDTO>> GetAllPrivateGalleriesByUserId(int orderId);
+        Task<List<PrivateGalleryOrderDetails>> GetAllPrivateGalleriesByUserId(int orderId);
+        Task<List<PrivateGalleryOrderDetails>> GetAllPrivateGalleriesVideosByUserId(int orderId);
         Task<List<PrivateGalleryDetailsForClientDTO>> GetAllPrivateGalleriesByUserIdWithoutOrdersRepos(int UserId);
         //Send
         Task SendFilesForUserByPrivateGalleryRepos( Gallery gallery);

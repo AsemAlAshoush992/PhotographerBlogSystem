@@ -13,7 +13,7 @@ namespace BlogPhotographerSystem_Core.Models.Entity
         public string Description { get; set; }
         public string Article { get; set; }
         public DateTime BlogDate { get; set; }
-        public bool IsApproved { get; set; }
+        public bool? IsApproved { get; set; }
         public int AuthorID { get; set; }
     }
 }

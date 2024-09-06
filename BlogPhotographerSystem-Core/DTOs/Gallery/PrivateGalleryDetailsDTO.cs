@@ -15,10 +15,6 @@ namespace BlogPhotographerSystem_Core.DTOs.Gallery
         public string FileType { get; set; }
         public bool IsPrivate { get; set; }
         public int? OrderID { get; set; }
-        public DateTime CreationDate { get; set; }
-        public DateTime? ModifiedDate { get; set; }
-        public int CreatorUserId { get; set; }
-        public int? ModifiedUserId { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

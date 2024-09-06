@@ -11,7 +11,6 @@ namespace BlogPhotographerSystem_Core.DTOs.Problem
         public string Title { get; set; }
         public string Purpose { get; set; }
         public string Description { get; set; }
-        public int UserID { get; set; }
         public int OrderId { get; set; }
     }
 }

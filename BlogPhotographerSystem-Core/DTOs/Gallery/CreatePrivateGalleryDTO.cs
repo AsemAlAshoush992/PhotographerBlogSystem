@@ -10,6 +10,5 @@ namespace BlogPhotographerSystem_Core.DTOs.Gallery
     public class CreatePrivateGalleryDTO
     {
         public string Path { get; set; }
-        public int UserID { get; set; }
     }
 }

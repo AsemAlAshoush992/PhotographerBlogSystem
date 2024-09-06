@@ -24,12 +24,13 @@ namespace BlogPhotographerSystem_Core.IServices
         //Delete
         Task DeleteBlog(int ID);
         //Aprroval
-        Task ConfirmUserBlog(int blogID);
-
+        Task ConfirmUserBlog(int dto);
+        //cancel
+        Task CancelUserBlog(int dto);
         //Client Management
         Task<List<BlogDetailsForUserDTO>> GetAllBlogsByUserId(int userId);
         //Send
-        Task SendClientBlogRequest(CreateBlogAdminDTO dto);
+        Task SendClientBlogRequest(CreateBlogAdminDTO dto, int userId);
         //Update
         Task UpdateClientBlog(UpdateBlogClientDTO dto);
         //Delete

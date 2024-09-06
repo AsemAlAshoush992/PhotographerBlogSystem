@@ -34,9 +34,8 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             //Default values
             builder.Property(x => x.IsLoggedIn).HasDefaultValue(false);
             //Size 
-            builder.Property(x => x.Password).HasMaxLength(15);
+            builder.Property(x => x.Password).HasMaxLength(30);
             //Check Constrain
-            //builder.ToTable(t => t.HasCheckConstraint("CH_Login_Password", @"Password REGEXP '[A-Z]{1,}[a-z]{5,}[0-9]+[+=)(*&^%$#@!~]+'"));
             builder.ToTable(t => t.HasCheckConstraint("CH_Login_Password",@"Password REGEXP '^(?=.*[A-Z])(?=(?:.*[a-z]){6,})(?=.*[0-9])(?=.*[+=)(*&^%$#@!~]).*$'"));
         }
     }

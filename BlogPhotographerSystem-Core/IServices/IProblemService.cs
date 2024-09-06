@@ -21,6 +21,6 @@ namespace BlogPhotographerSystem_Core.IServices
         Task DeleteProblem(int ID);
         //Client Management
         //Send
-        Task SendTechnicalSupportRequest(CreateProblemDTO dto);
+        Task SendTechnicalSupportRequest(CreateProblemDTO dto, int userId);
     }
 }

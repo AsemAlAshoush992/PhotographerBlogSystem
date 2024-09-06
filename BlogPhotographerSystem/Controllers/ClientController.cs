@@ -42,17 +42,17 @@ namespace BlogPhotographerSystem.Controllers
         /// 
         ///     Get api/Client
         ///     {        
-        ///       "userID": 2        
+        ///       "token": "eyJhbGciOiJIUzI1N"        
         ///     }
         /// </remarks>
         [HttpGet]
-        [Route("[action]/{userID}")]
-        public async Task<IActionResult> GetPersonalInformationByUserID(int userID)
+        [Route("[action]")]
+        public async Task<IActionResult> GetPersonalInformationByUserID([FromHeader] string token/*int userID*/)
         {
-
-            if (userID == null)
+            int userID = TokenHelper.IsValidToken2(token);
+            if (!TokenHelper.IsValidToken(token))
             {
-                return BadRequest("Please filling UserID");
+                return BadRequest("you're token failed");
             }
             try
             {
@@ -74,7 +74,7 @@ namespace BlogPhotographerSystem.Controllers
         /// 
         ///     Get api/Client
         ///     {        
-        ///       "userID": 1        
+        ///       "token": "eyJhbGciOiJIUzI1N"         
         ///     }
         /// </remarks>
         [HttpGet]
@@ -106,21 +106,57 @@ namespace BlogPhotographerSystem.Controllers
         /// 
         ///     Get api/Client
         ///     {        
-        ///       "userID": 4        
+        ///       "token": "eyJhbGciOiJIUzI1N"       
         ///     }
         /// </remarks>
         [HttpGet]
-        [Route("[action]/{UserId}")]
-        public async Task<IActionResult> GetAllPrivateGalleriesByUserId(int UserId)
+        [Route("[action]")]
+        public async Task<IActionResult> GetAllPrivateGalleriesByUserId([FromHeader] string token/*int UserId*/)
         {
 
-            if (UserId == null)
+            int userID = TokenHelper.IsValidToken2(token);
+            if (!TokenHelper.IsValidToken(token))
             {
-                return BadRequest("Please filling UserId");
+                return BadRequest("you're token failed");
             }
             try
             {
-                return StatusCode(200, await _galleryService.GetAllPrivateGalleriesByUserId(UserId));
+                return StatusCode(200, await _galleryService.GetAllPrivateGalleriesByUserId(userID));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, $"Error occurred{ex.Message}");
+            }
+        }
+
+
+
+        /// <summary>
+        /// Retrieves all private galleries Videos by userID of the client.
+        /// </summary>
+        /// <response code="200">Returns list of all private galleries by userID.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the private galleries.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Get api/Client
+        ///     {        
+        ///       "token": "eyJhbGciOiJIUzI1N"       
+        ///     }
+        /// </remarks>
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> GetAllPrivateGalleriesVideosByUserId([FromHeader] string token/*int UserId*/)
+        {
+
+            int userID = TokenHelper.IsValidToken2(token);
+            if (!TokenHelper.IsValidToken(token))
+            {
+                return BadRequest("you're token failed");
+            }
+            try
+            {
+                return StatusCode(200, await _galleryService.GetAllPrivateGalleriesVideosByUserId(userID));
             }
             catch (Exception ex)
             {
@@ -139,21 +175,22 @@ namespace BlogPhotographerSystem.Controllers
         /// 
         ///     Get api/Client
         ///     {        
-        ///       "userID": 4        
+        ///       "token": "eyJhbGciOiJIUzI1N"         
         ///     }
         /// </remarks>
         [HttpGet]
-        [Route("[action]/{UserId}")]
-        public async Task<IActionResult> GetAllPrivateGalleriesByUserIdWithoutOrders(int UserId)
+        [Route("[action]")]
+        public async Task<IActionResult> GetAllPrivateGalleriesByUserIdWithoutOrders([FromHeader] string token/*int UserId*/)
         {
 
-            if (UserId == null)
+            int userID = TokenHelper.IsValidToken2(token);
+            if (!TokenHelper.IsValidToken(token))
             {
-                return BadRequest("Please filling UserId");
+                return BadRequest("you're token failed");
             }
             try
             {
-                return StatusCode(200, await _galleryService.GetAllPrivateGalleriesByUserIdWithoutOrders(UserId));
+                return StatusCode(200, await _galleryService.GetAllPrivateGalleriesByUserIdWithoutOrders(userID));
             }
             catch (Exception ex)
             {
@@ -171,11 +208,12 @@ namespace BlogPhotographerSystem.Controllers
         /// Sample request:
         /// 
         ///     Post api/Client
-        ///     {        
+        ///     { 
+        ///         
+        ///        "token": "eyJhbGciOiJIUzI1N"
         ///        "title": "Rania blog",
         ///        "description": "lorem .....",
         ///        "article": "lorem .....",
-        ///        "authorId": 1,
         ///        "filePath": [
         ///          "photo/Rania.JPEG"
         ///        ]       
@@ -183,13 +221,18 @@ namespace BlogPhotographerSystem.Controllers
         /// </remarks>
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> SendBlogFromUserForApproval( CreateBlogAdminDTO dto)
+        public async Task<IActionResult> SendBlogFromUserForApproval([FromHeader] string token, CreateBlogAdminDTO dto)
         {
+            int userID = TokenHelper.IsValidToken2(token);
+            if (!TokenHelper.IsValidToken(token))
+            {
+                return BadRequest("you're token failed");
+            }
             if (dto == null)
                 return BadRequest("Please filling All Data");
             try
             {
-                await _blogService.SendClientBlogRequest(dto);
+                await _blogService.SendClientBlogRequest(dto, userID);
                 return StatusCode(201, "New Blog Has Been sent");
             }
             catch (Exception ex)
@@ -212,20 +255,25 @@ namespace BlogPhotographerSystem.Controllers
         ///     Post api/Client
         ///     { 
         ///       "paymentMethod": "Cash",
-        ///       "userID": 10,
+        ///       "token": "eyJhbGciOiJIUzI1N" 
         ///       "serviceName": "Travel Photoshoot"
         ///     }
         /// </remarks>
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> SendOrderForSpecificService(CreateOrderClientDTO dto)
+        public async Task<IActionResult> SendOrderForSpecificService([FromHeader] string token,CreateOrderClientDTO dto)
         {
+            int userID = TokenHelper.IsValidToken2(token);
+            if (!TokenHelper.IsValidToken(token))
+            {
+                return BadRequest("you're token failed");
+            }
             if (dto == null)
                 return BadRequest("Please filling All Data");
             try
             {
-                await _orderService.SendOrderForSpecificService(dto);
-                return StatusCode(202, "New Order Has Been sent");
+                int orderId = await _orderService.SendOrderForSpecificService(dto, userID);
+                return StatusCode(202, $"New Order Has Been sent, your order number is {orderId} please keep it");
             }
             catch (Exception ex)
             {
@@ -261,7 +309,7 @@ namespace BlogPhotographerSystem.Controllers
             try
             {
                 await _contactRequestService.SendContactRequestForService(dto);
-                return StatusCode(202, "New Contact Request Has Been sent");
+                return StatusCode(202, "New Contact Request Has Been Sent");
             }
             catch (Exception ex)
             {
@@ -279,18 +327,23 @@ namespace BlogPhotographerSystem.Controllers
         ///     Post api/Client
         ///     { 
         ///       "path": "photos/Rami",
-        ///       "userID": 6,
+        ///       "token": "eyJhbGciOiJIUzI1N" 
         ///     }
         /// </remarks>
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> UploadPrivateGalleryFiles(CreatePrivateGalleryDTO dto)
+        public async Task<IActionResult> UploadPrivateGalleryFiles([FromHeader] string token,CreatePrivateGalleryDTO dto)
         {
+            int userID = TokenHelper.IsValidToken2(token);
+            if (!TokenHelper.IsValidToken(token))
+            {
+                return BadRequest("you're token failed");
+            }
             if (dto == null)
                 return BadRequest("Please filling All Data");
             try
             {
-                await _galleryService.UploadFilesForUserByPrivateGallery(dto);
+                await _galleryService.UploadFilesForUserByPrivateGallery(dto, userID);
                 return StatusCode(201, "New File Has Been created");
             }
             catch (Exception ex)
@@ -313,20 +366,25 @@ namespace BlogPhotographerSystem.Controllers
         ///       "title": "Photo Quality",
         ///       "purpose": "Service",
         ///       "description": "Poor photo quality.",
-        ///       "userID": 2,
+        ///       "token": "eyJhbGciOiJIUzI1N" 
         ///       "orderId": 31
         ///     }
         /// </remarks>
 
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> SendTechnicalSupportRequest(CreateProblemDTO dto)
+        public async Task<IActionResult> SendTechnicalSupportRequest([FromHeader] string token, CreateProblemDTO dto)
         {
+            int userID = TokenHelper.IsValidToken2(token);
+            if (!TokenHelper.IsValidToken(token))
+            {
+                return BadRequest("you're token failed");
+            }
             if (dto == null)
                 return BadRequest("Please filling All Data");
             try
             {
-                await _problemService.SendTechnicalSupportRequest(dto);
+                await _problemService.SendTechnicalSupportRequest(dto, userID);
                 return StatusCode(202, "New Technical Support Has Been sent");
             }
             catch (Exception ex)
@@ -347,7 +405,7 @@ namespace BlogPhotographerSystem.Controllers
         /// 
         ///     Put api/Client
         ///     { 
-        ///       "id": 4,
+        ///       "token": "eyJhbGciOiJIUzI1N" 
         ///       "firstName": "Shadi",
         ///       "lastName": "Khalil",
         ///       "password": "Shadik123@",
@@ -358,13 +416,18 @@ namespace BlogPhotographerSystem.Controllers
         /// </remarks>
         [HttpPut]
         [Route("[action]")]
-        public async Task<IActionResult> UpdatePersonalInformationForUserAcount([FromBody] UpdateUserDTO dto)
+        public async Task<IActionResult> UpdatePersonalInformationForUserAcount([FromHeader] string token,[FromBody] UpdateUserDTO dto)
         {
+            int userID = TokenHelper.IsValidToken2(token);
+            if (!TokenHelper.IsValidToken(token))
+            {
+                return BadRequest("you're token failed");
+            }
             if (dto == null)
                 return BadRequest("Please filling All Data");
             try
             {
-                await _userService.UpdateUserAccount(dto);
+                await _userService.UpdateUserAccount(dto, userID);
                 return StatusCode(200, "The Personal Information has been Updated successfully");
             }
             catch (Exception ex)
@@ -387,6 +450,7 @@ namespace BlogPhotographerSystem.Controllers
         ///       "id": 25,
         ///       "attachementId": 37,
         ///       "title": "Ibrahim blog",
+        ///       "description": "lorem ...",
         ///       "article": null,
         ///       "path": null
         ///     }

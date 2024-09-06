@@ -4,6 +4,7 @@ using BlogPhotographerSystem_Core.IServices;
 using BlogPhotographerSystem_Core.Models.Entity;
 using BlogPhotographerSystem_Infra.Repos;
 using BlogPhotographerSystem_Infra.Services;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
@@ -13,7 +14,10 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 1073741824; 
+});
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -40,6 +44,7 @@ builder.Services.AddScoped<IServiceService, ServiceService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IContactRequestService, ContactRequestService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
 //IRepos and ReposClass
 builder.Services.AddScoped<IBlogRepos, BlogRepos>();
 builder.Services.AddScoped<ICategoryRepos, CategoryRepos>();
@@ -50,6 +55,7 @@ builder.Services.AddScoped<IServiceRepos, ServiceRepos>();
 builder.Services.AddScoped<IOrderRepos, OrderRepos>();
 builder.Services.AddScoped<IContactRequestRepos, ContactRequestRepos>();
 builder.Services.AddScoped<ILoginRepos, LoginRepos>();
+builder.Services.AddScoped<ICommentRepos, CommentRepos>();
 builder.Services.AddDbContext<BlogPhotographerSystemDBContext>(option => option.UseMySQL(builder.Configuration.GetConnectionString("mysqlconnect")));
 
 
@@ -58,6 +64,18 @@ var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").B
 Serilog.Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration).
                 WriteTo.File(configuration.GetValue<string>("LogerPath"), rollingInterval: RollingInterval.Day).
                 CreateLogger();
+
+//CROS origin
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy(name: "default", builder =>
+    {
+        builder.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 
 var app = builder.Build();
 
@@ -86,7 +104,7 @@ app.UseStaticFiles(new StaticFileOptions
 
 
 app.UseAuthorization();
-
+app.UseCors("default");
 app.MapControllers();
 
 app.Run();

@@ -12,6 +12,7 @@ namespace BlogPhotographerSystem.Controllers
     {
         [HttpPost]
         [Route("[action]")]
+        [DisableRequestSizeLimit]
         public async Task<IActionResult> UploadImageAndGetURL(IFormFile file)
         {
             string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "Files");
@@ -28,7 +29,39 @@ namespace BlogPhotographerSystem.Controllers
             return StatusCode(201, RelativePath);
         }
 
+
         [HttpPost]
+        [Route("[action]")]
+        [DisableRequestSizeLimit]
+        public async Task<IActionResult> UploadImagesAndGetURLs(IFormFile[] files)
+        {
+            string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "Files");
+
+            if (files == null || files.Length == 0)
+            {
+                throw new Exception("Please Enter Valid Files");
+            }
+
+            var fileUrls = new List<string>();
+
+            foreach (var file in files)
+            {
+                if (file.Length > 0)
+                {
+                    string newFileURL = Guid.NewGuid().ToString() + "_" + file.FileName;
+                    string relativePath = @"Files/" + newFileURL;
+                    using (var inputFile = new FileStream(Path.Combine(uploadFolder, newFileURL), FileMode.Create))
+                    {
+                        await file.CopyToAsync(inputFile);
+                    }
+                    fileUrls.Add(relativePath);
+                }
+            }
+
+            return StatusCode(201, fileUrls);
+        }
+
+        [HttpGet]
         [Route("[action]/{fileName}")]
         public IActionResult GetFiles(string fileName)
         {

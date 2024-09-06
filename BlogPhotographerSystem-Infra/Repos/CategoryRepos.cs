@@ -5,8 +5,10 @@ using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.Models.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net.Mail;
 using System.Reflection.Metadata;
@@ -31,9 +33,10 @@ namespace BlogPhotographerSystem_Infra.Repos
                         where category.IsDeleted == false
                         select new CategoriesInfoDTO
                         {
+                            Id = category.Id,
                             Title = category.Title,
                             Description = category.Description,
-                            ImagePath = $"https://localhost:7071/{category.ImagePath}"
+                            ImagePath = $"https://localhost:44358/{category.ImagePath}"
                         };
             return await query.ToListAsync();
         }
@@ -43,12 +46,13 @@ namespace BlogPhotographerSystem_Infra.Repos
         public async Task<List<CategoryDetailsDTO>> GetCategoryDetailsRepos()
         {
             var query = from category in _context.Categories
+                        where category.IsDeleted == false
                         select new CategoryDetailsDTO
                         {
                             Id = category.Id,
                             Title = category.Title,
                             Description = category.Description,
-                            ImagePath = $"https://localhost:7071/{category.ImagePath}",
+                            ImagePath = $"https://localhost:44358/{category.ImagePath}",
                             IsDeleted = category.IsDeleted
                         };
             return await query.ToListAsync();
@@ -63,11 +67,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                             Id = category.Id,
                             Title = category.Title,
                             Description = category.Description,
-                            ImagePath = $"https://localhost:7071/{category.ImagePath}",
-                            CreationDate = category.CreationDate,
-                            ModifiedDate = category.ModifiedDate,
-                            CreatorUserId = category.CreatorUserId,
-                            ModifiedUserId = category.ModifiedUserId,
+                            ImagePath = $"https://localhost:7071/{category.ImagePath}",                       
                             IsDeleted = category.IsDeleted
                         };
             return await query.SingleOrDefaultAsync();
@@ -113,7 +113,8 @@ namespace BlogPhotographerSystem_Infra.Repos
         public async Task DeleteCategoryRepos(int ID)
         {
             var query = await _context.Categories.SingleOrDefaultAsync(b => b.Id == ID);
-
+            if (query == null)
+                throw new Exception("Category not found");
             query.ModifiedDate = DateTime.Now;
             query.ModifiedUserId = 1;
             query.IsDeleted = true;

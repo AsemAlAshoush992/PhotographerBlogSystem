@@ -89,9 +89,9 @@ namespace BlogPhotographerSystem_Infra.Services
         {
             await _userRepos.DeleteUserRepos(ID);
         }
-        public async Task UpdateUserAccount(UpdateUserDTO dto)
+        public async Task UpdateUserAccount(UpdateUserDTO dto, int userID)
         {
-            await _userRepos.UpdateUserAccountRepos(dto);
+            await _userRepos.UpdateUserAccountRepos(dto, userID);
         }
     }
 }

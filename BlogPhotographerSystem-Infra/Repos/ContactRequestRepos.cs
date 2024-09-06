@@ -45,6 +45,8 @@ namespace BlogPhotographerSystem_Infra.Repos
         public async Task DeleteContactRequestRepos(int ID)
         {
             var contact = await _context.ContactRequests.SingleOrDefaultAsync(b => b.Id == ID);
+            if (contact == null)
+                throw new Exception("Contact not found");
             contact.ModifiedDate = DateTime.Now;
             contact.ModifiedUserId = 1;
             contact.IsDeleted = true;
@@ -61,6 +63,7 @@ namespace BlogPhotographerSystem_Infra.Repos
         public async Task<List<ContactRequestDetailsDTO>> GetAllContactRequestsRepos()
         {
             var query = from contact in _context.ContactRequests
+                        where contact.IsDeleted == false
                         select new ContactRequestDetailsDTO
                         {
                             Id = contact.Id,
@@ -89,11 +92,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                             Description = contact.Description,
                             Purpose = contact.Purpose,
                             Budget = contact.Budget,
-                            UserID = contact.UserID,
-                            CreationDate = contact.CreationDate,
-                            ModifiedDate = contact.ModifiedDate,
-                            CreatorUserId = contact.CreatorUserId,
-                            ModifiedUserId = contact.ModifiedUserId,
+                            UserID = contact.UserID,                            
                             IsDeleted = contact.IsDeleted
                         };
             return await query.SingleOrDefaultAsync();
@@ -111,11 +110,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                             Description = contact.Description,
                             Purpose = contact.Purpose,
                             Budget = contact.Budget,
-                            UserID = contact.UserID,
-                            CreationDate = contact.CreationDate,
-                            ModifiedDate = contact.ModifiedDate,
-                            CreatorUserId = contact.CreatorUserId,
-                            ModifiedUserId = contact.ModifiedUserId,
+                            UserID = contact.UserID,                           
                             IsDeleted = contact.IsDeleted
                         };
             return await query.ToListAsync();

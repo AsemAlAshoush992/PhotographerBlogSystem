@@ -56,6 +56,7 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.HasMany<Order>().WithOne().HasForeignKey(x => x.UserID);
             builder.HasMany<Blog>().WithOne().HasForeignKey(x => x.AuthorID);
             builder.HasMany<Problem>().WithOne().HasForeignKey(x => x.UserID);
+            builder.HasMany<Gallery>().WithOne().HasForeignKey(x => x.UserId);
 
         }
     }

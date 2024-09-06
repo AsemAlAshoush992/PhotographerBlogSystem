@@ -29,8 +29,10 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.Article).IsRequired();
             builder.Property(x => x.BlogDate).IsRequired();
             builder.Property(x => x.Description).IsRequired();
+            //Null Constraint
+            builder.Property(x => x.IsApproved).IsRequired(false);
             //Size 
-            builder.Property(x => x.Description).HasMaxLength(100);
+            builder.Property(x => x.Description).HasMaxLength(300);
             builder.Property(x => x.Title).HasMaxLength(30);
             //Nvarchar
             builder.Property(x => x.Title).IsUnicode();
@@ -40,9 +42,10 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.ToTable(t => t.HasCheckConstraint("CH_Blog_Title", "LENGTH(Title) >= 5"));
             //Default Constraint
             builder.Property(x => x.BlogDate).HasDefaultValue(DateTime.Now);
-            builder.Property(x => x.IsApproved).HasDefaultValue(false);
+            builder.Property(x => x.BlogDate).HasDefaultValue(null);
             //Relationships
             builder.HasMany<BlogAttachement>().WithOne().HasForeignKey(x => x.BlogID);
+            builder.HasMany<Comment>().WithOne().HasForeignKey(x => x.BlogId);
         }
     }
 }

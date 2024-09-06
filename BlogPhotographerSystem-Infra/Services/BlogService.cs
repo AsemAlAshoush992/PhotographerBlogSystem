@@ -109,7 +109,7 @@ namespace BlogPhotographerSystem_Infra.Services
             return await _blogRepos.GetAllBlogsByUserIdRepos(userId);
         }
 
-        public async Task SendClientBlogRequest(CreateBlogAdminDTO dto)
+        public async Task SendClientBlogRequest(CreateBlogAdminDTO dto, int userId)
         {
             Blog blog = new Blog()
             {
@@ -117,8 +117,8 @@ namespace BlogPhotographerSystem_Infra.Services
                 Description = dto.Description,
                 Article = dto.Article,
                 BlogDate = DateTime.Now,
-                IsApproved = false,
-                AuthorID = dto.AuthorId
+                IsApproved = null,
+                AuthorID = userId
             };
             int blogId = await _blogRepos.CreateBlogRepos(blog);
             foreach (var attachmentDto in dto.FilePath)
@@ -147,7 +147,7 @@ namespace BlogPhotographerSystem_Infra.Services
                     FileName = Path.GetFileNameWithoutExtension(attachmentDto),
                     FileType = (FileType)Enum.Parse(typeof(FileType), fileType),
                     BlogID = blogId,
-                    CreatorUserId = dto.AuthorId
+                    CreatorUserId = userId
                 };
                 await _blogRepos.CreateBlogAttachmentsRepos(attachement);
             }
@@ -155,6 +155,11 @@ namespace BlogPhotographerSystem_Infra.Services
         public async Task UpdateClientBlog(UpdateBlogClientDTO dto)
         {
             await _blogRepos.UpdateClientBlogRepos(dto);
+        }
+
+        public async Task CancelUserBlog(int dto)
+        {
+            await _blogRepos.CancelUserBlogRepos(dto);
         }
     }
 }

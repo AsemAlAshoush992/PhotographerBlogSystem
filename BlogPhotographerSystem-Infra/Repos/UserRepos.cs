@@ -9,6 +9,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using static BlogPhotographerSystem_Core.Helper.Enums.Enums;
@@ -43,10 +44,16 @@ namespace BlogPhotographerSystem_Infra.Repos
         public async Task DeleteUserRepos(int ID)
         {
             var user = await _dbContext.Users.SingleOrDefaultAsync(b => b.Id == ID);
+            if (user == null)
+                throw new Exception("User not found");
+            var login = await _dbContext.Logins.SingleOrDefaultAsync(b => b.UserID == ID);
             user.ModifiedDate = DateTime.Now;
             user.ModifiedUserId = 1;
             user.IsDeleted = true;
-
+            login.IsDeleted = true;
+            login.ModifiedDate = DateTime.Now;
+            login.ModifiedUserId = 1;
+            _dbContext.Update(login);
             _dbContext.Update(user);
             await _dbContext.SaveChangesAsync();
         }
@@ -65,11 +72,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                             BirthDate = filter.BirthDate,
                             ImagePath = filter.ImagePath,
                             Phone = filter.Phone,
-                            UserType = filter.UserType.ToString(),
-                            CreationDate = filter.CreationDate,
-                            ModifiedDate = filter.ModifiedDate,
-                            CreatorUserId = filter.CreatorUserId,
-                            ModifiedUserId = filter.ModifiedUserId,
+                            UserType = filter.UserType.ToString(),                           
                             IsDeleted = filter.IsDeleted
 
                         };
@@ -79,6 +82,7 @@ namespace BlogPhotographerSystem_Infra.Repos
         public async Task<List<UserDetailsDTO>> GetAllUsersRepos()
         {
             var query = from user in _dbContext.Users
+                        where user.IsDeleted == false
                         select new UserDetailsDTO
                         {
                             Id = user.Id,
@@ -86,7 +90,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                             LastName = user.LastName,
                             Email = user.Email,
                             BirthDate = user.BirthDate,
-                            ImagePath = $"https://localhost:7071/{user.ImagePath}",
+                            ImagePath = user.ImagePath != null? $"https://localhost:44358/{user.ImagePath}" : null ,
                             Phone = user.Phone,
                             UserType = user.UserType.ToString(),
                             IsDeleted = user.IsDeleted
@@ -102,11 +106,12 @@ namespace BlogPhotographerSystem_Infra.Repos
                         where user.Id == Id
                         select new UserInfoDTO
                         {
+                            Id = user.Id,
                             FullName = user.FirstName + " " + user.LastName,
                             Email = user.Email,
                             Password = login.Password,
                             BirthDate = user.BirthDate,
-                            ImagePath = $"https://localhost:7071/{user.ImagePath}",
+                            ImagePath = user.ImagePath != null? $"https://localhost:44358/{user.ImagePath}" : null ,
                             Phone = user.Phone
                         };
             return await query.SingleOrDefaultAsync();
@@ -123,22 +128,18 @@ namespace BlogPhotographerSystem_Infra.Repos
                             LastName = user.LastName,
                             Email = user.Email,
                             BirthDate = user.BirthDate,
-                            ImagePath = $"https://localhost:7071/{user.ImagePath}",
+                            ImagePath = $"https://localhost:44358/{user.ImagePath}",
                             Phone = user.Phone,
-                            UserType = user.UserType.ToString(),
-                            CreationDate = user.CreationDate,
-                            ModifiedDate = user.ModifiedDate,
-                            CreatorUserId = user.CreatorUserId,
-                            ModifiedUserId = user.ModifiedUserId,
+                            UserType = user.UserType.ToString(),                          
                             IsDeleted = user.IsDeleted
                         };
             return await query.SingleOrDefaultAsync();
         }
 
-        public async Task UpdateUserAccountRepos(UpdateUserDTO dto)
+        public async Task UpdateUserAccountRepos(UpdateUserDTO dto, int userID)
         {
-            var user = await _dbContext.Users.SingleOrDefaultAsync(b => b.Id == dto.Id);
-            var login = await _dbContext.Logins.SingleOrDefaultAsync(b => b.UserID == dto.Id);
+            var user = await _dbContext.Users.SingleOrDefaultAsync(b => b.Id == userID);
+            var login = await _dbContext.Logins.SingleOrDefaultAsync(b => b.UserID == userID);
 
 
             if (user == null)

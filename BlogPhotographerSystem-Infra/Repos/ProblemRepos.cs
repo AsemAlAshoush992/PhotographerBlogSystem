@@ -33,6 +33,8 @@ namespace BlogPhotographerSystem_Infra.Repos
         public async Task DeleteProblemRepos(int ID)
         {
             var problem = await _context.Problems.SingleOrDefaultAsync(b => b.Id == ID);
+            if (problem == null)
+                throw new Exception("Problem not found");
             problem.ModifiedDate = DateTime.Now;
             problem.ModifiedUserId = 1;
             problem.IsDeleted = true;
@@ -53,11 +55,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                             Purpose = filter.Purpose,
                             Description = filter.Description,
                             UserID = filter.UserID,
-                            OrderID = filter.OrderID,
-                            CreationDate = filter.CreationDate,
-                            ModifiedDate = filter.ModifiedDate,
-                            CreatorUserId = filter.CreatorUserId,
-                            ModifiedUserId = filter.ModifiedUserId,
+                            OrderID = filter.OrderID,                           
                             IsDeleted = filter.IsDeleted
 
                         };
@@ -67,6 +65,7 @@ namespace BlogPhotographerSystem_Infra.Repos
         public async Task<List<ProblemDetailsDTO>> GetAllProblemsRepos()
         {
             var query = from problem in _context.Problems
+                        where problem.IsDeleted == false
                         select new ProblemDetailsDTO
                         {
                             Id = problem.Id,
@@ -91,11 +90,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                             Purpose = problem.Purpose,
                             Description = problem.Description,
                             UserID = problem.UserID,
-                            OrderID = problem.OrderID,
-                            CreationDate = problem.CreationDate,
-                            ModifiedDate = problem.ModifiedDate,
-                            CreatorUserId = problem.CreatorUserId,
-                            ModifiedUserId = problem.ModifiedUserId,
+                            OrderID = problem.OrderID,                           
                             IsDeleted = problem.IsDeleted
                         };
             return await query.SingleOrDefaultAsync();

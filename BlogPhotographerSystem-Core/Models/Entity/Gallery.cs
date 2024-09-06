@@ -14,6 +14,7 @@ namespace BlogPhotographerSystem_Core.Models.Entity
         public string FileName { get; set; }
         public FileType FileType { get; set; }
         public bool IsPrivate { get; set; }
+        public int? UserId { get; set; }
         public int? OrderID { get; set; }
     }
 }

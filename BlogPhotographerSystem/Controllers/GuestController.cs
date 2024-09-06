@@ -1,5 +1,7 @@
-﻿using BlogPhotographerSystem_Core.DTOs.Login;
+﻿using BlogPhotographerSystem_Core.DTOs.Comment;
+using BlogPhotographerSystem_Core.DTOs.Login;
 using BlogPhotographerSystem_Core.DTOs.User;
+using BlogPhotographerSystem_Core.Helper;
 using BlogPhotographerSystem_Core.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +18,8 @@ namespace BlogPhotographerSystem.Controllers
         private readonly IServiceService _serviceService;
         private readonly IGalleryService _galleryService;
         private readonly ICategoryService _categoryService;
-        public GuestController(IUserService userService, ILoginService loginService, IBlogService blogService, IServiceService serviceService, IGalleryService galleryService, ICategoryService categoryService)
+        private readonly ICommentService _commentService;
+        public GuestController(IUserService userService, ILoginService loginService, IBlogService blogService, IServiceService serviceService, IGalleryService galleryService, ICategoryService categoryService, ICommentService commentService)
         {
             _userService = userService;
             _loginService = loginService;
@@ -24,6 +27,7 @@ namespace BlogPhotographerSystem.Controllers
             _serviceService = serviceService;
             _galleryService = galleryService;
             _categoryService = categoryService;
+            _commentService = commentService;
         }
 
         /// <summary>
@@ -74,17 +78,17 @@ namespace BlogPhotographerSystem.Controllers
         }
 
         /// <summary>
-        /// Retrieves all services.
+        /// Retrieves all services by category ID.
         /// </summary>
         /// <response code="200">Returns the list of all services created.</response>
         /// <response code="404">No content found or an error occurred while retrieving the services.</response>
         [HttpGet]
-        [Route("[action]")]
-        public async Task<IActionResult> GetAllServices()
+        [Route("[action]/{categoryId}")]
+        public async Task<IActionResult> GetAllServicesByCategoryId(int categoryId)
         {
             try
             {
-                return StatusCode(201, await _serviceService.GetAllServices());
+                return StatusCode(201, await _serviceService.GetAllServices(categoryId));
             }
             catch (Exception ex)
             {
@@ -186,6 +190,42 @@ namespace BlogPhotographerSystem.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Creates a new Comment.
+        /// </summary>
+        /// <response code="201">New Comment has been successfully created.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data, or an error occurred during client creation.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Post api/Guest
+        ///     {        
+        ///       "blogId": 5,
+        ///       "authorName": "Ali",
+        ///       "content": "Very Good!"   
+        ///     }
+        /// </remarks>
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> CreateNewComment([FromBody] CreateCommentDTO dto)
+        {
+            if (dto == null)
+                return BadRequest("Please filling All Data");
+            try
+            {
+                await _commentService.CreateComment(dto);   
+                return StatusCode(201, "New Comment Has Been Created");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(503, $"Error Ocurred {ex.Message}");
+            }
+        }
+
+
+
+
         /// <summary>
         /// Logs in a user account.
         /// </summary>
@@ -218,6 +258,43 @@ namespace BlogPhotographerSystem.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Logs in a admin account.
+        /// </summary>
+        /// <response code="201">The user has successfully logged in.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data.</response>
+        /// <response code="503">Service unavailable, an error occurred during the login process.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Put api/Guest
+        ///     {        
+        ///       "userName": "Majed.Mohammed7@yahoo.com",
+        ///       "password": "MajedM323#"   
+        ///     }
+        /// </remarks>
+        [HttpPut]
+        [Route("[action]")]
+        public async Task<IActionResult> LoginAdminAccount([FromBody] CreateLoginDTO dto)
+        {
+            if (string.IsNullOrEmpty(dto.UserName) || string.IsNullOrEmpty(dto.Password))
+                return BadRequest("Please filling All Data");
+            try
+            {
+                var token = await _loginService.GenerateAdminAccessToken(dto);
+                return StatusCode(200, token);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(503, $"Error Ocurred {ex.Message}");
+            }
+        }
+
+
+
+
+
         /// <summary>
         /// Logs out a user account.
         /// </summary>
@@ -229,18 +306,18 @@ namespace BlogPhotographerSystem.Controllers
         /// 
         ///     Put api/Guest
         ///     {        
-        ///       "userID": 10   
+        ///       "token": "eyJhbGciOiJIUzI1N"   
         ///     }
         /// </remarks>
         [HttpPut]
-        [Route("[action]/{userID}")]
-        public async Task<IActionResult> LogoutUserAcount( int userID)
+        [Route("[action]")]
+        public async Task<IActionResult> LogoutUserAcount([FromHeader] string token /*int userID*/)
         {
-            if (userID == null)
+            int userID = TokenHelper.IsValidToken2(token);
+            if (!TokenHelper.IsValidToken(token))
             {
-
-                return BadRequest("Please filling All Data");
-            }   
+                return BadRequest("you're token failed");
+            }
             try
             {
                 await _loginService.Logout(userID);

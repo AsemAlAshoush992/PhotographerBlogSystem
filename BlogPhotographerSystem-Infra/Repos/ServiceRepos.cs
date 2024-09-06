@@ -36,34 +36,31 @@ namespace BlogPhotographerSystem_Infra.Repos
                             Name = filter.Name,
                             Description = filter.Description,
                             ImagePath = $"https://localhost:7071/{filter.ImagePath}",
-                            Price = filter.Price,
+                            Price = filter.DisacountAmount != null ? (filter.Price * (1 - filter.DisacountAmount / 100)) + " JD" : filter.Price + " JD",
                             Quantity = filter.Quantity,
                             IsHaveDiscount = filter.IsHaveDiscount,
                             DisacountAmount = filter.DisacountAmount,
                             DiscountType = filter.DiscountType.ToString(),
-                            CategoryID = filter.CategoryID,
-                            CreationDate = filter.CreationDate,
-                            ModifiedDate = filter.ModifiedDate,
-                            CreatorUserId = filter.CreatorUserId,
-                            ModifiedUserId = filter.ModifiedUserId,
+                            CategoryID = filter.CategoryID,                           
                             IsDeleted = filter.IsDeleted
 
                         };
             return await query.ToListAsync();
 
         }
-        public async Task<List<ServiceInfoDTO>> GetAllServicesRepos()
+        public async Task<List<ServiceInfoDTO>> GetAllServicesRepos(int Id)
         {
             var query = from service in _context.Services
                         join category in _context.Categories
                         on service.CategoryID equals category.Id
-                        where service.IsDeleted == false
+                        where service.CategoryID ==Id && service.IsDeleted == false
                         select new ServiceInfoDTO
                         {
+                            Id = service.Id,
                             Name = service.Name,
                             Description = service.Description,
-                            ImagePath = $"https://localhost:7071/{service.ImagePath}",
-                            Price = service.Price,
+                            ImagePath = $"https://localhost:44358/{service.ImagePath}",
+                            Price = service.DisacountAmount != null? (service.Price * (1 - service.DisacountAmount/100 )) + " JD" : service.Price + " JD",
                             Quantity = service.Quantity != null ? service.Quantity.Value : 0,
                             DisacountAmount = service.DisacountAmount != null ? service.DisacountAmount + "%" : 0 + "%",
                             CategoryName = category.Title
@@ -140,6 +137,8 @@ namespace BlogPhotographerSystem_Infra.Repos
         public async Task DeleteServiceRepos(int ID)
         {
             var service = await _context.Services.SingleOrDefaultAsync(b => b.Id == ID);
+            if (service == null)
+                throw new Exception("Service not found");
             service.ModifiedDate = DateTime.Now;
             service.ModifiedUserId = 1;
             service.IsDeleted = true;
@@ -151,13 +150,14 @@ namespace BlogPhotographerSystem_Infra.Repos
         public async Task<List<ServiceDetailsDTO>> GetAllServicesForAdminRepos()
         {
             var query = from service in _context.Services
+                        where service.IsDeleted == false
                         select new ServiceDetailsDTO
                         {
                             Id = service.Id,
                             Name = service.Name,
                             Description = service.Description,
-                            ImagePath = $"https://localhost:7071/{service.ImagePath}",
-                            Price = service.Price,
+                            ImagePath = $"https://localhost:44358/{service.ImagePath}",
+                            Price = service.DisacountAmount != null? (service.Price * (1 - service.DisacountAmount/100 )) + "" : service.Price + "",
                             Quantity = service.Quantity,
                             IsHaveDiscount = service.IsHaveDiscount,
                             DisacountAmount = service.DisacountAmount,
@@ -179,16 +179,12 @@ namespace BlogPhotographerSystem_Infra.Repos
                             Name = service.Name,
                             Description = service.Description,
                             ImagePath = $"https://localhost:7071/{service.ImagePath}",
-                            Price = service.Price,
+                            Price = service.DisacountAmount != null ? (service.Price * (1 - service.DisacountAmount / 100)) + " JD" : service.Price + " JD",
                             Quantity = service.Quantity,
                             IsHaveDiscount = service.IsHaveDiscount,
                             DisacountAmount = service.DisacountAmount,
                             DiscountType = service.DiscountType.ToString(),
-                            CategoryID = service.CategoryID,
-                            CreationDate = service.CreationDate,
-                            ModifiedDate = service.ModifiedDate,
-                            CreatorUserId = service.CreatorUserId,
-                            ModifiedUserId = service.ModifiedUserId,
+                            CategoryID = service.CategoryID,                           
                             IsDeleted = service.IsDeleted
                         };
             return await query.SingleOrDefaultAsync();

@@ -25,6 +25,8 @@ namespace BlogPhotographerSystem_Core.IRepos
         Task DeleteBlogRepos(int ID);
         //Approval
         Task ConfirmUserBlogRepos(int blogID);
+        //Cancel
+        Task CancelUserBlogRepos(int blogID);
         //Client Management
         Task<List<BlogDetailsForUserDTO>> GetAllBlogsByUserIdRepos(int userId);
         //Update

@@ -1,5 +1,6 @@
 ﻿using BlogPhotographerSystem_Core.DTOs.Order;
 using BlogPhotographerSystem_Core.DTOs.User;
+using BlogPhotographerSystem_Core.Models.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +23,10 @@ namespace BlogPhotographerSystem_Core.IServices
         Task DeleteOrder(int ID);
         //Client Management
         //Send
-        Task SendOrderForSpecificService(CreateOrderClientDTO dto);
+        Task<int> SendOrderForSpecificService(CreateOrderClientDTO dto,int userId);
         //Cancel
         Task CancelOrderForSpecificService(CancelOrderClientDTO dto);
+        //change status
+        Task ChangeStatusSpecificOrder(ChangeSatausDTO dto);
     }
 }

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static BlogPhotographerSystem_Core.Helper.Enums.Enums;
 
 namespace BlogPhotographerSystem_Infra.Repos
 {
@@ -21,12 +22,26 @@ namespace BlogPhotographerSystem_Infra.Repos
         }
         public async Task<int> GetUserIdAfterLoginOperations(string email, string password)
         {
-            var query = from login in _context.Logins
-                        where login.UserName == email 
-                        && login.Password == password 
-                        && login.IsDeleted == false
-                        select login.UserID;
-              return (int)await query.FirstOrDefaultAsync();
+            //var query = from login in _context.Logins
+            //            where login.UserName == email 
+            //            && login.Password == password 
+            //            && login.IsDeleted == false
+            //            select login.UserID;
+            var query1 = await _context.Logins.SingleOrDefaultAsync
+                (x => x.UserName == email && x.Password == password && x.IsDeleted == false);
+            var query2 = await _context.Users.SingleOrDefaultAsync
+                (x => x.Email == email && x.UserType == (UserType)Enum.Parse(typeof(UserType), "Client"));
+            if (query1 != null && query2 != null)
+            {
+                query1.LastLoginTime = DateTime.Now;
+                query1.IsLoggedIn = true;
+                _context.Update(query1);
+                await _context.SaveChangesAsync();
+                return (int)query1.UserID;
+            }
+            else
+                throw new Exception("Unauthorized");
+             
         }
         public async Task LogoutRepos(int userID)
         {
@@ -63,6 +78,26 @@ namespace BlogPhotographerSystem_Infra.Repos
             }
             else
                 throw new Exception("Incorrect username or password");
+        }
+
+        public async Task<int> GetAdminIdAfterLoginOperations(string email, string password)
+        {
+            var query1 = await _context.Logins.SingleOrDefaultAsync
+                (x => x.UserName == email && x.Password == password 
+                && x.IsDeleted == false);
+            var query2 = await _context.Users.SingleOrDefaultAsync
+                (x => x.Email == email && x.UserType == (UserType)Enum.Parse(typeof(UserType), "Admin"));
+            if (query1 != null && query2 != null)
+            {
+                query1.LastLoginTime = DateTime.Now;
+                query1.IsLoggedIn = true;
+                _context.Update(query1);
+                await _context.SaveChangesAsync();
+                
+                return (int)query1.UserID;
+            }
+            else
+                throw new Exception("Unauthorized");
         }
     }
 }

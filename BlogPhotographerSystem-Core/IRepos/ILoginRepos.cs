@@ -12,6 +12,7 @@ namespace BlogPhotographerSystem_Core.IRepos
     {
         //Guest Management
         Task<int> GetUserIdAfterLoginOperations(string email, string password);
+        Task<int> GetAdminIdAfterLoginOperations(string email, string password);
         //Task LoginReposClient(CreateLoginDTO dto);
         Task ResetPasswordRepos(CreateLoginDTO dto);
         Task LogoutRepos(int userID);

@@ -11,7 +11,7 @@ namespace BlogPhotographerSystem_Core.IRepos
     public interface IServiceRepos
     {
         //Guest
-        Task<List<ServiceInfoDTO>> GetAllServicesRepos();
+        Task<List<ServiceInfoDTO>> GetAllServicesRepos(int Id);
         //Admin
         Task<List<ServiceDetailsDTO>> GetAllServicesForAdminRepos();
         Task<ServiceDetailsDTO> GetServiceDetailsByIdRepos(int Id);

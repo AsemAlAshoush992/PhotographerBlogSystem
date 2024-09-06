@@ -13,7 +13,7 @@ namespace BlogPhotographerSystem_Core.IServices
     public interface IServiceService
     {
         //Guest Management
-        Task<List<ServiceInfoDTO>> GetAllServices();
+        Task<List<ServiceInfoDTO>> GetAllServices(int Id);
         //Admin Management
         Task<List<ServiceDetailsDTO>> GetAllServicesForAdmin();
         Task<ServiceDetailsDTO> GetServiceDetailsById(int Id);

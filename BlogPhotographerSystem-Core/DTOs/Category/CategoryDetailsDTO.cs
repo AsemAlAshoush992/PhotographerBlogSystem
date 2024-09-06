@@ -12,10 +12,6 @@ namespace BlogPhotographerSystem_Core.DTOs.Category
         public string Title { get; set; }
         public string Description { get; set; }
         public string ImagePath { get; set; }
-        public DateTime CreationDate { get; set; }
-        public DateTime? ModifiedDate { get; set; }
-        public int CreatorUserId { get; set; }
-        public int? ModifiedUserId { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

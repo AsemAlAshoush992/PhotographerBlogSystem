@@ -14,6 +14,9 @@ namespace BlogPhotographerSystem_Core.IServices
         //Guest Management
         Task<string> GenerateUserAccessToken(CreateLoginDTO input);
         Task<User> TryAuthenticate(CreateLoginDTO input);
+
+        Task<string> GenerateAdminAccessToken(CreateLoginDTO input);
+        Task<User> TryAdminAuthenticate(CreateLoginDTO input);
         //Task Login(CreateLoginDTO dto);
         Task ResetPassword(CreateLoginDTO dto);
         Task Logout(int userID);

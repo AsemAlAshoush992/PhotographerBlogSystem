@@ -25,7 +25,7 @@ namespace BlogPhotographerSystem_Infra.Services
             await _galleryRepos.DeletePrivateGalleryRepos(ID);
         }
 
-        //Guest Management
+        //Guest ManagementPhotosAndVideosInfoDTO
         public async Task<List<PhotosAndVideosInfoDTO>> GetAllPhotosForPublicGallery()
         {
             return await _galleryRepos.GetAllPhotosForPublicGalleryRepos();
@@ -41,9 +41,14 @@ namespace BlogPhotographerSystem_Infra.Services
             return await _galleryRepos.GetPublicGalleryDetailsByIdRepos(Id);
         }
 
-        public async Task<List<PrivateGalleryDetailsForClientDTO>> GetAllPrivateGalleriesByUserId(int UserId)
+        public async Task<List<PrivateGalleryOrderDetails>> GetAllPrivateGalleriesByUserId(int UserId)
         {
             return await _galleryRepos.GetAllPrivateGalleriesByUserId(UserId);
+        }
+
+        public async Task<List<PrivateGalleryOrderDetails>> GetAllPrivateGalleriesVideosByUserId(int UserId)
+        {
+            return await _galleryRepos.GetAllPrivateGalleriesVideosByUserId(UserId);
         }
         public async Task<List<PrivateGalleryDetailsForClientDTO>> GetAllPrivateGalleriesByUserIdWithoutOrders(int UserId)
         {
@@ -88,7 +93,7 @@ namespace BlogPhotographerSystem_Infra.Services
             await _galleryRepos.UpdatePrivateGalleryRepos(dto);
         }
 
-        public async Task UploadFilesForUserByPrivateGallery(CreatePrivateGalleryDTO dto)
+        public async Task UploadFilesForUserByPrivateGallery(CreatePrivateGalleryDTO dto, int userId)
         {
             string fileType;
             string extension = Path.GetExtension(dto.Path).ToUpperInvariant();
@@ -111,7 +116,7 @@ namespace BlogPhotographerSystem_Infra.Services
                 FileName = Path.GetFileNameWithoutExtension(dto.Path),
                 FileType = (FileType)Enum.Parse(typeof(FileType), fileType),
                 IsPrivate = true,
-                CreatorUserId = dto.UserID
+                UserId = userId
             };
             await _galleryRepos.SendFilesForUserByPrivateGalleryRepos(gallery);
         }

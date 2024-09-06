@@ -56,5 +56,29 @@ namespace BlogPhotographerSystem_Infra.Services
         {
             await _loginRepos.ResetPasswordRepos(dto);
         }
+
+        public async Task<string> GenerateAdminAccessToken(CreateLoginDTO input)
+        {
+            var user = await TryAdminAuthenticate(input);
+            if (user != null)
+            {
+                return TokenHelper.GenerateJwtToken(user);
+            }
+            throw new Exception("Failed to generate token");
+        }
+
+        public async Task<User> TryAdminAuthenticate(CreateLoginDTO input)
+        {
+            var userId = await _loginRepos.GetAdminIdAfterLoginOperations(input.UserName, input.Password);
+
+            if (userId != 0)
+            {
+                return await _userRepos.GetUserById(userId);
+            }
+            else
+            {
+                throw new Exception("Wrong email or password");
+            }
+        }
     }
 }

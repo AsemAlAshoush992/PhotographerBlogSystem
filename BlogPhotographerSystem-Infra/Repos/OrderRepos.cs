@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static BlogPhotographerSystem_Core.Helper.Enums.Enums;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BlogPhotographerSystem_Infra.Repos
 {
@@ -39,20 +40,36 @@ namespace BlogPhotographerSystem_Infra.Repos
             await _context.SaveChangesAsync();
         }
 
+        public async Task ChangeStatusSpecificOrderRepos(ChangeSatausDTO dto)
+        {
+            var order = await _context.Orders.SingleOrDefaultAsync(b => b.Id == dto.OrderId);
+            if (order == null)
+                throw new Exception("Order not found");
+            order.ModifiedDate = DateTime.Now;
+            order.ModifiedUserId = 1;
+            order.Status = (Status)Enum.Parse(typeof(Status), dto.Status);
+
+            _context.Update(order);
+            await _context.SaveChangesAsync();
+        }
+
         public Task CreateNewOrderRepos(Order order)
         {
             throw new NotImplementedException();
         }
 
-        public async Task CreateOrderForSpecificServiceRepos(Order order)
+        public async Task<int> CreateOrderForSpecificServiceRepos(Order order)
         {
             await _context.Orders.AddAsync(order);
             await _context.SaveChangesAsync();
+            return order.Id;
         }
 
         public async Task DeleteOrderRepos(int ID)
         {
             var order = await _context.Orders.SingleOrDefaultAsync(b => b.Id == ID);
+            if (order == null)
+                throw new Exception("Order not found");
             order.ModifiedDate = DateTime.Now;
             order.ModifiedUserId = 1;
             order.IsDeleted = true;
@@ -81,11 +98,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                             Status = filter.Status.ToString(),
                             PaymentMethod = filter.PaymentMethod.ToString(),
                             UserID = filter.UserID,
-                            ServiceID = filter.ServiceID,
-                            CreationDate = filter.CreationDate,
-                            ModifiedDate = filter.ModifiedDate,
-                            CreatorUserId = filter.CreatorUserId,
-                            ModifiedUserId = filter.ModifiedUserId,
+                            ServiceID = filter.ServiceID,                           
                             IsDeleted = filter.IsDeleted
 
                         };
@@ -96,6 +109,7 @@ namespace BlogPhotographerSystem_Infra.Repos
         public async Task<List<OrderDetailsDTO>> GetAllOrdersRepos()
         {
             var query = from order in _context.Orders
+                        where order.IsDeleted == false
                         select new OrderDetailsDTO
                         {
                             Id= order.Id,
@@ -130,11 +144,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                             Status = order.Status.ToString(),
                             PaymentMethod = order.PaymentMethod.ToString(),
                             UserID = order.UserID,
-                            ServiceID = order.ServiceID,
-                            CreationDate = order.CreationDate,
-                            ModifiedDate = order.ModifiedDate,
-                            CreatorUserId = order.CreatorUserId,
-                            ModifiedUserId = order.ModifiedUserId,
+                            ServiceID = order.ServiceID,                           
                             IsDeleted = order.IsDeleted,
                         };
             return await query.SingleOrDefaultAsync();

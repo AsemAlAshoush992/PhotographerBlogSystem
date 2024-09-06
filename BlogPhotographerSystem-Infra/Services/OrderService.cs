@@ -25,6 +25,11 @@ namespace BlogPhotographerSystem_Infra.Services
             await _orderRepos.CancelOrderForServiceRepos(dto);
         }
 
+        public async Task ChangeStatusSpecificOrder(ChangeSatausDTO dto)
+        {
+            await _orderRepos.ChangeStatusSpecificOrderRepos(dto);
+        }
+
         public async Task DeleteOrder(int ID)
         {
             await _orderRepos.DeleteOrderRepos(ID);
@@ -46,7 +51,7 @@ namespace BlogPhotographerSystem_Infra.Services
             return await _orderRepos.GetOrderDetailsByIdRepos(Id);
         }
 
-        public async Task SendOrderForSpecificService(CreateOrderClientDTO dto)
+        public async Task<int> SendOrderForSpecificService(CreateOrderClientDTO dto, int userId)
         {
             string message;
             if (dto.ServiceName == "Wedding Package")
@@ -98,10 +103,11 @@ namespace BlogPhotographerSystem_Infra.Services
                 Note = message,
                 Status = Status.Pending,
                 PaymentMethod = (PaymentMethod)Enum.Parse(typeof(PaymentMethod), dto.PaymentMethod),
-                UserID = dto.UserID,
+                UserID = userId,
                 ServiceID = await _orderRepos.GetIdForSpecificService(dto.ServiceName)
             };
-            await _orderRepos.CreateOrderForSpecificServiceRepos(order);
+            int orderId = await _orderRepos.CreateOrderForSpecificServiceRepos(order);
+            return orderId;
         }
 
         public async Task UpdateOrder(UpdateOrderAdminDTO dto)

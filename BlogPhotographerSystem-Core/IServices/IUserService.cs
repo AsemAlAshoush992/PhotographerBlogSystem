@@ -2,6 +2,7 @@
 using BlogPhotographerSystem_Core.DTOs.Login;
 using BlogPhotographerSystem_Core.DTOs.Service;
 using BlogPhotographerSystem_Core.DTOs.User;
+using BlogPhotographerSystem_Core.Models.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,6 @@ namespace BlogPhotographerSystem_Core.IServices
         //User Management
         Task<UserInfoDTO> GetPersonalInformationsById(int Id);
         //Update
-        Task UpdateUserAccount(UpdateUserDTO dto);
+        Task UpdateUserAccount(UpdateUserDTO dto, int userID);
     }
 }
