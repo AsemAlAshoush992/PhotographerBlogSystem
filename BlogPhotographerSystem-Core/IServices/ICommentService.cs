@@ -12,5 +12,9 @@ namespace BlogPhotographerSystem_Core.IServices
     {
         //Create
         Task CreateComment(CreateCommentDTO dto);
+        //GetAll
+        Task<List<CommentsDetailsDTO>> GetAllComments();
+        //Delete
+        Task DeleteComment(int ID);
     }
 }

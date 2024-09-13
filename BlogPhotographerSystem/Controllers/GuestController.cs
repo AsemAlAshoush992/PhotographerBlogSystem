@@ -67,6 +67,8 @@ namespace BlogPhotographerSystem.Controllers
         [Route("[action]/{blogId}")]
         public async Task<IActionResult> GetBlogDetailsForUserById( int blogId)
         {
+            if (blogId == 0)
+                return BadRequest("Please filling BlogId");
             try
             {
                 return StatusCode(201, await _blogService.GetBlogDetailsById(blogId));
@@ -86,6 +88,8 @@ namespace BlogPhotographerSystem.Controllers
         [Route("[action]/{categoryId}")]
         public async Task<IActionResult> GetAllServicesByCategoryId(int categoryId)
         {
+            if (categoryId == 0)
+                return BadRequest("Please filling CategoryId");
             try
             {
                 return StatusCode(201, await _serviceService.GetAllServices(categoryId));

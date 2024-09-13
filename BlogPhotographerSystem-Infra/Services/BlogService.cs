@@ -31,7 +31,7 @@ namespace BlogPhotographerSystem_Infra.Services
             return await _blogRepos.GetBlogDetailsByIdRepos(blogid);
         }
         //Admin Management 
-        public async Task<List<BlogsDetailsDTO>> GetAllBlogsDetails()
+        public async Task<List<BlogDetailsForUserDTO>> GetAllBlogsDetails()
         {
             return await _blogRepos.GetAllBlogsDetailsRepos();
 

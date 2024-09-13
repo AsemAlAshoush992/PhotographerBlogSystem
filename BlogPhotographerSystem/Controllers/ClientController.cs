@@ -522,7 +522,7 @@ namespace BlogPhotographerSystem.Controllers
         [Route("[action]/{ID}")]
         public async Task<IActionResult> DeleteBlogForSpecificUser(int ID)
         {
-            if (ID == null)
+            if (ID == 0)
                 return BadRequest("Please filling BlogId");
             try
             {
@@ -553,7 +553,7 @@ namespace BlogPhotographerSystem.Controllers
         [Route("[action]/{ID}")]
         public async Task<IActionResult> DeletePrivateGalleryFile(int ID)
         {
-            if (ID == null)
+            if (ID == 0)
                 return BadRequest("Please filling PrivateGalleryId");
             try
             {

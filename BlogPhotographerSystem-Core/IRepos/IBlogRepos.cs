@@ -14,7 +14,7 @@ namespace BlogPhotographerSystem_Core.IRepos
         Task<List<BlogsCardsDTO>> GetAllBlogsInfoRepos();
         Task<BlogDetailsForUserDTO> GetBlogDetailsByIdRepos(int blogid);
         //Admin Management
-        Task<List<BlogsDetailsDTO>> GetAllBlogsDetailsRepos();
+        Task<List<BlogDetailsForUserDTO>> GetAllBlogsDetailsRepos();
         Task<BlogsDetailsDTO> GetBlogDetailsForAdminByIdRepos(int Id);
         //Create
         Task<int> CreateBlogRepos(Blog blog);

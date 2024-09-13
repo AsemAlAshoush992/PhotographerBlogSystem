@@ -71,20 +71,33 @@ namespace BlogPhotographerSystem_Infra.Repos
             };
             return await query.ToListAsync();
         }
-        public async Task<List<BlogsDetailsDTO>> GetAllBlogsDetailsRepos()
+        public async Task<List<BlogDetailsForUserDTO>> GetAllBlogsDetailsRepos()
         {
-            var query = from blog in _context.Blogs
+            var query = from user in _context.Users
+                        join blog in _context.Blogs
+                        on user.Id equals blog.AuthorID
+                        join attachement in _context.BlogAttachements
+                        on blog.Id equals attachement.BlogID
                         where blog.IsDeleted == false
-                        select new BlogsDetailsDTO
+                        group new { blog, user, attachement } by new { blog.Id, blog.Title, blog.Article, blog.BlogDate, user.FirstName, user.LastName, blog.IsApproved } into blogGroup
+                        select new BlogDetailsForUserDTO
                         {
-                            Id = blog.Id,
-                            Title = blog.Title,
-                            Description = blog.Description,
-                            BlogDate = blog.BlogDate,
-                            Status = blog.IsApproved == true ? "Approved" :
-                            blog.IsApproved == false ? "Rejected" : "Pending",
-                            AuthorID = blog.AuthorID,
-                            IsDeleted = blog.IsDeleted
+                            Id = blogGroup.Key.Id,
+                            Title = blogGroup.Key.Title,
+                            Article = blogGroup.Key.Article,
+                            BlogDate = blogGroup.Key.BlogDate,
+                            AuthorName = blogGroup.Key.FirstName + " " + blogGroup.Key.LastName,
+                            Status = blogGroup.Key.IsApproved == true ? "Approved" :
+                            blogGroup.Key.IsApproved == false ? "Rejected" : "Pending",
+                            BlogAttachments = blogGroup
+                                                    .Where(bg => bg.attachement != null)
+                                                    .Select(bg => new BlogAttachementDTO
+                                                    {
+                                                        Id = bg.attachement.Id,
+                                                        Path = $"https://localhost:44358/{bg.attachement.Path}"
+                                                    })
+                                                    .Distinct()
+                                                    .ToList(),
                         };
             return await query.ToListAsync();
 
@@ -130,6 +143,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                         where blogD.Id == blogid
                         && blogD.IsDeleted == false
                         && blogD.IsApproved == true
+                        && comment.IsDeleted == false
                         && file.FileType == (FileType)Enum.Parse(typeof(FileType), "Image")
             group new { blogD, user, file, comment } by new
                         {
@@ -165,6 +179,7 @@ namespace BlogPhotographerSystem_Infra.Repos
                                             CommentDate = bg.comment.CommentDate
                                         })
                                         .Distinct()
+                                        .OrderBy(b => b.CommentDate)
                                         .ToList()
                         };
             return await query.SingleOrDefaultAsync();

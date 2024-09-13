@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BlogPhotographerSystem_Infra.Services
 {
-    public class CommentService : ICommentService
+    public class CommentService : ICommentService 
     {
         private readonly ICommentRepos _commentRepos;
 
@@ -29,6 +29,16 @@ namespace BlogPhotographerSystem_Infra.Services
                 CommentDate = DateTime.Now
             };
             await _commentRepos.CreateCommentRepos(comment);
+        }
+
+        public async Task DeleteComment(int ID)
+        {
+             await _commentRepos.DeleteCommentRepos(ID);
+        }
+
+        public async Task<List<CommentsDetailsDTO>> GetAllComments()
+        {
+            return await _commentRepos.GetAllCommentsRepos();
         }
     }
 }

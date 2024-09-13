@@ -24,8 +24,9 @@ namespace BlogPhotographerSystem.Controllers
         private readonly IContactRequestService _contactRequestService;
         private readonly IProblemService _problemService;
         private readonly IGalleryService _galleryService;
+        private readonly ICommentService _commentService;
 
-        public AdminController(IBlogService blogService, ICategoryService categoryService, IUserService userService, IServiceService service, IOrderService orderService, IContactRequestService contactRequestService, IProblemService problemService, IGalleryService galleryService)
+        public AdminController(IBlogService blogService, ICategoryService categoryService, IUserService userService, IServiceService service, IOrderService orderService, IContactRequestService contactRequestService, IProblemService problemService, IGalleryService galleryService, ICommentService commentService)
         {
             _blogService = blogService;
             _categoryService = categoryService;
@@ -35,6 +36,7 @@ namespace BlogPhotographerSystem.Controllers
             _contactRequestService = contactRequestService;
             _problemService = problemService;
             _galleryService = galleryService;
+            _commentService = commentService;
         }
         /// <summary>
         /// Retrieves all blogs of the admin.
@@ -52,6 +54,25 @@ namespace BlogPhotographerSystem.Controllers
             catch (Exception ex)
             {
                 return StatusCode(404, $"Error occurred{ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Retrieves all comments details of admin.
+        /// </summary>
+        /// <response code="200">Returns the list of all comments details created.</response>
+        /// <response code="404">No content found or an error occurred while retrieving the comments.</response>
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> GetAllCommentsDetails()
+        {
+            try
+            {
+                return StatusCode(201, await _commentService.GetAllComments());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(503, $"Error Ocurred {ex.Message}");
             }
         }
 
@@ -176,7 +197,6 @@ namespace BlogPhotographerSystem.Controllers
             }
         }
 
-
         /// <summary>
         /// Retrieves all problems of the admin.
         /// </summary>
@@ -194,8 +214,7 @@ namespace BlogPhotographerSystem.Controllers
             {
                 return StatusCode(204, $"Error occurred {ex.Message}");
             }
-        }
-       
+        } 
        
         /// <summary>
         /// Uploads files to a user's private gallery.
@@ -227,7 +246,6 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(400, $"Error occurred {ex.Message}");
             }
         }
-
 
         /// <summary>
         /// Creates a new service of the admin.
@@ -567,7 +585,7 @@ namespace BlogPhotographerSystem.Controllers
         [Route("[action]/{ID}")]
         public async Task<IActionResult> DeleteSpecificOrder(int ID)
         {
-            if (ID == null)
+            if (ID == 0)
                 return BadRequest("Please filling OrderId");
             try
             {
@@ -599,7 +617,7 @@ namespace BlogPhotographerSystem.Controllers
         [Route("[action]/{ID}")]
         public async Task<IActionResult> DeleteSpecificGallery(int ID)
         {
-            if (ID == null)
+            if (ID == 0)
                 return BadRequest("Please filling PrivateGalleryId");
             try
             {
@@ -631,7 +649,7 @@ namespace BlogPhotographerSystem.Controllers
         public async Task<IActionResult> DeleteSpecificContactRequest(int ID)
         {
 
-            if (ID == null)
+            if (ID == 0)
                 return BadRequest("Please filling ContactRequestId");
             try
             {
@@ -662,7 +680,7 @@ namespace BlogPhotographerSystem.Controllers
         [Route("[action]/{ID}")]
         public async Task<IActionResult> DeleteSpecificService(int ID)
         {
-            if (ID == null)
+            if (ID == 0)
                 return BadRequest("Please filling ServiceId");
             try
             {
@@ -692,7 +710,7 @@ namespace BlogPhotographerSystem.Controllers
         [Route("[action]/{ID}")]
         public async Task<IActionResult> DeleteSpecificBlog(int ID)
         {
-            if (ID == null)
+            if (ID == 0)
                 return BadRequest("Please filling BlogId");
             try
             {
@@ -757,7 +775,7 @@ namespace BlogPhotographerSystem.Controllers
         [Route("[action]/{ID}")]
         public async Task<IActionResult> DeleteUser(int ID)
         {
-            if (ID == null)
+            if (ID == 0)
             {
                 return BadRequest("Fill the userId");
             }
@@ -791,12 +809,46 @@ namespace BlogPhotographerSystem.Controllers
         [Route("[action]/{ID}")]
         public async Task<IActionResult> DeleteSpecificCategory( int ID)
         {
-            if (ID == null)
+            if (ID == 0)
                 return BadRequest("Please filling CategoryId");
             try
             {
                 await _categoryService.DeleteCategory(ID);
                 return StatusCode(200, "The Category has been Deleted successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, $"Error occurred {ex.Message}");
+            }
+        }
+
+
+
+
+        /// <summary>
+        /// Deletes a specific comment of the admin.
+        /// </summary>
+        /// <response code="200">The comment has been deleted successfully.</response>
+        /// <response code="400">Bad request, indicating missing or invalid data.</response>
+        /// <response code="404">The comment was not found or an error occurred during deletion.</response>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Put api/Admin
+        ///     {        
+        ///       "ID": 3        
+        ///     }
+        /// </remarks>
+        [HttpPut]
+        [Route("[action]/{ID}")]
+        public async Task<IActionResult> DeleteSpecificComment(int ID)
+        {
+            if (ID == 0)
+                return BadRequest("Please filling CommentId");
+            try
+            {
+                await _commentService.DeleteComment(ID);
+                return StatusCode(200, "The Comment has been Deleted successfully");
             }
             catch (Exception ex)
             {
@@ -822,7 +874,7 @@ namespace BlogPhotographerSystem.Controllers
         [Route("[action]/{ID}")]
         public async Task<IActionResult> DeleteSpecificProblem(int ID)
         {
-            if (ID == null)
+            if (ID == 0)
                 return BadRequest("Please filling ProblemId");
             try
             {
@@ -852,7 +904,7 @@ namespace BlogPhotographerSystem.Controllers
         [Route("[action]/{blogID}")]
         public async Task<IActionResult> ConfirmUserBlogAndPublish(int blogID)
         {
-            if (blogID == null)
+            if (blogID == 0)
                 return BadRequest("Please filling BlogId");
             try
             {
@@ -883,7 +935,7 @@ namespace BlogPhotographerSystem.Controllers
         [Route("[action]/{blogID}")]
         public async Task<IActionResult> CancelUserBlog(int blogID)
         {
-            if (blogID == null)
+            if (blogID == 0)
                 return BadRequest("Please filling BlogId");
             try
             {

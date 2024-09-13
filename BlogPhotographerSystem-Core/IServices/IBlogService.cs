@@ -14,7 +14,7 @@ namespace BlogPhotographerSystem_Core.IServices
         Task<List<BlogsCardsDTO>> GetAllBlogsInfo();
         Task<BlogDetailsForUserDTO> GetBlogDetailsById(int blogid);
         //Admin Management
-        Task<List<BlogsDetailsDTO>> GetAllBlogsDetails();
+        Task<List<BlogDetailsForUserDTO>> GetAllBlogsDetails();
         Task<BlogsDetailsDTO> GetBlogDetailsForAdminById(int Id);
 
         //Create
