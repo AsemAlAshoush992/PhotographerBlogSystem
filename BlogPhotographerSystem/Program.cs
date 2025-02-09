@@ -56,9 +56,11 @@ builder.Services.AddScoped<IOrderRepos, OrderRepos>();
 builder.Services.AddScoped<IContactRequestRepos, ContactRequestRepos>();
 builder.Services.AddScoped<ILoginRepos, LoginRepos>();
 builder.Services.AddScoped<ICommentRepos, CommentRepos>();
+//builder.Services.AddDbContext<BlogPhotographerSystemDBContext>(cnn=> cnn.UseSqlServer(builder.Configuration.GetConnectionString("sqlconnect")));
 builder.Services.AddDbContext<BlogPhotographerSystemDBContext>(option => option.UseMySQL(builder.Configuration.GetConnectionString("mysqlconnect")));
-
-
+builder.Services.AddTransient<EmailService>(); //  ”ÃÌ· Œœ„… «·»—Ìœ «·≈·ﬂ —Ê‰Ì
+builder.Services.AddSingleton<OTPService>(); //  ”ÃÌ· OTPService ﬂŒœ„… À«» …
+builder.Services.AddMemoryCache();
 //serilog
 var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 Serilog.Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration).

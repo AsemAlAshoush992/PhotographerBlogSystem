@@ -1,14 +1,8 @@
 ﻿using BlogPhotographerSystem_Core.DTOs.User;
 using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.IServices;
-using BlogPhotographerSystem_Core.Migrations;
 using BlogPhotographerSystem_Core.Models.Entity;
-using BlogPhotographerSystem_Infra.Repos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.Policy;
 using static BlogPhotographerSystem_Core.Helper.Enums.Enums;
 
 namespace BlogPhotographerSystem_Infra.Services
@@ -16,7 +10,8 @@ namespace BlogPhotographerSystem_Infra.Services
     public class UserService : IUserService
     {
         private readonly IUserRepos _userRepos;
-        public UserService(IUserRepos userRepos)
+      
+        public UserService(IUserRepos userRepos, EmailService emailService)
         {
             _userRepos = userRepos;
         }
@@ -79,6 +74,7 @@ namespace BlogPhotographerSystem_Infra.Services
                 UserID = UsertId,
             };
             await _userRepos.CreateLoginRepos(login);
+           
         }
 
         public async Task UpdateUser(UpdateUserAdminDTO dto)

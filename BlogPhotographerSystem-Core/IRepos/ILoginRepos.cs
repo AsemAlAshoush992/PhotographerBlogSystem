@@ -14,7 +14,8 @@ namespace BlogPhotographerSystem_Core.IRepos
         Task<int> GetUserIdAfterLoginOperations(string email, string password);
         Task<int> GetAdminIdAfterLoginOperations(string email, string password);
         //Task LoginReposClient(CreateLoginDTO dto);
-        Task ResetPasswordRepos(CreateLoginDTO dto);
+        Task ResetPasswordRepos(ResetPasswordDTO dto);
+        Task ChangePasswordRepos(string email, ChangePasswordDTO dto);
         Task LogoutRepos(int userID);
     }
 }

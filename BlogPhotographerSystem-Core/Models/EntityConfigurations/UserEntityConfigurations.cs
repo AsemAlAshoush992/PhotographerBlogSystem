@@ -17,7 +17,8 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
         {
             //shared entity configuration
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).HasColumnType("int").ValueGeneratedOnAdd();
+           // builder.Property(x => x.Id).HasColumnType("int").ValueGeneratedOnAdd();
+            builder.Property(x => x.Id).UseIdentityColumn();
             builder.Property(x => x.CreationDate).IsRequired();
             builder.Property(x => x.CreatorUserId).IsRequired();
             builder.Property(x => x.IsDeleted).IsRequired();
@@ -45,11 +46,20 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             //Default Constraint
             builder.Property(x => x.UserType).HasDefaultValue((UserType)Enum.Parse(typeof(UserType), "Client"));
             //Check Constraint
-            builder.ToTable(t => t.HasCheckConstraint("CH_User_FirstName", @"NOT (FirstName REGEXP '[0-9~!@#$%^&*()_+=-]')"));
-            builder.ToTable(t => t.HasCheckConstraint("CH_User_LastName", @"NOT (LastName REGEXP '[0-9~!@#$%^&*()_+=-]')"));
+            //builder.ToTable(t => t.HasCheckConstraint("CH_User_FirstName", @"NOT (FirstName REGEXP '[0-9~!@#$%^&*()_+=-]')"));
+            builder.ToTable(t => t.HasCheckConstraint("CH_User_FirstName",
+            "FirstName NOT LIKE '%[0-9]%' AND " + // عدم وجود أرقام
+            "FirstName NOT LIKE '%[~!@#$%^&*()_+=-]%'"));
+            //builder.ToTable(t => t.HasCheckConstraint("CH_User_LastName", @"NOT (LastName REGEXP '[0-9~!@#$%^&*()_+=-]')"));
+            builder.ToTable(t => t.HasCheckConstraint("CH_User_LastName",
+             "LastName NOT LIKE '%[0-9]%' AND " + // عدم وجود أرقام
+             "LastName NOT LIKE '%[~!@#$%^&*()_+=-]%'"));
             builder.ToTable(t => t.HasCheckConstraint("CH_User_Phone", "Phone LIKE '009627________'"));
             //builder.ToTable(t => t.HasCheckConstraint("CH_User_Email", "Email LIKE '%@%.com'"));
-            builder.ToTable(t => t.HasCheckConstraint("CH_User_Email", @"Email REGEXP '^[A-Za-z0-9._-]+@[A-Za-z0-9]+[.][A-Za-z]+$'"));
+           // builder.ToTable(t => t.HasCheckConstraint("CH_User_Email", @"Email REGEXP '^[A-Za-z0-9._-]+@[A-Za-z0-9]+[.][A-Za-z]+$'"));
+            builder.ToTable(t => t.HasCheckConstraint("CH_User_Email",
+            "Email LIKE '%_@__%.__%' AND " + // يتحقق من وجود '@' و '.' في البريد
+             "Email NOT LIKE '%[^A-Za-z0-9._-]%'"));
             //Relationships
             builder.HasOne<Login>().WithOne().HasForeignKey<Login>(x => x.UserID);
             builder.HasMany<ContactRequest>().WithOne().HasForeignKey(x => x.UserID);

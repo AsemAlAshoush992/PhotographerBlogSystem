@@ -16,7 +16,8 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
         {
             //shared entity configuration
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).HasColumnType("int").ValueGeneratedOnAdd();
+           // builder.Property(x => x.Id).HasColumnType("int").ValueGeneratedOnAdd();
+            builder.Property(x => x.Id).UseIdentityColumn();
             builder.Property(x => x.CreationDate).IsRequired();
             builder.Property(x => x.CreatorUserId).IsRequired();
             builder.Property(x => x.IsDeleted).IsRequired();
@@ -37,7 +38,8 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             //Default Constraint
             builder.Property(x => x.FileType).HasDefaultValue((FileType)Enum.Parse(typeof(FileType), "Image"));
             //Check Constraint
-            builder.ToTable(t => t.HasCheckConstraint("CH_BlogAttachement_FileName", "LENGTH(FileName) >= 3"));
+            //builder.ToTable(t => t.HasCheckConstraint("CH_BlogAttachement_FileName", "LENGTH(FileName) >= 3"));
+            builder.ToTable(t => t.HasCheckConstraint("CH_BlogAttachement_FileName", "LEN(FileName) >= 3"));
             //builder.ToTable(t => t.HasCheckConstraint("CH_BlogAttachement_FileName", @"NOT (FileName REGEXP '[~!@#$%^&*()_+=-]')"));   
         }
     }

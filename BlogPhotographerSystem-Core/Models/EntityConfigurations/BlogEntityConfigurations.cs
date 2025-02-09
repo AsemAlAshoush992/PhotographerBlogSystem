@@ -15,7 +15,8 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
         {
             //shared entity configuration
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).HasColumnType("int").ValueGeneratedOnAdd();
+            //builder.Property(x => x.Id).HasColumnType("int").ValueGeneratedOnAdd();
+            builder.Property(x => x.Id).UseIdentityColumn();
             builder.Property(x => x.CreationDate).IsRequired();
             builder.Property(x => x.CreatorUserId).IsRequired();
             builder.Property(x => x.IsDeleted).IsRequired();
@@ -39,7 +40,9 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.Article).IsUnicode();
             builder.Property(x => x.Description).IsUnicode();
             //Check Constraint
-            builder.ToTable(t => t.HasCheckConstraint("CH_Blog_Title", "LENGTH(Title) >= 5"));
+            //builder.ToTable(t => t.HasCheckConstraint("CH_Blog_Title", "LENGTH(Title) >= 5"));
+            builder.ToTable(t => t.HasCheckConstraint("CH_Blog_Title", "LEN(Title) >= 5"));
+
             //Default Constraint
             builder.Property(x => x.BlogDate).HasDefaultValue(DateTime.Now);
             builder.Property(x => x.BlogDate).HasDefaultValue(null);

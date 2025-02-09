@@ -52,7 +52,7 @@ namespace BlogPhotographerSystem_Infra.Services
             await _loginRepos.LogoutRepos(userID);
         }
 
-        public async Task ResetPassword(CreateLoginDTO dto)
+        public async Task ResetPassword(ResetPasswordDTO dto)
         {
             await _loginRepos.ResetPasswordRepos(dto);
         }
@@ -79,6 +79,11 @@ namespace BlogPhotographerSystem_Infra.Services
             {
                 throw new Exception("Wrong email or password");
             }
+        }
+
+        public async Task ChangePassword(string email, ChangePasswordDTO dto)
+        {
+            await _loginRepos.ChangePasswordRepos(email,dto);
         }
     }
 }

@@ -15,7 +15,8 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
         {
             //shared entity configuration
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).HasColumnType("int").ValueGeneratedOnAdd();
+            //builder.Property(x => x.Id).HasColumnType("int").ValueGeneratedOnAdd();
+            builder.Property(x => x.Id).UseIdentityColumn();
             builder.Property(x => x.CreationDate).IsRequired();
             builder.Property(x => x.CreatorUserId).IsRequired();
             builder.Property(x => x.IsDeleted).IsRequired();
@@ -35,8 +36,12 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             builder.Property(x => x.AuthorName).IsUnicode();
             builder.Property(x => x.Content).IsUnicode();
             //Check Constraint
-            builder.ToTable(t => t.HasCheckConstraint("CH_Comment_AuthorName", "LENGTH(AuthorName) >= 3"));
-            builder.ToTable(t => t.HasCheckConstraint("CH_Comment_Content", "LENGTH(Content) >= 3"));
+           // builder.ToTable(t => t.HasCheckConstraint("CH_Comment_AuthorName", "LENGTH(AuthorName) >= 3"));
+            builder.ToTable(t => t.HasCheckConstraint("CH_Comment_AuthorName", "LEN(AuthorName) >= 3"));
+
+           // builder.ToTable(t => t.HasCheckConstraint("CH_Comment_Content", "LENGTH(Content) >= 3"));
+            builder.ToTable(t => t.HasCheckConstraint("CH_Comment_Content", "LEN(Content) >= 3"));
+
         }
     }
 }

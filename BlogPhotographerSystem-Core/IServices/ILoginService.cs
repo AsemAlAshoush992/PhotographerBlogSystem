@@ -18,7 +18,8 @@ namespace BlogPhotographerSystem_Core.IServices
         Task<string> GenerateAdminAccessToken(CreateLoginDTO input);
         Task<User> TryAdminAuthenticate(CreateLoginDTO input);
         //Task Login(CreateLoginDTO dto);
-        Task ResetPassword(CreateLoginDTO dto);
+        Task ResetPassword(ResetPasswordDTO dto);
+        Task ChangePassword(string email, ChangePasswordDTO dto);
         Task Logout(int userID);
 
     }

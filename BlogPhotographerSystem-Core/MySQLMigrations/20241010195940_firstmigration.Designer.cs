@@ -3,24 +3,27 @@ using System;
 using BlogPhotographerSystem_Core.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BlogPhotographerSystem_Core.Migrations
+namespace BlogPhotographerSystem_Core.MySQLMigrations
 {
     [DbContext(typeof(BlogPhotographerSystemDBContext))]
-    [Migration("20240721111634_asem5425")]
-    partial class asem5425
+    [Migration("20241010195940_firstmigration")]
+    partial class firstmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.18")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("ProductVersion", "7.0.20")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("BlogPhotographerSystem_Core.Models.Entity.Blog", b =>
                 {
@@ -28,23 +31,23 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<string>("Article")
                         .IsRequired()
                         .IsUnicode(true)
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("AuthorID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("BlogDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 7, 21, 14, 16, 34, 616, DateTimeKind.Local).AddTicks(9714));
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 7, 21, 14, 16, 34, 616, DateTimeKind.Local).AddTicks(8603));
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 10, 10, 22, 59, 40, 860, DateTimeKind.Local).AddTicks(3815));
 
                     b.Property<int>("CreatorUserId")
                         .ValueGeneratedOnAdd()
@@ -55,20 +58,18 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .IsRequired()
                         .HasMaxLength(300)
                         .IsUnicode(true)
-                        .HasColumnType("varchar(300)");
+                        .HasColumnType("nvarchar(300)");
 
-                    b.Property<bool>("IsApproved")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(false);
+                    b.Property<bool?>("IsApproved")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasDefaultValue(false);
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("ModifiedUserId")
                         .HasColumnType("int");
@@ -77,7 +78,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .IsRequired()
                         .HasMaxLength(30)
                         .IsUnicode(true)
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
@@ -85,7 +86,7 @@ namespace BlogPhotographerSystem_Core.Migrations
 
                     b.ToTable("Blogs", t =>
                         {
-                            t.HasCheckConstraint("CH_Blog_Title", "LENGTH(Title) >= 5");
+                            t.HasCheckConstraint("CH_Blog_Title", "LEN(Title) >= 5");
                         });
                 });
 
@@ -95,13 +96,15 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<int?>("BlogID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 7, 21, 14, 16, 34, 616, DateTimeKind.Local).AddTicks(6991));
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 10, 10, 22, 59, 40, 860, DateTimeKind.Local).AddTicks(1922));
 
                     b.Property<int>("CreatorUserId")
                         .ValueGeneratedOnAdd()
@@ -112,7 +115,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .IsUnicode(true)
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("FileType")
                         .ValueGeneratedOnAdd()
@@ -121,18 +124,18 @@ namespace BlogPhotographerSystem_Core.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasDefaultValue(false);
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("ModifiedUserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Path")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -140,7 +143,7 @@ namespace BlogPhotographerSystem_Core.Migrations
 
                     b.ToTable("BlogAttachements", t =>
                         {
-                            t.HasCheckConstraint("CH_BlogAttachement_FileName", "LENGTH(FileName) >= 3");
+                            t.HasCheckConstraint("CH_BlogAttachement_FileName", "LEN(FileName) >= 3");
                         });
                 });
 
@@ -150,10 +153,12 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 7, 21, 14, 16, 34, 613, DateTimeKind.Local).AddTicks(4217));
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 10, 10, 22, 59, 40, 856, DateTimeKind.Local).AddTicks(782));
 
                     b.Property<int>("CreatorUserId")
                         .ValueGeneratedOnAdd()
@@ -162,19 +167,19 @@ namespace BlogPhotographerSystem_Core.Migrations
 
                     b.Property<string>("Description")
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ImagePath")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasDefaultValue(false);
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("ModifiedUserId")
                         .HasColumnType("int");
@@ -183,13 +188,72 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .IsRequired()
                         .HasMaxLength(25)
                         .IsUnicode(true)
-                        .HasColumnType("varchar(25)");
+                        .HasColumnType("nvarchar(25)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Categories", t =>
                         {
-                            t.HasCheckConstraint("CH_Category_Title", "LENGTH(Title) >= 5");
+                            t.HasCheckConstraint("CH_Category_Title", "LEN(Title) >= 5");
+                        });
+                });
+
+            modelBuilder.Entity("BlogPhotographerSystem_Core.Models.Entity.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AuthorName")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<int>("BlogId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CommentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 10, 10, 22, 59, 40, 861, DateTimeKind.Local).AddTicks(5278));
+
+                    b.Property<int>("CreatorUserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ModifiedUserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogId");
+
+                    b.ToTable("Comments", t =>
+                        {
+                            t.HasCheckConstraint("CH_Comment_AuthorName", "LEN(AuthorName) >= 3");
+
+                            t.HasCheckConstraint("CH_Comment_Content", "LEN(Content) >= 3");
                         });
                 });
 
@@ -199,18 +263,20 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<float>("Budget")
-                        .HasColumnType("float");
+                        .HasColumnType("real");
 
                     b.Property<string>("ClientName")
                         .IsRequired()
                         .IsUnicode(true)
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 7, 21, 14, 16, 34, 614, DateTimeKind.Local).AddTicks(588));
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 10, 10, 22, 59, 40, 856, DateTimeKind.Local).AddTicks(8152));
 
                     b.Property<int>("CreatorUserId")
                         .ValueGeneratedOnAdd()
@@ -221,19 +287,19 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .IsUnicode(true)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasDefaultValue(false);
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("ModifiedUserId")
                         .HasColumnType("int");
@@ -241,11 +307,11 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasMaxLength(14)
-                        .HasColumnType("varchar(14)");
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<string>("Purpose")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserID")
                         .HasColumnType("int");
@@ -256,7 +322,7 @@ namespace BlogPhotographerSystem_Core.Migrations
 
                     b.ToTable("ContactRequests", t =>
                         {
-                            t.HasCheckConstraint("CH_ContactRequest_ClientName", "LENGTH(ClientName) >= 5");
+                            t.HasCheckConstraint("CH_ContactRequest_ClientName", "LEN(ClientName) >= 5");
 
                             t.HasCheckConstraint("CH_ContactRequest_Email", "Email LIKE '%@%.com'");
 
@@ -270,10 +336,12 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 7, 21, 14, 16, 34, 617, DateTimeKind.Local).AddTicks(4359));
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 10, 10, 22, 59, 40, 861, DateTimeKind.Local).AddTicks(3087));
 
                     b.Property<int>("CreatorUserId")
                         .ValueGeneratedOnAdd()
@@ -284,7 +352,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .IsUnicode(true)
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("FileType")
                         .ValueGeneratedOnAdd()
@@ -293,16 +361,16 @@ namespace BlogPhotographerSystem_Core.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasDefaultValue(false);
 
                     b.Property<bool>("IsPrivate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasDefaultValue(false);
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("ModifiedUserId")
                         .HasColumnType("int");
@@ -312,15 +380,20 @@ namespace BlogPhotographerSystem_Core.Migrations
 
                     b.Property<string>("Path")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrderID");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Galleries", t =>
                         {
-                            t.HasCheckConstraint("CH_Gallery_FileName", "LENGTH(FileName) >= 3");
+                            t.HasCheckConstraint("CH_Gallery_FileName", "LEN(FileName) >= 3");
                         });
                 });
 
@@ -330,10 +403,12 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 7, 21, 14, 16, 34, 613, DateTimeKind.Local).AddTicks(8694));
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 10, 10, 22, 59, 40, 856, DateTimeKind.Local).AddTicks(5790));
 
                     b.Property<int>("CreatorUserId")
                         .ValueGeneratedOnAdd()
@@ -342,34 +417,34 @@ namespace BlogPhotographerSystem_Core.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasDefaultValue(false);
 
                     b.Property<bool>("IsLoggedIn")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasDefaultValue(false);
 
                     b.Property<DateTime?>("LastLoginTime")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("ModifiedUserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("varchar(15)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int?>("UserID")
                         .HasColumnType("int");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -377,14 +452,15 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .IsUnique();
 
                     b.HasIndex("UserID")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[UserID] IS NOT NULL");
 
                     b.HasIndex("UserName")
                         .IsUnique();
 
                     b.ToTable("Logins", t =>
                         {
-                            t.HasCheckConstraint("CH_Login_Password", "Password REGEXP '^(?=.*[A-Z])(?=(?:.*[a-z]){6,})(?=.*[0-9])(?=.*[+=)(*&^%$#@!~]).*$'");
+                            t.HasCheckConstraint("CH_Login_Password", "LEN(Password) >= 6 AND Password LIKE '%[A-Z]%' AND Password LIKE '%[a-z]%' AND Password LIKE '%[0-9]%' AND Password LIKE '%[+=)(*&^%$#@!~]%'");
                         });
                 });
 
@@ -394,10 +470,12 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 7, 21, 14, 16, 34, 614, DateTimeKind.Local).AddTicks(2191));
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 10, 10, 22, 59, 40, 856, DateTimeKind.Local).AddTicks(9963));
 
                     b.Property<int>("CreatorUserId")
                         .ValueGeneratedOnAdd()
@@ -406,21 +484,21 @@ namespace BlogPhotographerSystem_Core.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasDefaultValue(false);
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("ModifiedUserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Note")
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("PaymentMethod")
                         .HasColumnType("int");
@@ -433,7 +511,7 @@ namespace BlogPhotographerSystem_Core.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserID")
                         .HasColumnType("int");
@@ -446,7 +524,7 @@ namespace BlogPhotographerSystem_Core.Migrations
 
                     b.ToTable("Orders", t =>
                         {
-                            t.HasCheckConstraint("CH_Order_Title", "LENGTH(Title) >= 5");
+                            t.HasCheckConstraint("CH_Order_Title", "LEN(Title) >= 5");
                         });
                 });
 
@@ -456,10 +534,12 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 7, 21, 14, 16, 34, 617, DateTimeKind.Local).AddTicks(2444));
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 10, 10, 22, 59, 40, 861, DateTimeKind.Local).AddTicks(968));
 
                     b.Property<int>("CreatorUserId")
                         .ValueGeneratedOnAdd()
@@ -469,15 +549,15 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .IsUnicode(true)
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasDefaultValue(false);
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("ModifiedUserId")
                         .HasColumnType("int");
@@ -489,12 +569,12 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .IsUnicode(true)
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserID")
                         .HasColumnType("int");
@@ -502,15 +582,16 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OrderID")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[OrderID] IS NOT NULL");
 
                     b.HasIndex("UserID");
 
                     b.ToTable("Problems", t =>
                         {
-                            t.HasCheckConstraint("CH_Problem_Purpose", "NOT (Purpose REGEXP '[0-9~!@#$%^&*()_+=-]')");
+                            t.HasCheckConstraint("CH_Problem_Purpose", "Purpose NOT LIKE '%[0-9]%' AND Purpose NOT LIKE '%[~!@#$%^&*()_+=-]%'");
 
-                            t.HasCheckConstraint("CH_Problem_Title", "NOT (Title REGEXP '[0-9~!@#$%^&*()_+=-]')");
+                            t.HasCheckConstraint("CH_Problem_Title", "Title NOT LIKE '%[0-9]%' AND Title NOT LIKE '%[~!@#$%^&*()_+=-]%'");
                         });
                 });
 
@@ -520,13 +601,15 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<int?>("CategoryID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 7, 21, 14, 16, 34, 614, DateTimeKind.Local).AddTicks(9530));
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 10, 10, 22, 59, 40, 857, DateTimeKind.Local).AddTicks(8414));
 
                     b.Property<int>("CreatorUserId")
                         .ValueGeneratedOnAdd()
@@ -537,10 +620,10 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .IsRequired()
                         .HasMaxLength(150)
                         .IsUnicode(true)
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<float?>("DisacountAmount")
-                        .HasColumnType("float");
+                        .HasColumnType("real");
 
                     b.Property<int?>("DiscountType")
                         .IsUnicode(true)
@@ -548,18 +631,18 @@ namespace BlogPhotographerSystem_Core.Migrations
 
                     b.Property<string>("ImagePath")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasDefaultValue(false);
 
                     b.Property<bool>("IsHaveDiscount")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("ModifiedUserId")
                         .HasColumnType("int");
@@ -567,7 +650,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .IsUnicode(true)
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
@@ -582,7 +665,7 @@ namespace BlogPhotographerSystem_Core.Migrations
 
                     b.ToTable("Services", t =>
                         {
-                            t.HasCheckConstraint("CH_Service_Name", "LENGTH(Name) >= 4");
+                            t.HasCheckConstraint("CH_Service_Name", "LEN(Name) >= 4");
                         });
                 });
 
@@ -592,13 +675,15 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 7, 21, 14, 16, 34, 615, DateTimeKind.Local).AddTicks(3245));
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 10, 10, 22, 59, 40, 858, DateTimeKind.Local).AddTicks(2828));
 
                     b.Property<int>("CreatorUserId")
                         .ValueGeneratedOnAdd()
@@ -607,28 +692,28 @@ namespace BlogPhotographerSystem_Core.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .IsUnicode(true)
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImagePath")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasDefaultValue(false);
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .IsUnicode(true)
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("ModifiedUserId")
                         .HasColumnType("int");
@@ -636,7 +721,7 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasMaxLength(14)
-                        .HasColumnType("varchar(14)");
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<int>("UserType")
                         .ValueGeneratedOnAdd()
@@ -653,11 +738,11 @@ namespace BlogPhotographerSystem_Core.Migrations
 
                     b.ToTable("Users", t =>
                         {
-                            t.HasCheckConstraint("CH_User_Email", "Email REGEXP '^[A-Za-z0-9._-]+@[A-Za-z0-9]+[.][A-Za-z]+$'");
+                            t.HasCheckConstraint("CH_User_Email", "Email LIKE '%_@__%.__%' AND Email NOT LIKE '%[^A-Za-z0-9._-]%'");
 
-                            t.HasCheckConstraint("CH_User_FirstName", "NOT (FirstName REGEXP '[0-9~!@#$%^&*()_+=-]')");
+                            t.HasCheckConstraint("CH_User_FirstName", "FirstName NOT LIKE '%[0-9]%' AND FirstName NOT LIKE '%[~!@#$%^&*()_+=-]%'");
 
-                            t.HasCheckConstraint("CH_User_LastName", "NOT (LastName REGEXP '[0-9~!@#$%^&*()_+=-]')");
+                            t.HasCheckConstraint("CH_User_LastName", "LastName NOT LIKE '%[0-9]%' AND LastName NOT LIKE '%[~!@#$%^&*()_+=-]%'");
 
                             t.HasCheckConstraint("CH_User_Phone", "Phone LIKE '009627________'");
                         });
@@ -679,6 +764,15 @@ namespace BlogPhotographerSystem_Core.Migrations
                         .HasForeignKey("BlogID");
                 });
 
+            modelBuilder.Entity("BlogPhotographerSystem_Core.Models.Entity.Comment", b =>
+                {
+                    b.HasOne("BlogPhotographerSystem_Core.Models.Entity.Blog", null)
+                        .WithMany()
+                        .HasForeignKey("BlogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("BlogPhotographerSystem_Core.Models.Entity.ContactRequest", b =>
                 {
                     b.HasOne("BlogPhotographerSystem_Core.Models.Entity.User", null)
@@ -691,6 +785,10 @@ namespace BlogPhotographerSystem_Core.Migrations
                     b.HasOne("BlogPhotographerSystem_Core.Models.Entity.Order", null)
                         .WithMany()
                         .HasForeignKey("OrderID");
+
+                    b.HasOne("BlogPhotographerSystem_Core.Models.Entity.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("BlogPhotographerSystem_Core.Models.Entity.Login", b =>

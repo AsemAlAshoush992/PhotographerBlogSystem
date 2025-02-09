@@ -3,8 +3,12 @@ using BlogPhotographerSystem_Core.DTOs.Login;
 using BlogPhotographerSystem_Core.DTOs.User;
 using BlogPhotographerSystem_Core.Helper;
 using BlogPhotographerSystem_Core.IServices;
+using BlogPhotographerSystem_Core.Models.Entity;
+using BlogPhotographerSystem_Infra.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace BlogPhotographerSystem.Controllers
 {
@@ -19,7 +23,9 @@ namespace BlogPhotographerSystem.Controllers
         private readonly IGalleryService _galleryService;
         private readonly ICategoryService _categoryService;
         private readonly ICommentService _commentService;
-        public GuestController(IUserService userService, ILoginService loginService, IBlogService blogService, IServiceService serviceService, IGalleryService galleryService, ICategoryService categoryService, ICommentService commentService)
+        private readonly EmailService _emailService;
+        private readonly OTPService _otpService;
+        public GuestController(IUserService userService, ILoginService loginService, IBlogService blogService, IServiceService serviceService, IGalleryService galleryService, ICategoryService categoryService, ICommentService commentService, EmailService emailService, OTPService otpService)
         {
             _userService = userService;
             _loginService = loginService;
@@ -28,6 +34,8 @@ namespace BlogPhotographerSystem.Controllers
             _galleryService = galleryService;
             _categoryService = categoryService;
             _commentService = commentService;
+            _emailService = emailService;
+            _otpService = otpService;
         }
 
         /// <summary>
@@ -65,7 +73,7 @@ namespace BlogPhotographerSystem.Controllers
         /// </remarks>
         [HttpGet]
         [Route("[action]/{blogId}")]
-        public async Task<IActionResult> GetBlogDetailsForUserById( int blogId)
+        public async Task<IActionResult> GetBlogDetailsForUserById(int blogId)
         {
             if (blogId == 0)
                 return BadRequest("Please filling BlogId");
@@ -156,7 +164,7 @@ namespace BlogPhotographerSystem.Controllers
                 return StatusCode(503, $"Error Ocurred {ex.Message}");
             }
         }
-        
+
 
         /// <summary>
         /// Creates a new client.
@@ -186,7 +194,27 @@ namespace BlogPhotographerSystem.Controllers
             try
             {
                 await _userService.Register(dto);
-                return StatusCode(201, "New Account Has Been Created");
+                var otpCode = _otpService.GenerateAndStoreOtp(dto.Email);
+                // إرسال بريد إلكتروني للتحقق
+                var emailSent = await _emailService.SendEmailAsync(dto.Email, "Email Verification",
+                 $@"<html>
+                   <body>
+                  <p>Hello {dto.FirstName} {dto.LastName},</p>
+                  <p>Thank you for registering on our site! To verify your email address, please use the following OTP code:</p>
+                  <p><strong>OTP Code: {otpCode}</strong></p>
+                  <p>Please enter this code on the verification page to complete your registration. This code is valid for 10 minutes only.</p>
+                  <p>If you did not request this verification, please ignore this message.</p>
+                  <p>Thank you,<br/>Support Team</p>
+                   </body>
+                  </html>");
+
+                if (emailSent)
+                {
+                    return StatusCode(201, "A verification email has been sent. Please check your email to complete registration.");
+                }
+
+                return BadRequest("Failed to send verification email.");
+
             }
             catch (Exception ex)
             {
@@ -194,7 +222,19 @@ namespace BlogPhotographerSystem.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> VerifyOtp([FromBody] VerifyOtpDTO dto)
+        {
 
+            if (_otpService.ValidateOtp(dto.Email, dto.OtpCode))
+            {
+                return Ok("OTP verified successfully. Registration complete!");
+            }
+
+            return BadRequest("Invalid or expired OTP code.");
+
+        }
         /// <summary>
         /// Creates a new Comment.
         /// </summary>
@@ -218,7 +258,7 @@ namespace BlogPhotographerSystem.Controllers
                 return BadRequest("Please filling All Data");
             try
             {
-                await _commentService.CreateComment(dto);   
+                await _commentService.CreateComment(dto);
                 return StatusCode(201, "New Comment Has Been Created");
             }
             catch (Exception ex)
@@ -245,7 +285,7 @@ namespace BlogPhotographerSystem.Controllers
         ///       "password": "MajedM323#"   
         ///     }
         /// </remarks>
-        [HttpPut]
+        [HttpPost]
         [Route("[action]")]
         public async Task<IActionResult> LoginUserAccount([FromBody] CreateLoginDTO dto)
         {
@@ -253,7 +293,7 @@ namespace BlogPhotographerSystem.Controllers
                 return BadRequest("Please filling All Data");
             try
             {
-                 var token = await _loginService.GenerateUserAccessToken(dto);
+                var token = await _loginService.GenerateUserAccessToken(dto);
                 return StatusCode(200, token);
             }
             catch (Exception ex)
@@ -278,7 +318,7 @@ namespace BlogPhotographerSystem.Controllers
         ///       "password": "MajedM323#"   
         ///     }
         /// </remarks>
-        [HttpPut]
+        [HttpPost]
         [Route("[action]")]
         public async Task<IActionResult> LoginAdminAccount([FromBody] CreateLoginDTO dto)
         {
@@ -313,7 +353,7 @@ namespace BlogPhotographerSystem.Controllers
         ///       "token": "eyJhbGciOiJIUzI1N"   
         ///     }
         /// </remarks>
-        [HttpPut]
+        [HttpPost]
         [Route("[action]")]
         public async Task<IActionResult> LogoutUserAcount([FromHeader] string token /*int userID*/)
         {
@@ -348,18 +388,44 @@ namespace BlogPhotographerSystem.Controllers
         ///       "password": "davidw123!"  
         ///     }
         /// </remarks>
-        [HttpPut]
-        [Route("[action]")]
-        public async Task<IActionResult> ResetPasswordUserAcount([FromBody]CreateLoginDTO dto)
+        [HttpPost]
+        [Route("[action]/{email}")]
+        public async Task<IActionResult> ChangePassword(string email, [FromBody] ChangePasswordDTO dto)
         {
-            if (string.IsNullOrEmpty(dto.UserName) || string.IsNullOrEmpty(dto.Password))
+            if (dto == null || string.IsNullOrWhiteSpace(dto.NewPassword) || string.IsNullOrWhiteSpace(dto.ConfirmPassword))
             {
-                return BadRequest("Please filling All Data");
-            }   
+                return BadRequest("Invalid request.");
+            }
+            try
+            {
+                await _loginService.ChangePassword(email, dto);
+                return StatusCode(201, "Password has been reset successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(503, $"Error Ocurred {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> RequestPasswordReset([FromBody] ResetPasswordDTO dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.UserName))
+            {
+                return BadRequest("Email is required.");
+            }
             try
             {
                 await _loginService.ResetPassword(dto);
-                return StatusCode(201, "Reset Password has been successfully");
+                var resetToken = Guid.NewGuid().ToString(); // توليد توكن
+
+                var resetLink = $"http://localhost:4200/resetpasswordTwo?token={resetToken}";
+                // إرسال البريد الإلكتروني
+                var subject = "Password Reset Request";
+                var body = $"Click the following link to reset your password: <a href='{resetLink}'>Reset Password</a>";
+                await _emailService.SendEmailAsync(dto.UserName, subject, body);
+                return StatusCode(201, "A reset password link has been sent to your email.");
             }
             catch (Exception ex)
             {

@@ -15,7 +15,8 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
         {
             //shared entity configuration
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).HasColumnType("int").ValueGeneratedOnAdd();
+           // builder.Property(x => x.Id).HasColumnType("int").ValueGeneratedOnAdd();
+            builder.Property(x => x.Id).UseIdentityColumn();
             builder.Property(x => x.CreationDate).IsRequired();
             builder.Property(x => x.CreatorUserId).IsRequired();
             builder.Property(x => x.IsDeleted).IsRequired();
@@ -36,7 +37,17 @@ namespace BlogPhotographerSystem_Core.Models.EntityConfigurations
             //Size 
             builder.Property(x => x.Password).HasMaxLength(30);
             //Check Constrain
-            builder.ToTable(t => t.HasCheckConstraint("CH_Login_Password",@"Password REGEXP '^(?=.*[A-Z])(?=(?:.*[a-z]){6,})(?=.*[0-9])(?=.*[+=)(*&^%$#@!~]).*$'"));
+           // builder.ToTable(t => t.HasCheckConstraint("CH_Login_Password",@"Password REGEXP '^(?=.*[A-Z])(?=(?:.*[a-z]){6,})(?=.*[0-9])(?=.*[+=)(*&^%$#@!~]).*$'"));
+            builder.ToTable(t =>
+            {
+                t.HasCheckConstraint("CH_Login_Password",
+                    "LEN(Password) >= 6 AND " + // طول كلمة المرور
+                    "Password LIKE '%[A-Z]%' AND " + // وجود حرف كبير
+                    "Password LIKE '%[a-z]%' AND " + // وجود حرف صغير
+                    "Password LIKE '%[0-9]%' AND " + // وجود رقم
+                    "Password LIKE '%[+=)(*&^%$#@!~]%'"); // وجود رمز خاص
+            });
+
         }
     }
 }

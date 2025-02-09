@@ -2,6 +2,7 @@
 using BlogPhotographerSystem_Core.DTOs.Login;
 using BlogPhotographerSystem_Core.IRepos;
 using BlogPhotographerSystem_Core.Models.Entity;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -52,18 +53,16 @@ namespace BlogPhotographerSystem_Infra.Repos
             await _context.SaveChangesAsync();
         }
 
-        public async Task ResetPasswordRepos(CreateLoginDTO dto)
+        public async Task ResetPasswordRepos(ResetPasswordDTO dto)
         {
             var query = await _context.Logins.SingleOrDefaultAsync
                 (x => x.UserName == dto.UserName);
-            if (query != null)
+            if (query == null)
             {
-                query.Password = dto.Password;
-                _context.Update(query);
-                await _context.SaveChangesAsync();
-            }
-            else
                 throw new Exception("The Email is Wrong ");
+            }
+            
+
         }
         public async Task LoginReposClient(CreateLoginDTO dto)
         {
@@ -98,6 +97,24 @@ namespace BlogPhotographerSystem_Infra.Repos
             }
             else
                 throw new Exception("Unauthorized");
+        }
+
+        public async Task ChangePasswordRepos(string email, ChangePasswordDTO dto)
+        {
+            var query = await _context.Logins.SingleOrDefaultAsync
+                (x => x.UserName == email);
+            if (query == null)
+            {
+                throw new Exception("The Email is Wrong ");
+            }
+            else
+            {
+                query.Password = dto.NewPassword;
+                query.ModifiedDate= DateTime.Now;
+                query.ModifiedUserId = 1;
+                _context.Update(query);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
